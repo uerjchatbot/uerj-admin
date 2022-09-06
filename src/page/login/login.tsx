@@ -1,7 +1,6 @@
 import React from "react";
 
-const Login = () => {
-  console.log("oi");
+const Login: React.FC = () => {
   return (
     <div>
       <h1>Login page</h1>

@@ -1,7 +1,6 @@
 import React from "react";
 
-const Home = () => {
-  console.log("oi");
+const Home: React.FC = () => {
   return <h1>Home page</h1>;
 };
 
