@@ -4,12 +4,7 @@ import { INITIAL_PATH } from "@/routes/paths/paths.public";
 import WrapperRoute from "@/routes/route.wrapper";
 import React from "react";
 
-import {
-  BrowserRouter,
-  Routes as Router,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter, Routes as Router, Route, Navigate } from "react-router-dom";
 
 const RoutesComponent: React.FC = () => {
   const renderPrivateRoutes = () => {
@@ -27,14 +22,10 @@ const RoutesComponent: React.FC = () => {
   return (
     <BrowserRouter>
       <Router>
-        <Route
-          element={<WrapperRoute redirect={INITIAL_PATH()} isPrivate={true} />}
-        >
+        <Route element={<WrapperRoute redirect={INITIAL_PATH()} isPrivate={true} />}>
           {renderPrivateRoutes()}
         </Route>
-        <Route
-          element={<WrapperRoute redirect={INITIAL_PATH()} isPrivate={false} />}
-        >
+        <Route element={<WrapperRoute redirect={INITIAL_PATH()} isPrivate={false} />}>
           {renderPublicRoutesComponents()}
         </Route>
 

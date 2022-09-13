@@ -5,7 +5,6 @@
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
     "jsx": "react-jsx",
     "experimentalDecorators": true,
-
     /* Modules */
     "module": "es2020",
     "moduleResolution": "node",
