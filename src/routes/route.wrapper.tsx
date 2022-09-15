@@ -2,6 +2,7 @@ import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import localStorageService from "@/services/local-storage/local-storage.service";
 import { AuthKeysEnum } from "@/types/enum/auth.enum";
+import Layout from "@/layout/layout";
 
 interface IWrapperRoute {
   redirect?: string;
@@ -14,6 +15,14 @@ const WrapperRoute: React.FC<IWrapperRoute> = ({ isPrivate, redirect = "/" }) =>
   // if (!token && isPrivate) {
   //   return <Navigate replace to={redirect} />;
   // }
+
+  if (isPrivate) {
+    return (
+      <Layout>
+        <Outlet />
+      </Layout>
+    );
+  }
 
   return <Outlet />;
 };

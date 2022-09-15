@@ -2,7 +2,8 @@ const Theme = {
   colors: {
     blue: {
       blueDark: "#00314D",
-      extraLightBlue: "#E6F6FF;"
+      extraLightBlue: "#E6F6FF",
+      lightBlue: "#E5F6FF"
     },
     black: {
       blackMedium: "#242626"

@@ -50,6 +50,7 @@ export const ContentCard = styled.div`
   width: 100%;
   height: 100px;
   position: relative;
+  cursor: pointer;
 
   @media (max-width: 1000px) {
     height: 190px;
