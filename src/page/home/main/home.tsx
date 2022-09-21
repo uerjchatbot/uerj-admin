@@ -16,12 +16,12 @@ import {
   Card
 } from "./styles";
 import { useNavigate } from "react-router-dom";
-import { VIEW_HOME_PATH } from "@/routes/paths/paths.private";
+import { STUDENT_PATH, VIEW_HOME_PATH } from "@/routes/paths/paths.private";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const navigateToView = () => navigate(VIEW_HOME_PATH());
-
+  const onGoToStep = (url: string) => navigate(url);
   return (
     <Container>
       <ContainerButton>
@@ -47,7 +47,7 @@ const Home: React.FC = () => {
         <p>Selecione a opção referente ao seu título de ingresso no PPGEdu:</p>
       </DescriptionContainer>
       <ContainerCards>
-        <ContentCard>
+        <ContentCard onClick={() => onGoToStep(STUDENT_PATH())}>
           <DotRounded>1</DotRounded>
           <Card>
             <span>

@@ -2532,6 +2532,11 @@ uri-js@^4.2.2:
   dependencies:
     punycode "^2.1.0"
 
+use-react-router-breadcrumbs@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/use-react-router-breadcrumbs/-/use-react-router-breadcrumbs-4.0.0.tgz#6181e839ac057335dd52d3f6430df7cd29f8d578"
+  integrity sha512-65nVc6DAT3otY/4uXq9IOIat5CRJGmfGn4kzS7LizUFPEkTQyLmsc3BbNrSOGwx+Q34vWy8cujSeJgYyx+BUeg==
+
 util-deprecate@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"

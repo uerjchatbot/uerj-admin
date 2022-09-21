@@ -9,13 +9,14 @@ import {
   UserContent,
   ImageContainer
 } from "./styles";
+import { Breadcrumb } from "@/layout/header/breadcrumb";
 
 const Header: React.FC = () => {
   return (
     <Container>
       <Content>
         <TitleContainer>
-          <h2>Início</h2>
+          <Breadcrumb />
         </TitleContainer>
         <UserContainer>
           <ImageContainer>
