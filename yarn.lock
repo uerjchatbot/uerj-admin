@@ -2390,6 +2390,16 @@ styled-components@^5.3.5:
     shallowequal "^1.1.0"
     supports-color "^5.5.0"
 
+suneditor-react@^3.4.1:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/suneditor-react/-/suneditor-react-3.4.1.tgz#77be66a6058c1e1b600d618acd5dd3a7d871ab9b"
+  integrity sha512-xsfMjy2748x8Bcw/SeT2CeecrBABcJPyCO+LPourVLcQg8QW/A9FbIfP0DghNlBkH/gxy9iviR5wVydg9UW2wQ==
+
+suneditor@^2.44.2:
+  version "2.44.2"
+  resolved "https://registry.yarnpkg.com/suneditor/-/suneditor-2.44.2.tgz#b688d6ff9ee90a2a3c44371b865970cd7377117d"
+  integrity sha512-MKBBOaWwki8C1k7qqW7vN6Bj5AgLbucn9l/lWy3xKWsTZwA6paCUHTm1BlUXqhA38lRL1OcunPkapk3rSotMGw==
+
 supports-color@^5.3.0, supports-color@^5.5.0:
   version "5.5.0"
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-5.5.0.tgz#e2e69a44ac8772f78a1ec0b35b689df6530efc8f"

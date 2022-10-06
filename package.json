@@ -25,6 +25,8 @@
     "slate": "^0.82.1",
     "slate-react": "^0.82.2",
     "styled-components": "^5.3.5",
+    "suneditor": "^2.44.2",
+    "suneditor-react": "^3.4.1",
     "tailwindcss": "^3.1.8",
     "use-react-router-breadcrumbs": "^4.0.0",
     "vite-tsconfig-paths": "^3.5.0"
