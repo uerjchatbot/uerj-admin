@@ -1,6 +1,7 @@
 import { Button } from "@/components/button";
 import React from "react";
 import { BsPencil } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 import {
   Container,
@@ -11,7 +12,12 @@ import {
   DotRounded
 } from "./styles";
 
+import { STUDENT_CALENDAR_PATH } from "@/routes/paths/paths.private";
+
 const Home: React.FC = () => {
+  const navigate = useNavigate();
+  const navigateToCalendarView = () => navigate(STUDENT_CALENDAR_PATH());
+
   return (
     <Container>
       <ContainerButton>
@@ -30,7 +36,10 @@ const Home: React.FC = () => {
         <p>Escolha entre as opções abaixo:</p>
       </DescriptionContainer>
       <ContainerCards>
-        <ContentCard>
+        <ContentCard
+          onClick={() => {
+            navigateToCalendarView();
+          }}>
           <DotRounded>1</DotRounded>
           <span>
             Calendário <br /> letivo
