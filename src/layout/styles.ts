@@ -8,4 +8,5 @@ export const Container = styled.div`
 
 export const Content = styled.div<{ rendedMenu: boolean }>`
   width: ${({ rendedMenu }) => (rendedMenu ? "calc(100% - 100px)" : "100%")};
+  overflow-y: scroll;
 `;
