@@ -15,7 +15,10 @@ const Theme = {
       extraLightGrey: "#e9f1f5",
       grey: "#919699"
     },
-    white: "#fff"
+    white: {
+      white: "#fff",
+      mediumWhite: "#F2FBFF"
+    }
   }
 } as const;
 
