@@ -10,6 +10,15 @@ export const ContainerButton = styled.div`
   margin-top: 24px;
   button {
     width: 30%;
+
+    background-color: ${({ theme }) => theme.colors.white.white};
+
+    transition: 0.5s;
+
+    &:hover {
+      background-color: ${({ theme }) => theme.colors.white.mediumWhite};
+    }
+
     span {
       display: flex;
       align-items: center;
@@ -29,6 +38,10 @@ export const DescriptionContainer = styled.div`
   color: ${({ theme }) => theme.colors.grey.grey};
   p {
     font-size: 1.4rem;
+  }
+
+  & > ${ContainerButton} {
+    justify-content: start;
   }
 `;
 

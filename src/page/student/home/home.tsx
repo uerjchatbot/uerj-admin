@@ -17,24 +17,34 @@ import { STUDENT_CALENDAR_PATH } from "@/routes/paths/paths.private";
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const navigateToCalendarView = () => navigate(STUDENT_CALENDAR_PATH());
+  const handleBackNavigation = () => navigate(-1);
 
   return (
     <Container>
       <ContainerButton>
-        <Button outline={true}>
-          <span>
-            Editar <BsPencil size={16} />
-          </span>
+        <Button outline={true} onClick={handleBackNavigation}>
+          <span>Voltar</span>
         </Button>
       </ContainerButton>
+
       <DescriptionContainer>
         <p> Olá Aluno PPGEdu,</p>
         <p>
           Seja bem-vindo ao nosso sistema de comunicação offline, seu auxiliar estudantil na
-          pós-graduação. Estamos à disposição sempre que precisar.
+          pós-graduação. <br />
+          Estamos à disposição sempre que precisar.
         </p>
         <p>Escolha entre as opções abaixo:</p>
+
+        <ContainerButton>
+          <Button outline={true}>
+            <span>
+              Editar <BsPencil size={16} />
+            </span>
+          </Button>
+        </ContainerButton>
       </DescriptionContainer>
+
       <ContainerCards>
         <ContentCard
           onClick={() => {
