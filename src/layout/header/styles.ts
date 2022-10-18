@@ -36,19 +36,19 @@ export const UserContainer = styled.div`
 `;
 
 export const ImageContainer = styled.div`
+  width: 80px;
   height: 80px;
   border-radius: 50%;
-  width: 80px;
-  background-color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.white.white};
   display: flex;
   justify-content: center;
   align-items: center;
   margin-right: 16px;
 
+  object-fit: contain;
   img {
-    width: 60%;
+    width: 80%;
     height: 60%;
-    margin-right: 12px;
   }
 `;
 

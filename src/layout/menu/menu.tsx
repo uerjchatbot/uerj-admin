@@ -51,7 +51,7 @@ const Menu: React.FC = () => {
     const isActive = location.pathname.includes(path);
     return (
       <MenuIcon active={isActive} key={text}>
-        <Icon size={32} color={isActive ? Theme.colors.blue.blueDark : Theme.colors.white} />
+        <Icon size={32} color={isActive ? Theme.colors.blue.blueDark : Theme.colors.white.white} />
         <span>{text}</span>
       </MenuIcon>
     );

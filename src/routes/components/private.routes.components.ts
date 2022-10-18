@@ -5,6 +5,7 @@ import { CalendarPage } from "@/page/student/calendar";
 // import { HOME_PATH, STUDENT_PATH, VIEW_HOME_PATH } from "@/routes/paths/paths.private";
 import * as Private from "@/routes/paths/paths.private";
 import { RouteComponentInterface } from "@/types/interface/routes/route-component.interface";
+import { FacultAndStudents } from "@/page/student/faculty_and_students";
 
 export const PrivateRoutesComponents: RouteComponentInterface[] = [
   {
@@ -26,5 +27,10 @@ export const PrivateRoutesComponents: RouteComponentInterface[] = [
     path: Private.STUDENT_CALENDAR_PATH(),
     Component: CalendarPage,
     breadcrumb: " / 1 - Calendário letivo"
+  },
+  {
+    path: Private.STUDENT_FACULTY_AND_STUDENDS(),
+    Component: FacultAndStudents,
+    breadcrumb: " / 2 - Corpos Docentes e Discentes"
   }
 ];

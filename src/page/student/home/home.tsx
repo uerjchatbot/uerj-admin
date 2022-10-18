@@ -12,11 +12,12 @@ import {
   DotRounded
 } from "./styles";
 
-import { STUDENT_CALENDAR_PATH } from "@/routes/paths/paths.private";
+import { STUDENT_CALENDAR_PATH, STUDENT_FACULTY_AND_STUDENDS } from "@/routes/paths/paths.private";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const navigateToCalendarView = () => navigate(STUDENT_CALENDAR_PATH());
+  const navigateToFacultyAndStudents = () => navigate(STUDENT_FACULTY_AND_STUDENDS());
   const handleBackNavigation = () => navigate(-1);
 
   return (
@@ -55,7 +56,11 @@ const Home: React.FC = () => {
             Calendário <br /> letivo
           </span>
         </ContentCard>
-        <ContentCard>
+
+        <ContentCard
+          onClick={() => {
+            navigateToFacultyAndStudents();
+          }}>
           <DotRounded>2</DotRounded>
           <span>
             Corpo
@@ -63,18 +68,22 @@ const Home: React.FC = () => {
             docente
           </span>
         </ContentCard>
+
         <ContentCard>
           <DotRounded>3</DotRounded>
           <span>Disciplinas</span>
         </ContentCard>
+
         <ContentCard>
           <DotRounded>4</DotRounded>
           <span>Eventos</span>
         </ContentCard>
+
         <ContentCard>
           <DotRounded>5</DotRounded>
           <span>Horários</span>
         </ContentCard>
+
         <ContentCard>
           <DotRounded>6</DotRounded>
           <span>
@@ -85,6 +94,7 @@ const Home: React.FC = () => {
             de bolsas
           </span>
         </ContentCard>
+
         <ContentCard>
           <DotRounded>7</DotRounded>
           <span>
