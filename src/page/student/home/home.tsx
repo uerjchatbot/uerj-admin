@@ -1,5 +1,5 @@
+import React, { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/button";
-import React from "react";
 import { BsPencil } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
@@ -13,8 +13,21 @@ import {
 } from "./styles";
 
 import { STUDENT_CALENDAR_PATH, STUDENT_FACULTY_AND_STUDENDS } from "@/routes/paths/paths.private";
+import { StudentServices } from "@/services/student/home.service";
 
 const Home: React.FC = () => {
+  const [data, setData] = useState();
+
+  const getData = useCallback(async () => {
+    const { data } = await StudentServices.getHomeData();
+
+    console.log("data:", data);
+  }, []);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
   const navigate = useNavigate();
   const navigateToCalendarView = () => navigate(STUDENT_CALENDAR_PATH());
   const navigateToFacultyAndStudents = () => navigate(STUDENT_FACULTY_AND_STUDENDS());
@@ -23,7 +36,7 @@ const Home: React.FC = () => {
   return (
     <Container>
       <ContainerButton>
-        <Button outline={true} onClick={handleBackNavigation}>
+        <Button outline={true} onClick={handleBackNavigation} type={"button"}>
           <span>Voltar</span>
         </Button>
       </ContainerButton>
@@ -38,7 +51,7 @@ const Home: React.FC = () => {
         <p>Escolha entre as opções abaixo:</p>
 
         <ContainerButton>
-          <Button outline={true}>
+          <Button outline={true} type={"button"}>
             <span>
               Editar <BsPencil size={16} />
             </span>
