@@ -1,16 +1,20 @@
 import { EyesClosed, EyesOpen } from "@/assets/icons/passwords-icons";
 import Theme from "@/styles/theme";
 import React, { useMemo, useState } from "react";
+import { UseFormRegister } from "react-hook-form";
 
-import { Container, Input as InputStyled, Label } from "./styles";
+import { Container, ErrorMessage, Input as InputStyled, Label } from "./styles";
 
 interface InputProps {
-  name?: string;
+  name: string;
   placeholder?: string;
   label?: string;
   value?: string;
   type?: "text" | "number" | "password" | "email";
   required?: boolean;
+  register: UseFormRegister<any>;
+  errorMessage?: string;
+  errors?: any;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -19,7 +23,10 @@ const Input: React.FC<InputProps> = ({
   label,
   name,
   placeholder,
-  value
+  value,
+  register,
+  errorMessage,
+  errors
 }) => {
   const [clickedIconPassword, setClickedIconPassword] = useState<boolean>(false);
 
@@ -50,17 +57,20 @@ const Input: React.FC<InputProps> = ({
   }, [type, clickedIconPassword]);
 
   return (
-    <Container>
-      <Label>{label}</Label>
-      <InputStyled
-        required={required}
-        type={typeComponent}
-        defaultValue={value}
-        name={name}
-        placeholder={placeholder}
-      />
-      {showIconPassword()}
-    </Container>
+    <>
+      <Container>
+        <Label>{label}</Label>
+
+        <InputStyled
+          type={typeComponent}
+          defaultValue={value}
+          placeholder={placeholder}
+          {...register(name, { required: required ? errorMessage : false })}
+        />
+        {showIconPassword()}
+      </Container>
+      {errors[name] && <ErrorMessage>{errors[name].message}</ErrorMessage>}
+    </>
   );
 };
 
