@@ -28,3 +28,10 @@ export const Input = styled.input`
   padding-left: 1.2rem;
   outline: 1px solid ${({ theme }) => theme.colors.grey.extraLightGrey};
 `;
+
+export const ErrorMessage = styled.p`
+  color: red;
+  font-size: 0.5rem;
+
+  padding-bottom: 1rem;
+`;
