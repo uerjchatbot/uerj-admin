@@ -8,6 +8,10 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     font-family: 'Lato', 'Courier New', Courier, monospace
   }
+
+  .spinner {
+    z-index: 5;
+  }
 `;
 
 export default GlobalStyle;
