@@ -3,8 +3,8 @@ import styled from "styled-components";
 export const Container = styled.div`
   width: 90%;
 
-  > div {
-    margin-bottom: 24px;
+  form > div {
+    margin-bottom: 12px;
   }
 
   p {
@@ -21,4 +21,6 @@ export const ForgotPassword = styled.div`
     color: ${({ theme }) => theme.colors.blue.blueDark};
     font-size: 1.2rem;
   }
+
+  padding-bottom: 1rem;
 `;
