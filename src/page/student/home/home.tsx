@@ -3,6 +3,8 @@ import { Button } from "@/components/button";
 import { BsPencil } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
+import { Markup } from "interweave";
+
 import {
   Container,
   ContainerButton,
@@ -17,11 +19,17 @@ import { StudentServices } from "@/services/student/home.service";
 
 const Home: React.FC = () => {
   const [data, setData] = useState();
+  const [title, setTitle] = useState("");
 
   const getData = useCallback(async () => {
-    const { data } = await StudentServices.getHomeData();
+    try {
+      const { data } = await StudentServices.getHomeData();
 
-    console.log("data:", data);
+      setData(data);
+      setTitle(data.title);
+    } catch (error) {
+      console.log("error:", error);
+    }
   }, []);
 
   useEffect(() => {
@@ -42,13 +50,7 @@ const Home: React.FC = () => {
       </ContainerButton>
 
       <DescriptionContainer>
-        <p> Olá Aluno PPGEdu,</p>
-        <p>
-          Seja bem-vindo ao nosso sistema de comunicação offline, seu auxiliar estudantil na
-          pós-graduação. <br />
-          Estamos à disposição sempre que precisar.
-        </p>
-        <p>Escolha entre as opções abaixo:</p>
+        <div dangerouslySetInnerHTML={{ __html: title.replaceAll("\n", "<br />") }} />
 
         <ContainerButton>
           <Button outline={true} type={"button"}>
