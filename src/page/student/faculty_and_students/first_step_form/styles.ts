@@ -38,6 +38,12 @@ export const EditButton = styled.button`
   border-radius: 6px;
 
   cursor: pointer;
+
+  transition: 0.5s;
+
+  &:hover {
+    background-color: ${Theme.colors.white.mediumWhite};
+  }
 `;
 
 export const ContainerCards = styled.div`
@@ -55,7 +61,6 @@ export const ContainerCards = styled.div`
 
 export const ContentCard = styled.div`
   width: 100%;
-  cursor: pointer;
 
   display: flex;
   align-items: flex-start;
