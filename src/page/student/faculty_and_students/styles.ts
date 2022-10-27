@@ -38,9 +38,9 @@ export const SwitchStageButton = styled.button<{ isSelected: boolean }>`
 
 export const BackButton = styled.button`
   padding: 0 6rem;
-  height: 36px;
+  height: 48px;
 
-  border: 2px solid ${Theme.colors.blue.blueDark};
+  border: 1px solid ${Theme.colors.blue.blueDark};
   background-color: ${Theme.colors.white.white};
   border-radius: 6px;
 
@@ -48,4 +48,10 @@ export const BackButton = styled.button`
   color: ${Theme.colors.blue.blueDark};
 
   cursor: pointer;
+
+  transition: 0.5s;
+
+  &:hover {
+    background-color: ${Theme.colors.white.mediumWhite};
+  }
 `;
