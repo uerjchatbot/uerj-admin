@@ -52,3 +52,12 @@ export interface ITeachersData {
   created_at: string;
   updated_at: string;
 }
+
+export interface IStudentHomeData {
+  id: number;
+  father_question: number;
+  identifier: string;
+  title: string;
+  question: string;
+  response: boolean;
+}
