@@ -29,6 +29,7 @@ const TextEditor = ({ value, setValue }: Props) => {
       defaultValue={value}
       placeholder="Digite aqui"
       setOptions={options as SetOptions}
+      setDefaultStyle="font-size: 24px; font-family: Lato"
       getSunEditorInstance={getSunEditorInstance}
       onChange={() => {
         if (editorRef.current && editorRef.current.getText().length > 0) {
