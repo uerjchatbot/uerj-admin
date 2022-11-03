@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/button";
-import { EditorText } from "@/components/editor/main";
+// import { EditorText } from "@/components/editor/main";
 import { HOME_PATH } from "@/routes/paths/paths.private";
 
 import { ButtonContainer, Container, Content } from "./styles";
@@ -14,15 +14,13 @@ const ViewHome: React.FC = () => {
   return (
     <Container>
       <ButtonContainer>
-        <Button outline={true} onClick={onBack}>
+        <Button outline={true} onClick={onBack} type={"button"}>
           Cancelar
         </Button>
       </ButtonContainer>
-      <Content>
-        <EditorText />
-      </Content>
+      <Content>{/* <EditorText /> */}</Content>
       <ButtonContainer>
-        <Button outline={true} onClick={onBack}>
+        <Button outline={true} onClick={onBack} type={"button"}>
           Salvar
         </Button>
       </ButtonContainer>
