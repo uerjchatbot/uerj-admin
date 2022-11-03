@@ -8,6 +8,7 @@ export const ContainerButton = styled.div`
   align-items: flex-end;
   justify-content: end;
   margin-top: 24px;
+
   button {
     width: 30%;
 
@@ -83,4 +84,9 @@ export const ContentCard = styled.div`
 export const DotRounded = styled(CommonDot)`
   width: 80px;
   height: 80px;
+`;
+
+export const Title = styled.div`
+  font-weight: 400;
+  font-size: 1.5rem;
 `;

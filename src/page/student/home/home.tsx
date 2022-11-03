@@ -3,7 +3,7 @@ import { Button } from "@/components/button";
 import { BsPencil } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
-import { Markup } from "interweave";
+// import { Markup } from "interweave";
 
 import {
   Container,
@@ -11,22 +11,30 @@ import {
   ContainerCards,
   ContentCard,
   DescriptionContainer,
-  DotRounded
+  DotRounded,
+  Title
 } from "./styles";
 
 import { STUDENT_CALENDAR_PATH, STUDENT_FACULTY_AND_STUDENDS } from "@/routes/paths/paths.private";
 import { StudentServices } from "@/services/student/home.service";
+import { IStudentHomeData } from "@/models/student";
+import { useModal } from "@/hooks/useModal";
+import EditHomeTitle from "./edit-home-title/edit-home-title";
+
+function filterTitle(title: string) {
+  return title.replaceAll("\n", "<br />").replaceAll("\b", "");
+}
 
 const Home: React.FC = () => {
-  const [data, setData] = useState();
-  const [title, setTitle] = useState("");
+  const { setTitle, setComponent, setIsVisible } = useModal();
+
+  const [data, setData] = useState<IStudentHomeData>();
 
   const getData = useCallback(async () => {
     try {
       const { data } = await StudentServices.getHomeData();
 
       setData(data);
-      setTitle(data.title);
     } catch (error) {
       console.log("error:", error);
     }
@@ -41,6 +49,16 @@ const Home: React.FC = () => {
   const navigateToFacultyAndStudents = () => navigate(STUDENT_FACULTY_AND_STUDENDS());
   const handleBackNavigation = () => navigate(-1);
 
+  // console.log("data:", data);
+
+  const handleEditTitle = async (): Promise<void> => {
+    setTitle("texto de boas vindas");
+    setComponent(<EditHomeTitle data={data?.title} />);
+    setIsVisible(true);
+
+    await getData();
+  };
+
   return (
     <Container>
       <ContainerButton>
@@ -50,10 +68,10 @@ const Home: React.FC = () => {
       </ContainerButton>
 
       <DescriptionContainer>
-        <div dangerouslySetInnerHTML={{ __html: title.replaceAll("\n", "<br />") }} />
+        {data?.title && <Title dangerouslySetInnerHTML={{ __html: filterTitle(data.title) }} />}
 
         <ContainerButton>
-          <Button outline={true} type={"button"}>
+          <Button outline={true} type={"button"} onClick={handleEditTitle}>
             <span>
               Editar <BsPencil size={16} />
             </span>
