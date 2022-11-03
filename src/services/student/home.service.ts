@@ -7,6 +7,9 @@ export const StudentServices = {
   getHomeData(): AxiosPromise<any> {
     return api.get("student/question?identifier=STUDENT");
   },
+  updateHomeTitle(title: string): AxiosPromise<void> {
+    return api.put("student/question?identifier=STUDENT", { title });
+  },
 
   //? Teaching Staff Home
   getTeachingStaffData(): AxiosPromise<any> {
