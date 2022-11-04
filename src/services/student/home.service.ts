@@ -1,13 +1,19 @@
-import { ICordinationData, IFfpData, IRepresentationData, ITeachersData } from "@/models/student";
+import {
+  ICordinationData,
+  IFfpData,
+  IRepresentationData,
+  IStudentHomeData,
+  ITeachersData
+} from "@/models/student";
 import { AxiosPromise } from "axios";
 import { api } from "../api";
 
 export const StudentServices = {
   //? Home
-  getHomeData(): AxiosPromise<any> {
+  getHomeData(): AxiosPromise<IStudentHomeData> {
     return api.get("student/question?identifier=STUDENT");
   },
-  updateHomeTitle(title: string): AxiosPromise<void> {
+  updateHomeTitle(title: string): AxiosPromise<IStudentHomeData> {
     return api.put("student/question?identifier=STUDENT", { title });
   },
 
