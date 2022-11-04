@@ -20,6 +20,7 @@ import { StudentServices } from "@/services/student/home.service";
 import { IStudentHomeData } from "@/models/student";
 import { useModal } from "@/hooks/useModal";
 import EditHomeTitle from "./edit-home-title/edit-home-title";
+import { toast } from "react-toastify";
 
 function filterTitle(title: string) {
   return title.replaceAll("\n", "<br />").replaceAll("\b", "");
@@ -49,14 +50,14 @@ const Home: React.FC = () => {
   const navigateToFacultyAndStudents = () => navigate(STUDENT_FACULTY_AND_STUDENDS());
   const handleBackNavigation = () => navigate(-1);
 
-  // console.log("data:", data);
-
   const handleEditTitle = async (): Promise<void> => {
-    setTitle("texto de boas vindas");
-    setComponent(<EditHomeTitle data={data?.title} />);
-    setIsVisible(true);
-
-    await getData();
+    try {
+      setTitle("texto de boas vindas");
+      setComponent(<EditHomeTitle data={data?.title} setData={setData} />);
+      setIsVisible(true);
+    } catch (error) {
+      toast.error("Houve um erro ao editar o texto");
+    }
   };
 
   return (

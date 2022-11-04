@@ -1,14 +1,17 @@
 import { EditTextButton } from "@/components/edit-text-button";
 import { TextEditor } from "@/components/text-editor";
 import { useModal } from "@/hooks/useModal";
+import { IStudentHomeData } from "@/models/student";
 import { StudentServices } from "@/services/student/home.service";
 import React, { useCallback, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 type Props = {
   data: string | undefined;
+  setData: React.Dispatch<React.SetStateAction<IStudentHomeData | undefined>>;
 };
 
-const EditHomeTitle = ({ data }: Props) => {
+const EditHomeTitle = ({ data, setData }: Props) => {
   const { setIsVisible } = useModal();
 
   const [text, setText] = useState("");
@@ -29,11 +32,11 @@ const EditHomeTitle = ({ data }: Props) => {
     try {
       const response = await StudentServices.updateHomeTitle(text);
 
-      console.log("response:", response);
+      setData(response.data);
 
       setIsVisible(false);
     } catch (error) {
-      console.log("error:", error);
+      toast.error("Houve um erro ai salvar o texto");
     }
   };
 
