@@ -1,8 +1,6 @@
-import React, { useState } from "react";
-
-import { Button } from "@/components/button";
+import React, { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { BsPencil } from "react-icons/bs";
-import { SelectOptions } from "@/components/select";
 
 import {
   Container,
@@ -13,107 +11,83 @@ import {
   DescriptionContainer,
   DotRounded
 } from "./styles";
-import { TextEditor } from "@/components/text-editor";
+
+import { CalendarServices } from "@/services/student/calendar.service";
+import { Button } from "@/components/button";
+import { SelectOptions } from "@/components/select";
+
+import { STUDENT_PATH } from "@/routes/paths/paths.private";
 
 const Calendar = () => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [description, setDescription] = useState(
-    "O Calendário Letivo é composto por datas fixadas para o cumprimento do semestre letivo no Programa de Pós Graduação em Educação."
-  );
+  const navigate = useNavigate();
+
+  const [data, setData] = useState<any>({});
 
   const [cardText1, setCardText1] = useState("Período letivo");
   const [cardText2, setCardText2] = useState("Período de recesso");
 
-  //TODO Ajeitar funções de editar e cancelar
-  //TODO Pegar dados da API (ou dados mockados) para setar
-  //TODO Fazer a lógica dos selects de data
-  //TODO Análisar questões das formatações de texto front e mostrar na API
+  const handleNavigateBack = () => navigate(STUDENT_PATH());
+
+  const getData = useCallback(async () => {
+    const { data } = await CalendarServices.getTitle();
+
+    console.log("data:", data);
+
+    setData(data);
+  }, []);
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <Container>
       <ContainerButton>
-        {isEditing && (
-          <Button outline={true}>
-            <span
-              onClick={() => {
-                setIsEditing((oldValue) => !oldValue);
-              }}>
-              Salvar
-            </span>
-          </Button>
-        )}
-
-        <Button outline={true}>
-          <span onClick={() => setIsEditing((oldValue) => !oldValue)}>
-            {isEditing ? (
-              "Cancelar"
-            ) : (
-              <>
-                Editar <BsPencil size={16} />
-              </>
-            )}
-          </span>
+        <Button outline={true} type={"button"}>
+          <span onClick={handleNavigateBack}>Voltar</span>
         </Button>
       </ContainerButton>
 
-      {isEditing ? (
-        <>
-          <DescriptionContainer>
-            <TextEditor value={description} setValue={setDescription} />
-          </DescriptionContainer>
+      <>
+        <DescriptionContainer>
+          <p>{data.title}</p>
 
-          <ContainerCards>
-            <ContentCard>
-              <ContentCardHeader>
-                <DotRounded>1</DotRounded>
-                <TextEditor value={cardText1} setValue={setCardText1} />
-              </ContentCardHeader>
-            </ContentCard>
+          <div>
+            <Button outline={true} type={"button"}>
+              <span onClick={() => console.log("voltar")}>
+                Editar <BsPencil size={16} />
+              </span>
+            </Button>
+          </div>
+        </DescriptionContainer>
 
-            <ContentCard>
-              <ContentCardHeader>
-                <DotRounded>2</DotRounded>
-                <TextEditor value={cardText2} setValue={setCardText2} />
-              </ContentCardHeader>
-            </ContentCard>
-          </ContainerCards>
-        </>
-      ) : (
-        <>
-          <DescriptionContainer>
-            <p>{description}</p>
+        <ContainerCards>
+          <ContentCard>
+            <ContentCardHeader>
+              <DotRounded>1</DotRounded>
+              <span>{cardText1}</span>
+            </ContentCardHeader>
 
-            <p>Escolha a opção de interesse:</p>
-          </DescriptionContainer>
+            <p>
+              O período letivo para alunos do PPGEdu tem início em{" "}
+              <SelectOptions data={["1", "2", "3"]} />
+              <SelectOptions data={["Janeiro", "Fevereiro", "Dezembro"]} />
+              <SelectOptions data={["2023", "2024", "2025"]} />
+              <br /> e finaliza em
+              <SelectOptions data={["1", "2", "3"]} />
+              <SelectOptions data={["Janeiro", "Fevereiro", "Dezembro"]} />
+              <SelectOptions data={["2023", "2024", "2025"]} />
+            </p>
+          </ContentCard>
 
-          <ContainerCards>
-            <ContentCard>
-              <ContentCardHeader>
-                <DotRounded>1</DotRounded>
-                <span>{cardText1}</span>
-              </ContentCardHeader>
-
-              <p>
-                O período letivo para alunos do PPGEdu tem início em{" "}
-                <SelectOptions data={["1", "2", "3"]} />
-                <SelectOptions data={["Janeiro", "Fevereiro", "Dezembro"]} />
-                <SelectOptions data={["2023", "2024", "2025"]} />
-                <br /> e finaliza em
-                <SelectOptions data={["1", "2", "3"]} />
-                <SelectOptions data={["Janeiro", "Fevereiro", "Dezembro"]} />
-                <SelectOptions data={["2023", "2024", "2025"]} />
-              </p>
-            </ContentCard>
-
-            <ContentCard>
-              <ContentCardHeader>
-                <DotRounded>2</DotRounded>
-                <span>{cardText2}</span>
-              </ContentCardHeader>
-            </ContentCard>
-          </ContainerCards>
-        </>
-      )}
+          <ContentCard>
+            <ContentCardHeader>
+              <DotRounded>2</DotRounded>
+              <span>{cardText2}</span>
+            </ContentCardHeader>
+          </ContentCard>
+        </ContainerCards>
+      </>
     </Container>
   );
 };
