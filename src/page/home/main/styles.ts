@@ -28,7 +28,7 @@ export const DescriptionContainer = styled.div`
   margin: 42px auto;
   margin-bottom: 100px;
   color: ${({ theme }) => theme.colors.grey.grey};
-  p {
+  div {
     font-size: 1.4rem;
   }
 `;
