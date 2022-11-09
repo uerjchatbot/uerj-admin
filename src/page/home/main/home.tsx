@@ -30,10 +30,16 @@ const convertIcon = {
   4: <RepeatIcon size={48} color={Theme.colors.blue.blueDark} />
 };
 
+const convertPath = {
+  0: STUDENT_PATH(),
+  1: " ",
+  2: " ",
+  3: " "
+};
+
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const navigateToView = () => navigate(VIEW_HOME_PATH());
-  const onGoToStep = (url: string) => navigate(url);
 
   const [homeData, setHomeData] = useState<IHomeData>({} as IHomeData);
 
@@ -73,7 +79,7 @@ const Home: React.FC = () => {
         {homeData.childrens &&
           homeData.childrens.map((children, index) => {
             return (
-              <ContentCard onClick={() => onGoToStep(STUDENT_PATH())} key={children.question}>
+              <ContentCard onClick={() => navigate(convertPath[index])} key={children.question}>
                 <DotRounded>{index + 1}</DotRounded>
                 <Card>
                   <span>
