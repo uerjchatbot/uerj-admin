@@ -6,8 +6,8 @@ export const Container = styled.div``;
 export const ContainerButton = styled.div`
   width: 90%;
   display: flex;
-  align-items: flex-end;
-  justify-content: end;
+  align-items: flex-start;
+  justify-content: start;
   margin-top: 24px;
   button {
     width: 30%;
