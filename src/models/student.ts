@@ -53,11 +53,65 @@ export interface ITeachersData {
   updated_at: string;
 }
 
+export interface IChildrenData {
+  id: number;
+  question: string;
+  father_question: number;
+  title: string;
+  response: boolean;
+  childrens: IChildrenData[];
+}
+
 export interface IStudentHomeData {
   id: number;
-  father_question: number;
-  identifier: string;
-  title: string;
   question: string;
+  father_question: number;
+  title: string;
   response: boolean;
+  childrens: IChildrenData[];
+}
+
+export interface ICalendarTitleData {
+  id: number;
+  question: string;
+  father_question: number;
+  title: string;
+  response: boolean;
+  identifier: string;
+}
+
+export interface ICalendarPeriodData {
+  formatted: {
+    title: string;
+    dates: {
+      initial: string;
+      final: string;
+    };
+  };
+  default: {
+    id: number;
+    question: string;
+    father_question: number;
+    title: string;
+    response: true;
+    identifier: string;
+    created_at: string;
+    updated_at: string;
+    periods: [
+      {
+        id: number;
+        question_id: number;
+        content: string;
+        created_at: string;
+        updated_at: string;
+      },
+      {
+        id: number;
+        question_id: number;
+        content: string;
+        created_at: string;
+        updated_at: string;
+      }
+    ];
+  };
 }

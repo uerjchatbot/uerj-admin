@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Button } from "@/components/button";
+import { toast } from "react-toastify";
 import { BsPencil } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-
-// import { Markup } from "interweave";
 
 import {
   Container,
@@ -15,16 +13,28 @@ import {
   Title
 } from "./styles";
 
-import { STUDENT_CALENDAR_PATH, STUDENT_FACULTY_AND_STUDENDS } from "@/routes/paths/paths.private";
+import {
+  HOME_PATH,
+  STUDENT_CALENDAR_PATH,
+  STUDENT_FACULTY_AND_STUDENDS
+} from "@/routes/paths/paths.private";
 import { StudentServices } from "@/services/student/home.service";
 import { IStudentHomeData } from "@/models/student";
 import { useModal } from "@/hooks/useModal";
 import EditHomeTitle from "./edit-home-title/edit-home-title";
-import { toast } from "react-toastify";
+import { convertToHtml } from "@/utils/formarter";
+import { orderChildrens } from "@/utils/order";
+import { Button } from "@/components/button";
 
-function filterTitle(title: string) {
-  return title.replaceAll("\n", "<br />").replaceAll("\b", "");
-}
+const navigateToPath = {
+  0: STUDENT_CALENDAR_PATH(),
+  1: STUDENT_FACULTY_AND_STUDENDS(),
+  2: "",
+  3: "",
+  4: "",
+  5: "",
+  6: ""
+};
 
 const Home: React.FC = () => {
   const { setTitle, setComponent, setIsVisible } = useModal();
@@ -34,6 +44,8 @@ const Home: React.FC = () => {
   const getData = useCallback(async () => {
     try {
       const { data } = await StudentServices.getHomeData();
+
+      data.childrens = orderChildrens(data.childrens);
 
       setData(data);
     } catch (error) {
@@ -46,9 +58,7 @@ const Home: React.FC = () => {
   }, []);
 
   const navigate = useNavigate();
-  const navigateToCalendarView = () => navigate(STUDENT_CALENDAR_PATH());
-  const navigateToFacultyAndStudents = () => navigate(STUDENT_FACULTY_AND_STUDENDS());
-  const handleBackNavigation = () => navigate(-1);
+  const handleBackNavigation = () => navigate(HOME_PATH());
 
   const handleEditTitle = async (): Promise<void> => {
     try {
@@ -69,7 +79,7 @@ const Home: React.FC = () => {
       </ContainerButton>
 
       <DescriptionContainer>
-        {data?.title && <Title dangerouslySetInnerHTML={{ __html: filterTitle(data.title) }} />}
+        {data?.title && <Title dangerouslySetInnerHTML={{ __html: convertToHtml(data.title) }} />}
 
         <ContainerButton>
           <Button outline={true} type={"button"} onClick={handleEditTitle}>
@@ -81,7 +91,20 @@ const Home: React.FC = () => {
       </DescriptionContainer>
 
       <ContainerCards>
-        <ContentCard
+        {data?.childrens.map((children, index) => {
+          return (
+            <ContentCard
+              key={children.title}
+              onClick={() => {
+                navigate(navigateToPath[index]);
+              }}>
+              <DotRounded>{index + 1}</DotRounded>
+              <span>{children.question}</span>
+            </ContentCard>
+          );
+        })}
+
+        {/* <ContentCard
           onClick={() => {
             navigateToCalendarView();
           }}>
@@ -135,7 +158,7 @@ const Home: React.FC = () => {
             Instruções
             <br />e tutoriais
           </span>
-        </ContentCard>
+        </ContentCard> */}
       </ContainerCards>
     </Container>
   );

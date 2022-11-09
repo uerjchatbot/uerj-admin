@@ -1,10 +1,11 @@
+import React, { useCallback, useEffect, useState } from "react";
+import { toast } from "react-toastify";
+
 import { EditTextButton } from "@/components/edit-text-button";
 import { TextEditor } from "@/components/text-editor";
 import { useModal } from "@/hooks/useModal";
 import { IStudentHomeData } from "@/models/student";
 import { StudentServices } from "@/services/student/home.service";
-import React, { useCallback, useEffect, useState } from "react";
-import { toast } from "react-toastify";
 
 type Props = {
   data: string | undefined;
@@ -16,12 +17,6 @@ const EditHomeTitle = ({ data, setData }: Props) => {
 
   const [text, setText] = useState("");
 
-  useEffect(() => {
-    if (data && data?.length > 0) {
-      setText(data);
-    }
-  }, [data]);
-
   const renderTextEditor = useCallback(() => {
     if (text.length === 0) return <></>;
 
@@ -32,15 +27,23 @@ const EditHomeTitle = ({ data, setData }: Props) => {
     try {
       const response = await StudentServices.updateHomeTitle(text);
 
-      setData(response.data);
+      setData((oldValue) => {
+        return { ...oldValue, ...response.data };
+      });
 
       setIsVisible(false);
+
+      toast.success("Texto alterado com sucesso!");
     } catch (error) {
       toast.error("Houve um erro ai salvar o texto");
     }
   };
 
-  console.log("text 1:", text);
+  useEffect(() => {
+    if (data && data?.length > 0) {
+      setText(data);
+    }
+  }, [data]);
 
   return (
     <div>

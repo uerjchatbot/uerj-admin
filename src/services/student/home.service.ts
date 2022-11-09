@@ -11,10 +11,10 @@ import { api } from "../api";
 export const StudentServices = {
   //? Home
   getHomeData(): AxiosPromise<IStudentHomeData> {
-    return api.get("student/question?identifier=STUDENT");
+    return api.get("question/2");
   },
   updateHomeTitle(title: string): AxiosPromise<IStudentHomeData> {
-    return api.put("student/question?identifier=STUDENT", { title });
+    return api.put("question/2", { question: "Aluno", title });
   },
 
   //? Teaching Staff Home
