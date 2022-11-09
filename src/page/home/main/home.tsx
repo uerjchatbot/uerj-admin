@@ -22,6 +22,8 @@ import { IHomeData } from "@/models/home";
 import { convertToHtml } from "@/utils/formarter";
 import { orderChildrens } from "@/utils/order";
 import { toast } from "react-toastify";
+import { useModal } from "@/hooks/useModal";
+import { EditHomeTitle } from "./edit-title";
 
 const convertIcon = {
   1: <StudentIcon size={48} color={Theme.colors.blue.blueDark} />,
@@ -38,8 +40,10 @@ const convertPath = {
 };
 
 const Home: React.FC = () => {
+  const { setTitle, setComponent, setIsVisible } = useModal();
+
   const navigate = useNavigate();
-  const navigateToView = () => navigate(VIEW_HOME_PATH());
+  // const navigateToView = () => navigate(VIEW_HOME_PATH());
 
   const [homeData, setHomeData] = useState<IHomeData>({} as IHomeData);
 
@@ -55,24 +59,29 @@ const Home: React.FC = () => {
     }
   }, []);
 
+  const handleOpenEditModal = () => {
+    setTitle("Início");
+    setComponent(<EditHomeTitle title={homeData.title} setData={setHomeData} />);
+    setIsVisible(true);
+  };
+
   useEffect(() => {
     getData();
   }, []);
 
   return (
     <Container>
-      <ContainerButton>
-        <Button outline={true} onClick={navigateToView} type={"button"}>
-          <span>
-            Editar <BsPencil size={16} />
-          </span>
-        </Button>
-      </ContainerButton>
-
       <DescriptionContainer>
         {homeData.title && (
           <div dangerouslySetInnerHTML={{ __html: convertToHtml(homeData.title) }} />
         )}
+        <ContainerButton>
+          <Button outline={true} onClick={handleOpenEditModal} type={"button"}>
+            <span>
+              Editar <BsPencil size={16} />
+            </span>
+          </Button>
+        </ContainerButton>
       </DescriptionContainer>
 
       <ContainerCards>
