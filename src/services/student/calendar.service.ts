@@ -1,29 +1,18 @@
+import { ICalendarTitleData, ICalendarChildrenData } from "@/models/student";
 import { AxiosPromise } from "axios";
 import { api } from "../api";
 
 export const CalendarServices = {
   //? Home
-  getTitle(): AxiosPromise<any> {
-    return api.get("student/question?identifier=STUDENT_CALENDAR");
+  getTitle(questionId: number): AxiosPromise<ICalendarTitleData> {
+    return api.get(`question/${questionId}`);
   },
 
-  //? Period
-  getPeriod(): AxiosPromise<any> {
-    return api.get("student/calendar/question?identifier=CALENDAR_PERIOD");
+  updateTitle(questionId: number, title: string): AxiosPromise<ICalendarTitleData> {
+    return api.put(`question/${questionId}`, { title });
   },
 
-  //? Recess
-  getRecess(): AxiosPromise<any> {
-    return api.get("student/calendar/question?identifier=CALENDAR_RECESS");
-  },
-
-  //? Matters
-  getMatters(): AxiosPromise<any> {
-    return api.get("student/calendar/question?identifier=CALENDAR_MATTERS");
-  },
-
-  //? Vote
-  getVote(): AxiosPromise<any> {
-    return api.get("student/calendar/question?identifier=CALENDAR_VOTE");
+  getCalendarChildrenData(childrenId: number): AxiosPromise<ICalendarChildrenData> {
+    return api.get(`question/${childrenId}`);
   }
 };

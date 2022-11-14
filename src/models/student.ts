@@ -77,41 +77,14 @@ export interface ICalendarTitleData {
   father_question: number;
   title: string;
   response: boolean;
-  identifier: string;
+  childrens: IChildrenData[];
 }
 
-export interface ICalendarPeriodData {
-  formatted: {
-    title: string;
-    dates: {
-      initial: string;
-      final: string;
-    };
-  };
-  default: {
-    id: number;
-    question: string;
-    father_question: number;
-    title: string;
-    response: true;
-    identifier: string;
-    created_at: string;
-    updated_at: string;
-    periods: [
-      {
-        id: number;
-        question_id: number;
-        content: string;
-        created_at: string;
-        updated_at: string;
-      },
-      {
-        id: number;
-        question_id: number;
-        content: string;
-        created_at: string;
-        updated_at: string;
-      }
-    ];
-  };
+export interface ICalendarChildrenData {
+  id: number;
+  question: string;
+  father_question: number;
+  title: string;
+  response: boolean;
+  childrens: [];
 }

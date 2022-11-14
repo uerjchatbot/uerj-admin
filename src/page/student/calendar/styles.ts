@@ -31,10 +31,15 @@ export const ContainerButton = styled.div`
 export const DescriptionContainer = styled.div`
   width: 90%;
   margin: 42px auto;
-  margin-bottom: 100px;
+  margin-bottom: 4rem;
   color: ${({ theme }) => theme.colors.grey.grey};
   p {
     font-size: 1.4rem;
+    margin-bottom: 1rem;
+  }
+
+  div {
+    width: 15%;
   }
 `;
 
@@ -53,22 +58,38 @@ export const ContainerCards = styled.div`
 
 export const ContentCard = styled.div`
   width: 100%;
-  cursor: pointer;
 
-  /* background-color: red; */
+  div {
+    margin-top: 4px;
 
-  display: flex;
-  align-items: flex-start;
-  flex-direction: column;
+    display: flex;
+    align-items: center;
 
-  span {
-    text-align: center;
-    font-size: 1.5rem;
-    margin-left: 1rem;
+    span {
+      text-align: center;
+      font-size: 1.5rem;
+    }
+    p {
+      color: ${({ theme }) => theme.colors.grey.grey};
+      font-size: 1.4rem;
+    }
   }
-  p {
-    color: ${({ theme }) => theme.colors.grey.grey};
-    font-size: 1.4rem;
+
+  /* .container-button { */
+  button {
+    width: 15%;
+
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  ul {
+    margin-top: 1rem;
+
+    li {
+      font-size: 1.3rem;
+      color: ${({ theme }) => theme.colors.grey.grey};
+    }
   }
 
   @media (max-width: 1000px) {
@@ -89,4 +110,26 @@ export const ContentCardHeader = styled.div`
 export const DotRounded = styled(CommonDot)`
   width: 80px;
   height: 80px;
+`;
+
+export const DatePickerContainer = styled.div`
+  padding: 8px;
+  background-color: ${(props) => props.theme.colors.blue.lightBlue};
+  margin-left: 1rem;
+  margin-right: 0.5rem;
+
+  display: flex;
+  flex-direction: column;
+  /* justify-content: flex-start; */
+
+  p {
+    width: 100%;
+    font-size: 1rem !important;
+
+    border-bottom: ${(props) => `1px solid ${props.theme.colors.grey.mediumGrey}`};
+  }
+
+  span {
+    width: 100%;
+  }
 `;
