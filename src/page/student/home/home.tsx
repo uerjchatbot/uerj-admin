@@ -37,6 +37,8 @@ const navigateToPath = {
 };
 
 const Home: React.FC = () => {
+  const navigate = useNavigate();
+
   const { setTitle, setComponent, setIsVisible } = useModal();
 
   const [data, setData] = useState<IStudentHomeData>();
@@ -57,7 +59,6 @@ const Home: React.FC = () => {
     getData();
   }, []);
 
-  const navigate = useNavigate();
   const handleBackNavigation = () => navigate(HOME_PATH());
 
   const handleEditTitle = async (): Promise<void> => {
@@ -96,69 +97,17 @@ const Home: React.FC = () => {
             <ContentCard
               key={children.title}
               onClick={() => {
-                navigate(navigateToPath[index]);
+                navigate(navigateToPath[index], {
+                  state: {
+                    childrenId: children.id
+                  }
+                });
               }}>
               <DotRounded>{index + 1}</DotRounded>
               <span>{children.question}</span>
             </ContentCard>
           );
         })}
-
-        {/* <ContentCard
-          onClick={() => {
-            navigateToCalendarView();
-          }}>
-          <DotRounded>1</DotRounded>
-          <span>
-            Calendário <br /> letivo
-          </span>
-        </ContentCard>
-
-        <ContentCard
-          onClick={() => {
-            navigateToFacultyAndStudents();
-          }}>
-          <DotRounded>2</DotRounded>
-          <span>
-            Corpo
-            <br />
-            docente
-          </span>
-        </ContentCard>
-
-        <ContentCard>
-          <DotRounded>3</DotRounded>
-          <span>Disciplinas</span>
-        </ContentCard>
-
-        <ContentCard>
-          <DotRounded>4</DotRounded>
-          <span>Eventos</span>
-        </ContentCard>
-
-        <ContentCard>
-          <DotRounded>5</DotRounded>
-          <span>Horários</span>
-        </ContentCard>
-
-        <ContentCard>
-          <DotRounded>6</DotRounded>
-          <span>
-            Processo
-            <br />
-            seletivo
-            <br />
-            de bolsas
-          </span>
-        </ContentCard>
-
-        <ContentCard>
-          <DotRounded>7</DotRounded>
-          <span>
-            Instruções
-            <br />e tutoriais
-          </span>
-        </ContentCard> */}
       </ContainerCards>
     </Container>
   );
