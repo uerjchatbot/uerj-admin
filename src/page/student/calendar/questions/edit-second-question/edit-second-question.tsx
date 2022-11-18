@@ -41,7 +41,7 @@ const EditSecondQuestion = ({
     return (
       <>
         <QuestionContainer>
-          <DotRounded>1</DotRounded>
+          <DotRounded>2</DotRounded>
           <TextEditor value={text} setValue={setText} />
         </QuestionContainer>
 
