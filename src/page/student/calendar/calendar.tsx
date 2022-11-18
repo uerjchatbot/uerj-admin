@@ -23,6 +23,7 @@ import { Button } from "@/components/button";
 import { useModal } from "@/hooks/useModal";
 import { orderChildrens } from "@/utils/order";
 import { EditFirstQuestion } from "./questions/edit-first-question";
+import { EditSecondQuestion } from "./questions/edit-second-question";
 
 const Calendar = () => {
   const navigate = useNavigate();
@@ -109,7 +110,7 @@ const Calendar = () => {
     setIsVisible(true);
   };
 
-  const handleOpenEditFirstQuestionModal = (questionId: number): void => {
+  const handleOpenEditFirstQuestionModal = (): void => {
     setTitle(firstQuestionData.question);
 
     setComponent(
@@ -120,6 +121,23 @@ const Calendar = () => {
         initial_date={firstQuestionData.title.split("|")[1]}
         final_date={firstQuestionData.title.split("|")[3]}
         questionId={firstQuestionData.id}
+      />
+    );
+
+    setIsVisible(true);
+  };
+
+  const handleOpenEditSecondQuestionModal = (): void => {
+    setTitle(secondQuestionData.question);
+
+    setComponent(
+      <EditSecondQuestion
+        question={secondQuestionData.question}
+        setQuestion={setSecondQuestionData}
+        title={secondQuestionData.title.split("|")[0]}
+        initial_date={secondQuestionData.title.split("|")[1]}
+        final_date={secondQuestionData.title.split("|")[3]}
+        questionId={secondQuestionData.id}
       />
     );
 
@@ -183,7 +201,7 @@ const Calendar = () => {
         </div>
 
         <Button outline={true} type={"button"}>
-          <span onClick={() => console.log("editar o período letivo")}>
+          <span onClick={handleOpenEditSecondQuestionModal}>
             Editar <BsPencil size={16} />
           </span>
         </Button>

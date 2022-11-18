@@ -26,7 +26,37 @@ export const CalendarServices = {
     });
   },
 
-  updateFirstQuestionDate(
+  //? SecondQuestion
+  updateSecondQuestion(questionId: number, question: string): AxiosPromise<any> {
+    const title = "O período de recesso para alunos do PPGEdu tem início em |x| e finaliza em |x|";
+
+    return api.put(`question/${questionId}`, {
+      title,
+      question
+    });
+  },
+
+  //? ThirdQuestion
+  updateThirdQuestion(questionId: number, question: string): AxiosPromise<any> {
+    const title = "O período de recesso para alunos do PPGEdu tem início em |x| e finaliza em |x|";
+
+    return api.put(`question/${questionId}`, {
+      title,
+      question
+    });
+  },
+
+  //? FourthQuestion
+  updateFourthQuestion(questionId: number, question: string): AxiosPromise<any> {
+    const title = "O período de recesso para alunos do PPGEdu tem início em |x| e finaliza em |x|";
+
+    return api.put(`question/${questionId}`, {
+      title,
+      question
+    });
+  },
+
+  updateQuestionDate(
     questionId: number,
     title: string,
     initialDate: string,
@@ -37,17 +67,5 @@ export const CalendarServices = {
       initial_date: initialDate,
       final_date: finalDate
     });
-  },
-
-  updateSecondQuestion(): AxiosPromise<any> {
-    return api.put(``);
-  },
-
-  updateThirdQuestion(): AxiosPromise<any> {
-    return api.put(``);
-  },
-
-  updateFourthQuestion(): AxiosPromise<any> {
-    return api.put(``);
   }
 };
