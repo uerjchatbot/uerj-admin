@@ -22,6 +22,7 @@ import { useLoading } from "@/hooks/useLoading";
 import { Button } from "@/components/button";
 import { useModal } from "@/hooks/useModal";
 import { orderChildrens } from "@/utils/order";
+import { EditFirstQuestion } from "./questions/edit-first-question";
 
 const Calendar = () => {
   const navigate = useNavigate();
@@ -108,6 +109,23 @@ const Calendar = () => {
     setIsVisible(true);
   };
 
+  const handleOpenEditFirstQuestionModal = (questionId: number): void => {
+    setTitle(firstQuestionData.question);
+
+    setComponent(
+      <EditFirstQuestion
+        question={firstQuestionData.question}
+        setQuestion={setFirstQuestionData}
+        title={firstQuestionData.title.split("|")[0]}
+        initial_date={firstQuestionData.title.split("|")[1]}
+        final_date={firstQuestionData.title.split("|")[3]}
+        questionId={firstQuestionData.id}
+      />
+    );
+
+    setIsVisible(true);
+  };
+
   //! Render components functions
   const renderFirstQuestion = useCallback(() => {
     if (!firstQuestionData.question || !firstQuestionData.title) return <></>;
@@ -133,7 +151,7 @@ const Calendar = () => {
         </div>
 
         <Button outline={true} type={"button"}>
-          <span onClick={() => console.log("editar o período letivo")}>
+          <span onClick={handleOpenEditFirstQuestionModal}>
             Editar <BsPencil size={16} />
           </span>
         </Button>
