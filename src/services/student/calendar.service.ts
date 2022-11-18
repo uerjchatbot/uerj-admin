@@ -47,9 +47,7 @@ export const CalendarServices = {
   },
 
   //? FourthQuestion
-  updateFourthQuestion(questionId: number, question: string): AxiosPromise<any> {
-    const title = "O período de recesso para alunos do PPGEdu tem início em |x| e finaliza em |x|";
-
+  updateFourthQuestion(questionId: number, question: string, title: string): AxiosPromise<any> {
     return api.put(`question/${questionId}`, {
       title,
       question

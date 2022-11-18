@@ -24,6 +24,7 @@ import { useModal } from "@/hooks/useModal";
 import { orderChildrens } from "@/utils/order";
 import { EditFirstQuestion } from "./questions/edit-first-question";
 import { EditSecondQuestion } from "./questions/edit-second-question";
+import { EditFourthQuestion } from "./questions/edit-fourth-question";
 
 const Calendar = () => {
   const navigate = useNavigate();
@@ -144,6 +145,21 @@ const Calendar = () => {
     setIsVisible(true);
   };
 
+  const handleOpenEditFourthQuestionModal = (): void => {
+    setTitle(fourthQuestionData.question);
+
+    setComponent(
+      <EditFourthQuestion
+        question={fourthQuestionData.question}
+        setQuestion={setFourthQuestionData}
+        title={fourthQuestionData.title}
+        questionId={fourthQuestionData.id}
+      />
+    );
+
+    setIsVisible(true);
+  };
+
   //! Render components functions
   const renderFirstQuestion = useCallback(() => {
     if (!firstQuestionData.question || !firstQuestionData.title) return <></>;
@@ -257,11 +273,11 @@ const Calendar = () => {
         </ContentCardHeader>
 
         <div>
-          <p>{fourthQuestionData.title.split("|")[0]}</p>
+          <p>{fourthQuestionData.title}</p>
         </div>
 
         <Button outline={true} type={"button"}>
-          <span onClick={() => console.log("editar o período letivo")}>
+          <span onClick={handleOpenEditFourthQuestionModal}>
             Editar <BsPencil size={16} />
           </span>
         </Button>
