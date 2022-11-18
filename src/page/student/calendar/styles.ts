@@ -100,7 +100,6 @@ export const ContentCard = styled.div`
 export const ContentCardHeader = styled.div`
   width: 100%;
 
-  /* background-color: green; */
   display: flex;
   align-items: center;
   justify-content: flex-start;
