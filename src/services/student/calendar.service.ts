@@ -46,6 +46,10 @@ export const CalendarServices = {
     });
   },
 
+  updateThirdQuestionChildren(childrenId: number, title: string): AxiosPromise<any> {
+    return api.put(`question/${childrenId}`, { title });
+  },
+
   //? FourthQuestion
   updateFourthQuestion(questionId: number, question: string, title: string): AxiosPromise<any> {
     return api.put(`question/${questionId}`, {

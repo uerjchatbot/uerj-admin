@@ -22,8 +22,11 @@ import { useLoading } from "@/hooks/useLoading";
 import { Button } from "@/components/button";
 import { useModal } from "@/hooks/useModal";
 import { orderChildrens } from "@/utils/order";
+
+//? Edit Modals
 import { EditFirstQuestion } from "./questions/edit-first-question";
 import { EditSecondQuestion } from "./questions/edit-second-question";
+import { EditThirdQuestion } from "./questions/edit-third-question";
 import { EditFourthQuestion } from "./questions/edit-fourth-question";
 
 const Calendar = () => {
@@ -49,7 +52,7 @@ const Calendar = () => {
 
   const handleNavigateBack = () => navigate(STUDENT_PATH());
 
-  //! Get data from routes
+  //? Get data from routes
   const getChildrensData = useCallback(async () => {
     setLoading(true);
 
@@ -100,7 +103,7 @@ const Calendar = () => {
     }
   }, []);
 
-  //! Edit Text's modals
+  //? Edit Text's modals
   const handleOpenEditTitleModal = (questionId: number): void => {
     setTitle(titleData.question);
 
@@ -145,6 +148,25 @@ const Calendar = () => {
     setIsVisible(true);
   };
 
+  const handleOpenEditThirdQuestionModal = (): void => {
+    setTitle(secondQuestionData.question);
+
+    setComponent(
+      <EditThirdQuestion
+        question={thirdQuestionData.question}
+        setQuestion={setThirdQuestionData}
+        title={thirdQuestionData.title.split("|")[0]}
+        initial_date={thirdQuestionData.title.split("|")[1]}
+        final_date={thirdQuestionData.title.split("|")[3]}
+        childrenId={thirdQuestionData.childrens[0].id}
+        childrenTitle={thirdQuestionData.childrens[0].title}
+        questionId={thirdQuestionData.id}
+      />
+    );
+
+    setIsVisible(true);
+  };
+
   const handleOpenEditFourthQuestionModal = (): void => {
     setTitle(fourthQuestionData.question);
 
@@ -160,7 +182,7 @@ const Calendar = () => {
     setIsVisible(true);
   };
 
-  //! Render components functions
+  //? Render components functions
   const renderFirstQuestion = useCallback(() => {
     if (!firstQuestionData.question || !firstQuestionData.title) return <></>;
 
@@ -254,7 +276,7 @@ const Calendar = () => {
         </ul>
 
         <Button outline={true} type={"button"}>
-          <span onClick={() => console.log("editar o período letivo")}>
+          <span onClick={handleOpenEditThirdQuestionModal}>
             Editar <BsPencil size={16} />
           </span>
         </Button>
