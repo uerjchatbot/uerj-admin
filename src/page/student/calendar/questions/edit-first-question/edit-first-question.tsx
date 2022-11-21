@@ -111,7 +111,7 @@ const EditFirstQuestion = ({
           />
         </div>
         <div>
-          <p>data final</p>
+          <p>Data final</p>
           <DatePicker
             format="dd/MM/yyyy"
             defaultValue={finalDate ? formateStringToDate(finalDate) : new Date()}
