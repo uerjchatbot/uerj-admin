@@ -26,15 +26,15 @@ import { convertToHtml } from "@/utils/formarter";
 import { orderChildrens } from "@/utils/order";
 import { Button } from "@/components/button";
 
-const navigateToPath = {
-  0: STUDENT_CALENDAR_PATH(),
-  1: STUDENT_FACULTY_AND_STUDENDS(),
-  2: "",
-  3: "",
-  4: "",
-  5: "",
-  6: ""
-};
+const navigateToPath = [
+  STUDENT_CALENDAR_PATH(),
+  STUDENT_FACULTY_AND_STUDENDS(),
+  "",
+  "",
+  "",
+  "",
+  ""
+];
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
