@@ -32,12 +32,13 @@ const convertIcon = {
   4: <RepeatIcon size={48} color={Theme.colors.blue.blueDark} />
 };
 
-const convertPath = {
-  0: STUDENT_PATH(),
-  1: " ",
-  2: " ",
-  3: " "
-};
+// const convertPath = {
+//   0: STUDENT_PATH(),
+//   1: " ",
+//   2: " ",
+//   3: " "
+// };
+const convertPath = [STUDENT_PATH(), " ", " ", " "];
 
 const Home: React.FC = () => {
   const { setTitle, setComponent, setIsVisible } = useModal();
