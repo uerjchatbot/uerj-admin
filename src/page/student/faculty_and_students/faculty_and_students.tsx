@@ -1,32 +1,40 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import { useLoading } from "@/hooks/useLoading";
-import { StudentServices } from "@/services/student/home.service";
 
 import * as S from "./styles";
 import { FirstStepForm } from "./first_step_form";
 import { SecondStepForm } from "./second_step_form";
 import { ThirdStepForm } from "./third_step_form";
+import { TeachingStaffServices } from "@/services/student/teachint-staff.service";
+import { orderChildrens } from "@/utils/order";
+import { ITeachingStaffData } from "@/models/teaching-staff";
 
 // type Props = {};
 
 const FacultAndStudents = () => {
   const { setLoading } = useLoading();
+  const { state }: { state: any } = useLocation();
 
   const [selectedStage, setSelectedStage] = useState(1);
-  const [title, setTitle] = useState("");
+  const [homeData, setHomeData] = useState<ITeachingStaffData>({} as ITeachingStaffData);
 
   const getData = async () => {
     try {
       setLoading(true);
-      const { data } = await StudentServices.getTeachingStaffData();
+      const { data } = await TeachingStaffServices.getHomeData(state.childrenId);
 
-      console.log("data:", data);
-      setTitle(data.title);
+      data.childrens = orderChildrens(data.childrens);
+
+      // console.log("data:", data);
+      setHomeData(data);
 
       setLoading(false);
     } catch (error) {
       console.log("error:", error);
+      toast.error("Houve um erro ao pegar as informações.");
       setLoading(false);
     }
   };
@@ -65,9 +73,15 @@ const FacultAndStudents = () => {
         </div>
       </S.HeaderContainer>
 
-      {selectedStage === 1 && <FirstStepForm title={title} />}
-      {selectedStage === 2 && <SecondStepForm />}
-      {selectedStage === 3 && <ThirdStepForm />}
+      {homeData.childrens && selectedStage === 1 && (
+        <FirstStepForm
+          title={homeData?.title}
+          ffp={homeData?.childrens[0]}
+          coordination={homeData?.childrens[1]}
+        />
+      )}
+      {homeData.childrens && selectedStage === 2 && <SecondStepForm />}
+      {homeData.childrens && selectedStage === 3 && <ThirdStepForm />}
     </S.Container>
   );
 };

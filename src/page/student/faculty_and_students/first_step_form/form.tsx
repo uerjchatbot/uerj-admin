@@ -5,65 +5,56 @@ import { BsPencil } from "react-icons/bs";
 import { StudentServices } from "@/services/student/home.service";
 import { ICordinationData, IFfpData, IRepresentationData, ITeachersData } from "@/models/student";
 import { useLoading } from "@/hooks/useLoading";
+import { ITeachingStaffChildrenData } from "@/models/teaching-staff";
 
 type Props = {
-  title: string;
+  title?: string;
+  ffp?: ITeachingStaffChildrenData;
+  coordination?: ITeachingStaffChildrenData;
 };
 
-const Form = ({ title }: Props) => {
+const Form = ({ title, ffp, coordination }: Props) => {
   const { setLoading } = useLoading();
-  const [isEditing, setIsEditing] = useState(false);
 
-  const [ffpData, setFfpData] = useState({} as IFfpData);
-  const [coordinationData, setCoordinationData] = useState({} as ICordinationData);
-  const [representationData, setRepresentationData] = useState({} as IRepresentationData);
-  const [teachersData, setTeachersData] = useState({} as ITeachersData);
+  // const getData = async () => {
+  //   try {
+  //     setLoading(true);
 
-  const getData = async () => {
-    try {
-      setLoading(true);
+  //     const ffpResponse = await StudentServices.getTeachingStaffFFPData();
+  //     const coordinationResponse = await StudentServices.getTeachingStaffCoordinationData();
+  //     const representationResponse = await StudentServices.getTeachingStaffRepresentationData();
+  //     const teachersResponse = await StudentServices.getTeachingStaffTeacherData();
 
-      const ffpResponse = await StudentServices.getTeachingStaffFFPData();
-      const coordinationResponse = await StudentServices.getTeachingStaffCoordinationData();
-      const representationResponse = await StudentServices.getTeachingStaffRepresentationData();
-      const teachersResponse = await StudentServices.getTeachingStaffTeacherData();
+  //     setFfpData(ffpResponse.data);
+  //     setCoordinationData(coordinationResponse.data);
+  //     setRepresentationData(representationResponse.data);
+  //     setTeachersData(teachersResponse.data);
 
-      setFfpData(ffpResponse.data);
-      setCoordinationData(coordinationResponse.data);
-      setRepresentationData(representationResponse.data);
-      setTeachersData(teachersResponse.data);
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.log("error:", error);
+  //     setLoading(false);
+  //   }
+  // };
 
-      setLoading(false);
-    } catch (error) {
-      console.log("error:", error);
-      setLoading(false);
-    }
-  };
+  // useEffect(() => {
+  //   getData();
+  // }, []);
 
-  useEffect(() => {
-    getData();
-  }, []);
-
-  console.log("ffpData:", ffpData);
-  // console.log("coordinationData:", coordinationData);
-  // console.log("representationData:", representationData);
-  // console.log("teachersData:", teachersData);
+  // console.log("title:", title);
+  console.log("ffp:", ffp);
+  console.log("ffp children:", ffp?.childrens[0].title.split("|"));
+  // console.log("coordination:", coordination);
 
   return (
     <>
       <S.DescriptionContainer>
-        <div dangerouslySetInnerHTML={{ __html: title.replaceAll("\n", "<br />") }} />
+        {title && <div dangerouslySetInnerHTML={{ __html: title.replaceAll("\n", "<br />") }} />}
 
         <S.ContainerButton>
           <S.EditButton>
-            <span onClick={() => setIsEditing((oldValue) => !oldValue)}>
-              {isEditing ? (
-                "Cancelar"
-              ) : (
-                <>
-                  Editar <BsPencil size={16} />
-                </>
-              )}
+            <span onClick={() => console.log("opa")}>
+              Editar <BsPencil size={16} />
             </span>
           </S.EditButton>
         </S.ContainerButton>
@@ -73,61 +64,55 @@ const Form = ({ title }: Props) => {
         <S.ContentCard>
           <S.ContentCardHeader>
             <S.DotRounded>1</S.DotRounded>
-            {ffpData.question && <span>{ffpData?.question}</span>}
+            {ffp && <span>{ffp.question}</span>}
           </S.ContentCardHeader>
 
-          <p>O PPGEDU faz parte da FFP que tem como Diretor o(a) Professor(a)</p>
-          {ffpData.teachers && (
+          <p>{ffp?.childrens[0].title.split("|")[0]}</p>
+          {ffp?.childrens && (
             <S.Input
               placeholder="Nome do diretor(a)"
               disabled
-              defaultValue={ffpData?.teachers[0]?.name}
+              defaultValue={ffp.childrens[0].title.split("|")[1]}
             />
           )}
 
-          <p>Currículo Lattes</p>
-          {ffpData.teachers && (
+          <p>{ffp?.childrens[0].title.split("|")[2]}</p>
+          {ffp?.childrens && (
             <S.Input
               placeholder="Lattes do diretor(a)"
               disabled
-              defaultValue={ffpData?.teachers[0]?.link}
+              defaultValue={ffp.childrens[0].title.split("|")[3]}
             />
           )}
 
-          <p>e Vice Professor(a) Dr(a)</p>
-          {ffpData.teachers && (
+          <p>{ffp?.childrens[0].title.split("|")[4]}</p>
+          {ffp?.childrens && (
             <S.Input
               placeholder="Nome do(a) vice diretor(a)"
               disabled
-              defaultValue={ffpData?.teachers[1]?.name}
+              defaultValue={ffp.childrens[0].title.split("|")[5]}
             />
           )}
 
-          <p>Link currículo Lattes</p>
-          {ffpData.teachers && (
+          <p>{ffp?.childrens[0].title.split("|")[6]}</p>
+          {ffp?.childrens && (
             <S.Input
               placeholder="Lattes do(a) vice diretor(a)"
               disabled
-              defaultValue={ffpData?.teachers[1]?.link}
+              defaultValue={ffp.childrens[0].title.split("|")[7]}
             />
           )}
 
-          <S.ContainerButton>
-            <S.EditButton>
-              <span onClick={() => setIsEditing((oldValue) => !oldValue)}>
-                {isEditing ? (
-                  "Cancelar"
-                ) : (
-                  <>
-                    Editar <BsPencil size={16} />
-                  </>
-                )}
-              </span>
-            </S.EditButton>
-          </S.ContainerButton>
+          {/* <S.ContainerButton> */}
+          <S.EditButton>
+            <span onClick={() => console.log("opa")}>
+              Editar <BsPencil size={16} />
+            </span>
+          </S.EditButton>
+          {/* </S.ContainerButton> */}
         </S.ContentCard>
 
-        <S.ContentCard>
+        {/* <S.ContentCard>
           {coordinationData.teachers && (
             <>
               <S.ContentCardHeader>
@@ -178,7 +163,7 @@ const Form = ({ title }: Props) => {
               </S.ContainerButton>
             </>
           )}
-        </S.ContentCard>
+        </S.ContentCard> */}
       </S.ContainerCards>
     </>
   );

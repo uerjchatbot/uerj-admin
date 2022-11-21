@@ -21,8 +21,10 @@ export const DescriptionContainer = styled.div`
 export const ContainerButton = styled.div``;
 
 export const EditButton = styled.button`
-  width: 132px;
-  height: 48px;
+  /* width: 132px; */
+  /* height: 48px; */
+
+  padding: 0.5rem 1rem;
 
   margin-top: 1rem;
 
@@ -98,8 +100,7 @@ export const DotRounded = styled(CommonDot)`
 
 export const Input = styled.input`
   width: 100%;
-  height: 48px;
-  padding: 0 1rem;
+  padding: 0.5rem 1rem;
 
   background-color: ${Theme.colors.white.mediumWhite};
 
