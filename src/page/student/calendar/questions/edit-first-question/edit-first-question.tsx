@@ -54,7 +54,7 @@ const EditFirstQuestion = ({
     try {
       await CalendarServices.updateFirstQuestion(questionId, text);
 
-      const { data } = await CalendarServices.updateFirstQuestionDate(
+      const { data } = await CalendarServices.updateQuestionDate(
         questionId,
         textInfo,
         initialDate,
