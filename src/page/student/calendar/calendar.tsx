@@ -32,7 +32,7 @@ import { EditFourthQuestion } from "./questions/edit-fourth-question";
 const Calendar = () => {
   const navigate = useNavigate();
   const { setLoading } = useLoading();
-  const { state } = useLocation();
+  const { state }: { state: any } = useLocation();
   const { setTitle, setComponent, setIsVisible } = useModal();
 
   const [titleData, setTitleData] = useState<ICalendarTitleData>({} as ICalendarTitleData);
