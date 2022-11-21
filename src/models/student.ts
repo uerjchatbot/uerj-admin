@@ -86,5 +86,5 @@ export interface ICalendarChildrenData {
   father_question: number;
   title: string;
   response: boolean;
-  childrens: [];
+  childrens: IChildrenData[];
 }
