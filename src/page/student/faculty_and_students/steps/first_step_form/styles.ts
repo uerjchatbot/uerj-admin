@@ -1,6 +1,7 @@
-import Theme from "@/styles/theme";
 import styled from "styled-components";
+
 import { DotRounded as CommonDot } from "@/components/dot-rounded";
+import Theme from "@/styles/theme";
 
 export const Container = styled.div``;
 
@@ -15,36 +16,6 @@ export const DescriptionContainer = styled.div`
 
   p {
     margin: 0;
-  }
-`;
-
-export const ContainerButton = styled.div``;
-
-export const EditButton = styled.button`
-  /* width: 132px; */
-  /* height: 48px; */
-
-  padding: 0.5rem 1rem;
-
-  margin-top: 1rem;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  font-size: 1rem;
-
-  background-color: ${Theme.colors.white.white};
-
-  border: 2px solid ${Theme.colors.blue.blueDark};
-  border-radius: 6px;
-
-  cursor: pointer;
-
-  transition: 0.5s;
-
-  &:hover {
-    background-color: ${Theme.colors.white.mediumWhite};
   }
 `;
 
@@ -118,5 +89,27 @@ export const Input = styled.input`
 
   &::placeholder {
     color: ${Theme.colors.grey.mediumGrey};
+  }
+`;
+
+export const ContainerButton = styled.div`
+  width: 50%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: start;
+  gap: 1rem;
+  margin-top: 24px;
+
+  button {
+    width: 30%;
+    span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      svg {
+        margin-left: 12px;
+      }
+    }
   }
 `;

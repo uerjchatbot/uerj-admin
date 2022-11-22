@@ -5,9 +5,9 @@ import { toast } from "react-toastify";
 import { useLoading } from "@/hooks/useLoading";
 
 import * as S from "./styles";
-import { FirstStepForm } from "./first_step_form";
-import { SecondStepForm } from "./second_step_form";
-import { ThirdStepForm } from "./third_step_form";
+import { FirstStepForm } from "./steps/first_step_form";
+import { SecondStepForm } from "./steps/second_step_form";
+import { ThirdStepForm } from "./steps/third_step_form";
 import { TeachingStaffServices } from "@/services/student/teachint-staff.service";
 import { orderChildrens } from "@/utils/order";
 import { ITeachingStaffData } from "@/models/teaching-staff";
@@ -28,7 +28,6 @@ const FacultAndStudents = () => {
 
       data.childrens = orderChildrens(data.childrens);
 
-      // console.log("data:", data);
       setHomeData(data);
 
       setLoading(false);
