@@ -49,8 +49,6 @@ const Form = ({ representation }: Props) => {
     getClassroomData();
   }, [getClassroomData]);
 
-  // console.log("classroomData:", classroomData);
-
   return (
     <S.ContainerCards>
       <S.ContentCard>
