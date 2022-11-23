@@ -8,6 +8,7 @@ import { IClassroomData, ITeachingStaffChildrenData } from "@/models/teaching-st
 import { TeachingStaffServices } from "@/services/student/teachint-staff.service";
 import { Button } from "@/components/button";
 import * as S from "./styles";
+import { formatIndexToLetter } from "@/utils/formarter";
 
 type Props = {
   representation?: ITeachingStaffChildrenData;
@@ -80,11 +81,14 @@ const Form = ({ representation }: Props) => {
                   </button>
                 </S.ClassHeaderContainer>
 
-                {classroomData[index]?.map((classroom: any) => {
+                {classroomData[index]?.map((classroom: any, index2: number) => {
                   return (
                     <S.ClassDataContainer key={classroom.id}>
                       <S.ClassDataHeaderContainer>
-                        <p>Os representantes da turma {classroom.matter} são:</p>
+                        <p>
+                          <strong>{formatIndexToLetter(index2)} - </strong>
+                          Os representantes da turma {classroom.matter} são:
+                        </p>
 
                         <div>
                           <button>
