@@ -80,7 +80,9 @@ const FacultAndStudents = () => {
       {homeData.childrens && selectedStage === 2 && (
         <SecondStepForm representation={homeData?.childrens[2]} />
       )}
-      {homeData.childrens && selectedStage === 3 && <ThirdStepForm />}
+      {homeData.childrens && selectedStage === 3 && (
+        <ThirdStepForm teachers={homeData?.childrens[3]} />
+      )}
     </S.Container>
   );
 };
