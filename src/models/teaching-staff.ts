@@ -15,3 +15,9 @@ export interface ITeachingStaffData {
   response: boolean;
   childrens: ITeachingStaffChildrenData[];
 }
+
+export interface IClassroomData {
+  index: number;
+  matter: string;
+  students: string[];
+}

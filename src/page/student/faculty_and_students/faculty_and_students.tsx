@@ -12,8 +12,6 @@ import { TeachingStaffServices } from "@/services/student/teachint-staff.service
 import { orderChildrens } from "@/utils/order";
 import { ITeachingStaffData } from "@/models/teaching-staff";
 
-// type Props = {};
-
 const FacultAndStudents = () => {
   const { setLoading } = useLoading();
   const { state }: { state: any } = useLocation();
@@ -79,7 +77,9 @@ const FacultAndStudents = () => {
           coordination={homeData?.childrens[1]}
         />
       )}
-      {homeData.childrens && selectedStage === 2 && <SecondStepForm />}
+      {homeData.childrens && selectedStage === 2 && (
+        <SecondStepForm representation={homeData?.childrens[2]} />
+      )}
       {homeData.childrens && selectedStage === 3 && <ThirdStepForm />}
     </S.Container>
   );

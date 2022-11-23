@@ -16,6 +16,18 @@ export const DescriptionContainer = styled.div`
   }
 `;
 
+export const EditButtonContainer = styled.div`
+  width: 90%;
+
+  button {
+    width: 30%;
+
+    span {
+      font-size: 1rem;
+    }
+  }
+`;
+
 export const EditButton = styled.button`
   width: 132px;
   height: 36px;
@@ -90,7 +102,6 @@ export const DotRounded = styled(CommonDot)`
 
 export const ClassContainer = styled.div`
   width: 100%;
-  margin-top: 2rem;
 
   display: flex;
   flex-direction: column;
@@ -99,6 +110,7 @@ export const ClassContainer = styled.div`
 export const ClassHeaderContainer = styled.div`
   width: 100%;
 
+  margin-top: 3rem;
   margin-bottom: 2rem;
 
   display: flex;
@@ -112,7 +124,7 @@ export const ClassHeaderContainer = styled.div`
 
   button {
     width: 300px;
-    height: 36px;
+    height: 48px;
 
     display: flex;
     align-items: center;
@@ -148,6 +160,8 @@ export const ClassDataHeaderContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  /* margin-top: 1rem; */
 
   p {
     margin: 0;

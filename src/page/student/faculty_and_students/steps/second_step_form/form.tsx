@@ -1,131 +1,118 @@
-import React, { useState } from "react";
-import * as S from "./styles";
-
+import React, { useCallback, useEffect, useState } from "react";
 import { BsPencil, BsTrash } from "react-icons/bs";
 import { IoIosPeople } from "react-icons/io";
 import { FiEdit } from "react-icons/fi";
 
-// type Props = {};
+// eslint-disable-next-line no-unused-vars
+import { IClassroomData, ITeachingStaffChildrenData } from "@/models/teaching-staff";
+import { TeachingStaffServices } from "@/services/student/teachint-staff.service";
+import { Button } from "@/components/button";
+import * as S from "./styles";
 
-const names = ["Beatriz Moura", "Joyce Paiva", "Mauro Perez"];
+type Props = {
+  representation?: ITeachingStaffChildrenData;
+};
 
-const Form = () => {
-  const [isEditing, setIsEditing] = useState(false);
+const Form = ({ representation }: Props) => {
+  const [classroomData, setClassroomData] = useState<any>([] as any);
+
+  const getChildrenId = async (): Promise<number[]> => {
+    if (representation?.childrens) {
+      const response1 = await TeachingStaffServices.getClassroomChildrenId(
+        representation.childrens[0].id
+      );
+      const response2 = await TeachingStaffServices.getClassroomChildrenId(
+        representation.childrens[1].id
+      );
+
+      return [response1.data.childrens[0].id, response2.data.childrens[0].id];
+    } else {
+      return [0, 0];
+    }
+  };
+
+  const getClassroomData = useCallback(async (): Promise<void> => {
+    try {
+      const ids = await getChildrenId();
+
+      const response1 = await TeachingStaffServices.getClassroomChildrenData(ids[0]);
+      const response2 = await TeachingStaffServices.getClassroomChildrenData(ids[1]);
+
+      setClassroomData((oldValue: any) => [...oldValue, response1.data]);
+      setClassroomData((oldValue: any) => [...oldValue, response2.data]);
+    } catch (error) {
+      console.log("error:", error);
+    }
+  }, [representation]);
+
+  useEffect(() => {
+    getClassroomData();
+  }, [getClassroomData]);
+
+  // console.log("classroomData:", classroomData);
 
   return (
     <S.ContainerCards>
       <S.ContentCard>
         <S.ContentCardHeader>
           <S.DotRounded>3</S.DotRounded>
-          <span>Representação estudantil</span>
+          <span>{representation?.question}</span>
         </S.ContentCardHeader>
 
         <S.DescriptionContainer>
-          <p>
-            Os representantes de turma são encarregados de representar os interesses do conjunto dos
-            estudantes no âmbito do Programa, bem como participar, com voz e voto, do Colegiado do
-            Programa, em Comissões e em grupos de trabalho, de modo a colaborar com o êxito dos
-            processos formativos e a consecução dos objetivos dos cursos de pós-graduação.
-            <br />
-            Cada uma das turmas em andamento dos cursos de mestrado e de doutorado conta com um
-            representante titular e um suplente, ambos devidamente matriculados e eleitos pelos
-            estudantes.
-          </p>
-          <div>
-            <S.EditButton onClick={() => setIsEditing((oldValue) => !oldValue)}>
-              {isEditing ? (
-                <>Cancelar</>
-              ) : (
-                <>
-                  Editar <BsPencil size={16} />
-                </>
-              )}
-            </S.EditButton>
-          </div>
+          <p>{representation?.title}</p>
+          <S.EditButtonContainer>
+            <Button outline={true} type={"button"}>
+              <span onClick={() => console.log("opa")}>
+                Editar <BsPencil size={16} />
+              </span>
+            </Button>
+          </S.EditButtonContainer>
         </S.DescriptionContainer>
 
         <S.ClassContainer>
-          <S.ClassHeaderContainer>
-            <p>1- mestrado</p>
-            <button>
-              Adicionar turma <IoIosPeople />
-            </button>
-          </S.ClassHeaderContainer>
+          <div>
+            {representation?.childrens.map((classroom, index) => (
+              <>
+                <S.ClassHeaderContainer>
+                  <p>{`${index + 1}- ${classroom.question}`}</p>
 
-          <S.ClassDataContainer>
-            <S.ClassDataHeaderContainer>
-              <p>
-                <strong>A -</strong> Os representantes da turma Pedagogia são:
-              </p>
+                  <button onClick={() => console.log(`Adicionar turma de ${classroom.question}`)}>
+                    Adicionar turma <IoIosPeople />
+                  </button>
+                </S.ClassHeaderContainer>
 
-              <div>
-                <button>
-                  <FiEdit />
-                </button>
-                <button>
-                  <BsTrash />
-                </button>
-              </div>
-            </S.ClassDataHeaderContainer>
+                {classroomData[index]?.map((classroom: any) => {
+                  return (
+                    <S.ClassDataContainer key={classroom.id}>
+                      <S.ClassDataHeaderContainer>
+                        <p>Os representantes da turma {classroom.matter} são:</p>
 
-            <S.ClassDataNamesContainer>
-              <ul>
-                {names.map((name: string, idx: number) => (
-                  <li key={`name-${idx}`}>{name}</li>
-                ))}
-              </ul>
-            </S.ClassDataNamesContainer>
-          </S.ClassDataContainer>
+                        <div>
+                          <button>
+                            <FiEdit onClick={() => console.log(`Edit ${classroom.matter} class`)} />
+                          </button>
+                          <button>
+                            <BsTrash
+                              onClick={() => console.log(`Delete ${classroom.matter} class`)}
+                            />
+                          </button>
+                        </div>
+                      </S.ClassDataHeaderContainer>
 
-          <S.ClassDataContainer>
-            <S.ClassDataHeaderContainer>
-              <p>
-                <strong>B -</strong> Os representantes da turma Pedagogia são:
-              </p>
-
-              <div>
-                <button>
-                  <FiEdit />
-                </button>
-                <button>
-                  <BsTrash />
-                </button>
-              </div>
-            </S.ClassDataHeaderContainer>
-
-            <S.ClassDataNamesContainer>
-              <ul>
-                {names.map((name: string, idx: number) => (
-                  <li key={`name-${idx}`}>{name}</li>
-                ))}
-              </ul>
-            </S.ClassDataNamesContainer>
-          </S.ClassDataContainer>
-
-          <S.ClassDataContainer>
-            <S.ClassDataHeaderContainer>
-              <p>
-                <strong>C -</strong> Os representantes da turma Pedagogia são:
-              </p>
-
-              <div>
-                <button>
-                  <FiEdit />
-                </button>
-                <button>
-                  <BsTrash />
-                </button>
-              </div>
-            </S.ClassDataHeaderContainer>
-
-            <S.ClassDataNamesContainer>
-              <ul>
-                {names.map((name: string, idx: number) => (
-                  <li key={`name-${idx}`}>{name}</li>
-                ))}
-              </ul>
-            </S.ClassDataNamesContainer>
-          </S.ClassDataContainer>
+                      <S.ClassDataNamesContainer>
+                        <ul>
+                          {classroom.students.map((name: string, idx: number) => (
+                            <li key={`name-${idx}`}>{name}</li>
+                          ))}
+                        </ul>
+                      </S.ClassDataNamesContainer>
+                    </S.ClassDataContainer>
+                  );
+                })}
+              </>
+            ))}
+          </div>
         </S.ClassContainer>
       </S.ContentCard>
     </S.ContainerCards>
