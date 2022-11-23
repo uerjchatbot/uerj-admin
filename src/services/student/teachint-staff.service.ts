@@ -16,5 +16,9 @@ export const TeachingStaffServices = {
 
   getClassroomChildrenData(id = 0): AxiosPromise<IClassroomData[]> {
     return api.get(`class/question/${id}`);
+  },
+
+  getTeachers(id: number): AxiosPromise<any> {
+    return api.get(`teacher/question/${id}`);
   }
 };

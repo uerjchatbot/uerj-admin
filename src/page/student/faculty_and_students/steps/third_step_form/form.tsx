@@ -1,41 +1,77 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import * as S from "./styles";
 
-import { BsPencil } from "react-icons/bs";
+import { BsPencil, BsTrash } from "react-icons/bs";
+import { TeachingStaffServices } from "@/services/student/teachint-staff.service";
+import { Button } from "@/components/button";
+import { FiEdit } from "react-icons/fi";
+import { formatIndexToLetter } from "@/utils/formarter";
 
-// type Props = {};
+type Props = {
+  teachers: any;
+};
 
-const Form = () => {
-  const [isEditing, setIsEditing] = useState(false);
+const Form = ({ teachers }: Props) => {
+  const [teachersData, setTeachersData] = useState<any[]>([]);
+
+  console.log("teachers:", teachers);
+
+  const getTeachersData = useCallback(async (): Promise<void> => {
+    const response = await TeachingStaffServices.getHomeData(teachers.id);
+
+    const { data } = await TeachingStaffServices.getTeachers(response.data.childrens[0].id);
+
+    console.log("data:", data);
+
+    setTeachersData(data);
+  }, [teachers]);
+
+  useEffect(() => {
+    getTeachersData();
+  }, [getTeachersData]);
 
   return (
     <S.ContainerCards>
       <S.ContentCard>
         <S.ContentCardHeader>
           <S.DotRounded>4</S.DotRounded>
-          <span>Professores</span>
+          <span>{teachers?.question}</span>
         </S.ContentCardHeader>
 
         <S.DescriptionContainer>
-          <p>
-            Nossos professores/pesquisadores têm formação ampla e compatível com a área de
-            concentração e com as linhas pesquisa do PPGEdu. Para conhecê-los melhor, você poderá
-            acessar o Currículo Lattes de cada um deles através dos links abaixo.
-          </p>
+          <p>{teachers?.title}</p>
           <S.ContainerButton>
-            <S.EditButton>
-              <span onClick={() => setIsEditing((oldValue) => !oldValue)}>
-                {isEditing ? (
-                  "Cancelar"
-                ) : (
-                  <>
-                    Editar <BsPencil size={16} />
-                  </>
-                )}
+            <Button outline={true} type={"button"}>
+              <span onClick={() => console.log("opa")}>
+                Editar <BsPencil size={16} />
               </span>
-            </S.EditButton>
+            </Button>
           </S.ContainerButton>
         </S.DescriptionContainer>
+
+        {teachersData?.map((teacher, index) => (
+          <S.ClassDataContainer key={`teacher ${index}`}>
+            <S.ClassDataHeaderContainer>
+              <p>
+                <strong>{formatIndexToLetter(index)} - </strong>
+                Professor(a) {teacher.teacher}
+              </p>
+
+              <div>
+                <button>
+                  <FiEdit onClick={() => console.log(`Edit teacher ${teacher.teacher}`)} />
+                </button>
+                <button>
+                  <BsTrash onClick={() => console.log(`Delete teacher ${teacher.teacher}`)} />
+                </button>
+              </div>
+            </S.ClassDataHeaderContainer>
+
+            <S.ClassDataNamesContainer>
+              <p>{teacher.link}</p>
+            </S.ClassDataNamesContainer>
+          </S.ClassDataContainer>
+        ))}
       </S.ContentCard>
     </S.ContainerCards>
   );

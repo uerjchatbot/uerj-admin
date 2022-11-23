@@ -5,6 +5,8 @@ import { DotRounded as CommonDot } from "@/components/dot-rounded";
 export const Container = styled.div``;
 
 export const DescriptionContainer = styled.div`
+  margin-bottom: 2rem;
+
   font-size: 1.5rem;
   color: ${Theme.colors.grey.grey};
 
@@ -16,7 +18,17 @@ export const DescriptionContainer = styled.div`
   }
 `;
 
-export const ContainerButton = styled.div``;
+export const ContainerButton = styled.div`
+  width: 90%;
+
+  button {
+    width: 30%;
+
+    span {
+      font-size: 1rem;
+    }
+  }
+`;
 
 export const EditButton = styled.button`
   width: 132px;
@@ -110,5 +122,70 @@ export const Input = styled.input`
 
   &::placeholder {
     color: ${Theme.colors.grey.mediumGrey};
+  }
+`;
+
+export const ClassDataContainer = styled.div`
+  width: 100%;
+  padding: 1rem;
+
+  margin-top: 0;
+  margin-bottom: 1rem;
+
+  display: flex;
+  flex-direction: column;
+
+  box-shadow: 0px 1px 6px rgba(184, 190, 194, 0.6);
+  border-radius: 5px;
+`;
+
+export const ClassDataHeaderContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  p {
+    margin: 0;
+
+    strong {
+      color: ${Theme.colors.blue.blueDark};
+    }
+  }
+
+  div {
+    display: flex;
+    gap: 1rem;
+
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 0.5rem;
+
+      background-color: ${Theme.colors.blue.lightBlue};
+
+      border: none;
+      border-radius: 50%;
+
+      font-size: 1rem;
+
+      cursor: pointer;
+    }
+  }
+`;
+
+export const ClassDataNamesContainer = styled.div`
+  ul {
+    list-style: none;
+    margin: 2rem 0 0 0;
+    padding: 0;
+
+    li {
+      margin-top: 0.5rem;
+
+      font-size: 1.25rem;
+      color: ${Theme.colors.grey.grey};
+    }
   }
 `;
