@@ -196,12 +196,12 @@ const Calendar = () => {
         <div>
           <p>{firstQuestionData.title.split("|")[0]}</p>
           <DatePickerContainer>
-            <p>Data início:</p>
             <span>{firstQuestionData.title.split("|")[1]}</span>
           </DatePickerContainer>
 
+          <p>{firstQuestionData.title.split("|")[2]}</p>
+
           <DatePickerContainer>
-            <p>Data final:</p>
             <span>{firstQuestionData.title.split("|")[3]}</span>
           </DatePickerContainer>
         </div>
@@ -228,12 +228,12 @@ const Calendar = () => {
         <div>
           <p>{secondQuestionData.title.split("|")[0]}</p>
           <DatePickerContainer>
-            <p>Data início:</p>
             <span>{secondQuestionData.title.split("|")[1]}</span>
           </DatePickerContainer>
 
+          <p>{secondQuestionData.title.split("|")[2]}</p>
+
           <DatePickerContainer>
-            <p>Data final:</p>
             <span>{secondQuestionData.title.split("|")[3]}</span>
           </DatePickerContainer>
         </div>
@@ -260,12 +260,12 @@ const Calendar = () => {
         <div>
           <p>{thirdQuestionData.title.split("|")[0]}</p>
           <DatePickerContainer>
-            <p>Data início:</p>
             <span>{thirdQuestionData.title.split("|")[1]}</span>
           </DatePickerContainer>
 
+          <p>{thirdQuestionData.title.split("|")[2]}</p>
+
           <DatePickerContainer>
-            <p>Data final:</p>
             <span>{thirdQuestionData.title.split("|")[3]}</span>
           </DatePickerContainer>
         </div>

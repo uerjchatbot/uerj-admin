@@ -113,22 +113,14 @@ export const DotRounded = styled(CommonDot)`
 
 export const DatePickerContainer = styled.div`
   padding: 8px;
-  background-color: ${(props) => props.theme.colors.blue.lightBlue};
   margin-left: 1rem;
   margin-right: 0.5rem;
 
   display: flex;
   flex-direction: column;
-  /* justify-content: flex-start; */
-
-  p {
-    width: 100%;
-    font-size: 1rem !important;
-
-    border-bottom: ${(props) => `1px solid ${props.theme.colors.grey.mediumGrey}`};
-  }
 
   span {
     width: 100%;
+    color: ${({ theme }) => theme.colors.blue.normalBlue};
   }
 `;
