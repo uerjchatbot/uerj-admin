@@ -1,17 +1,33 @@
-// import React, { useState, useEffect } from "react";
+import React from "react";
 import * as S from "./styles";
 
 import { BsPencil } from "react-icons/bs";
-import { ITeachingStaffChildrenData } from "@/models/teaching-staff";
+import { ITeachingStaffChildrenData, ITeachingStaffData } from "@/models/teaching-staff";
 import { Button } from "@/components/button";
+import { useModal } from "@/hooks/useModal";
+import { EditPageDescription } from "../../edit_modals/page_description";
 
 type Props = {
+  homeDataId?: number;
   title?: string;
   ffp?: ITeachingStaffChildrenData;
   coordination?: ITeachingStaffChildrenData;
+  setData: React.Dispatch<React.SetStateAction<ITeachingStaffData>>;
 };
 
-const Form = ({ title, ffp, coordination }: Props) => {
+const Form = ({ homeDataId, title, ffp, coordination, setData }: Props) => {
+  const { setTitle, setComponent, setIsVisible } = useModal();
+
+  const handleOpenEditTitleModal = (): void => {
+    setTitle("Corpos Docentes e Discentes");
+
+    setComponent(
+      <EditPageDescription questionId={homeDataId || 0} text={title || ""} setData={setData} />
+    );
+
+    setIsVisible(true);
+  };
+
   return (
     <>
       <S.DescriptionContainer>
@@ -19,7 +35,7 @@ const Form = ({ title, ffp, coordination }: Props) => {
 
         <S.ContainerButton>
           <Button outline={true} type={"button"}>
-            <span onClick={() => console.log("opa")}>
+            <span onClick={handleOpenEditTitleModal}>
               Editar <BsPencil size={16} />
             </span>
           </Button>

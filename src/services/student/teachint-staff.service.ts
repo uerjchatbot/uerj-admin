@@ -9,6 +9,10 @@ export const TeachingStaffServices = {
     return api.get(`question/${id}`);
   },
 
+  updateHomeTitle(id: number, title: string): AxiosPromise<ITeachingStaffData> {
+    return api.put(`question/${id}`, { title });
+  },
+
   //? Classroom Children
   getClassroomChildrenId(id: number): AxiosPromise<ITeachingStaffData> {
     return api.get(`question/${id}`);

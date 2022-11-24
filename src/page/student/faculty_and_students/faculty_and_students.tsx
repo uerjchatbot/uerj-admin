@@ -72,9 +72,11 @@ const FacultAndStudents = () => {
 
       {homeData.childrens && selectedStage === 1 && (
         <FirstStepForm
+          homeDataId={homeData.id}
           title={homeData?.title}
           ffp={homeData?.childrens[0]}
           coordination={homeData?.childrens[1]}
+          setData={setHomeData}
         />
       )}
       {homeData.childrens && selectedStage === 2 && (
