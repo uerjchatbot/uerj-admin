@@ -6,7 +6,7 @@ import { EditTextButton } from "@/components/edit-text-button";
 import { toast } from "react-toastify";
 import { useModal } from "@/hooks/useModal";
 import { ITeachingStaffData } from "@/models/teaching-staff";
-import { TeachingStaffServices } from "@/services/student/teachint-staff.service";
+import { TeachingStaffServices } from "@/services/student/teaching-staff.service";
 
 type Props = {
   questionId: number;
@@ -50,8 +50,6 @@ const PageDescription = ({ questionId, text, setData }: Props) => {
       setTextInfo(text);
     }
   }, [text]);
-
-  console.log("questionId:", questionId);
 
   return (
     <>
