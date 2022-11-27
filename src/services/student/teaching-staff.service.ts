@@ -24,5 +24,18 @@ export const TeachingStaffServices = {
 
   getTeachers(id: number): AxiosPromise<any> {
     return api.get(`teacher/question/${id}`);
+  },
+
+  //? Update FFP teachers
+  updateFfpQuestionAndTitle(
+    id: number,
+    title: string,
+    question: string
+  ): AxiosPromise<ITeachingStaffData> {
+    return api.put(`question/${id}`, { title, question });
+  },
+
+  updateFfpTeachers(id: number, teachers: any): AxiosPromise<ITeachingStaffData> {
+    return api.put(`name-link/question/${id}`, { teachers });
   }
 };
