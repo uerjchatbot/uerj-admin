@@ -1,5 +1,7 @@
-import Theme from "@/styles/theme";
 import styled from "styled-components";
+
+import { DotRounded as CommonDot } from "@/components/dot-rounded";
+import Theme from "@/styles/theme";
 
 // import { DotRounded as CommonDot } from "@/components/dot-rounded";
 
@@ -54,4 +56,9 @@ export const BackButton = styled.button`
   &:hover {
     background-color: ${Theme.colors.white.mediumWhite};
   }
+`;
+
+export const DotRounded = styled(CommonDot)`
+  width: 80px;
+  height: 80px;
 `;

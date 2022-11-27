@@ -8,7 +8,7 @@ import * as S from "./styles";
 import { FirstStepForm } from "./steps/first_step_form";
 import { SecondStepForm } from "./steps/second_step_form";
 import { ThirdStepForm } from "./steps/third_step_form";
-import { TeachingStaffServices } from "@/services/student/teachint-staff.service";
+import { TeachingStaffServices } from "@/services/student/teaching-staff.service";
 import { orderChildrens } from "@/utils/order";
 import { ITeachingStaffData } from "@/models/teaching-staff";
 
@@ -18,6 +18,49 @@ const FacultAndStudents = () => {
 
   const [selectedStage, setSelectedStage] = useState(1);
   const [homeData, setHomeData] = useState<ITeachingStaffData>({} as ITeachingStaffData);
+  const [ffp, setFfp] = useState<ITeachingStaffData>({} as ITeachingStaffData);
+  const [coordination, setCoordination] = useState<ITeachingStaffData>({} as ITeachingStaffData);
+  const [representation, setRepresentation] = useState<ITeachingStaffData>(
+    {} as ITeachingStaffData
+  );
+  const [teachers, setTeachers] = useState<ITeachingStaffData>({} as ITeachingStaffData);
+
+  const getFfpData = async (): Promise<void> => {
+    try {
+      setLoading(true);
+      const { data } = await TeachingStaffServices.getHomeData(homeData.childrens[0].id);
+
+      data.childrens = orderChildrens(data.childrens);
+
+      setFfp(data);
+
+      setLoading(false);
+    } catch (error) {
+      console.log("error:", error);
+      toast.error("Houve um erro ao pegar as informações da FFP.");
+      setLoading(false);
+    }
+  };
+
+  const getCoordinationData = async (): Promise<void> => {
+    try {
+      setLoading(true);
+      const { data } = await TeachingStaffServices.getHomeData(homeData.childrens[1].id);
+
+      data.childrens = orderChildrens(data.childrens);
+
+      setCoordination(data);
+
+      setLoading(false);
+    } catch (error) {
+      console.log("error:", error);
+      toast.error("Houve um erro ao pegar as informações da Coordenação.");
+      setLoading(false);
+    }
+  };
+
+  const getrepresentationData = async (): Promise<void> => {};
+  const getTachersData = async (): Promise<void> => {};
 
   const getData = async () => {
     try {
@@ -39,6 +82,15 @@ const FacultAndStudents = () => {
   useEffect(() => {
     getData();
   }, []);
+
+  useEffect(() => {
+    if (homeData.childrens) {
+      getFfpData();
+      getCoordinationData();
+      getrepresentationData();
+      getTachersData();
+    }
+  }, [homeData]);
 
   const handleSelectStage = (stageNumber: number) => setSelectedStage(stageNumber);
 
@@ -74,14 +126,18 @@ const FacultAndStudents = () => {
         <FirstStepForm
           homeDataId={homeData.id}
           title={homeData?.title}
-          ffp={homeData?.childrens[0]}
-          coordination={homeData?.childrens[1]}
+          ffp={ffp}
+          setFfp={setFfp}
+          coordination={coordination}
+          setCoordination={setCoordination}
           setData={setHomeData}
         />
       )}
+
       {homeData.childrens && selectedStage === 2 && (
         <SecondStepForm representation={homeData?.childrens[2]} />
       )}
+
       {homeData.childrens && selectedStage === 3 && (
         <ThirdStepForm teachers={homeData?.childrens[3]} />
       )}
