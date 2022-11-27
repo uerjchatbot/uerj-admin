@@ -9,6 +9,10 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Lato', 'Courier New', Courier, monospace
   }
 
+  input:focus {
+    outline: none;
+  }
+
   .spinner {
     z-index: 5;
   }
