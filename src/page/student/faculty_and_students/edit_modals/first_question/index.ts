@@ -1,1 +1,1 @@
-export { default as FirstQuestion } from "./first_question";
+export { default as EditFirstQuestion } from "./first_question";
