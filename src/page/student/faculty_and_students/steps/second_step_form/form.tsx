@@ -4,17 +4,22 @@ import { IoIosPeople } from "react-icons/io";
 import { FiEdit } from "react-icons/fi";
 
 // eslint-disable-next-line no-unused-vars
-import { IClassroomData, ITeachingStaffChildrenData } from "@/models/teaching-staff";
-import { TeachingStaffServices } from "@/services/student/teachint-staff.service";
+import { ITeachingStaffChildrenData, ITeachingStaffData } from "@/models/teaching-staff";
+import { TeachingStaffServices } from "@/services/student/teaching-staff.service";
 import { Button } from "@/components/button";
 import * as S from "./styles";
 import { formatIndexToLetter } from "@/utils/formarter";
+import { useModal } from "@/hooks/useModal";
+import { EditThirdQuestion } from "../../edit_modals/third_question";
 
 type Props = {
   representation?: ITeachingStaffChildrenData;
+  setRepresentation: React.Dispatch<React.SetStateAction<ITeachingStaffData>>;
 };
 
-const Form = ({ representation }: Props) => {
+const Form = ({ representation, setRepresentation }: Props) => {
+  const { setTitle, setComponent, setIsVisible } = useModal();
+
   const [classroomData, setClassroomData] = useState<any>([] as any);
 
   const getChildrenId = async (): Promise<number[]> => {
@@ -46,9 +51,28 @@ const Form = ({ representation }: Props) => {
     }
   }, [representation]);
 
+  const handleOpenEditQuestionModal = () => {
+    if (representation) {
+      setTitle(representation.question);
+
+      setComponent(
+        <EditThirdQuestion
+          questionId={representation.id}
+          text={representation.question}
+          description={representation.title}
+          setRepresentation={setRepresentation}
+        />
+      );
+
+      setIsVisible(true);
+    }
+  };
+
   useEffect(() => {
     getClassroomData();
   }, [getClassroomData]);
+
+  // console.log("representation:", representation);
 
   return (
     <S.ContainerCards>
@@ -62,7 +86,7 @@ const Form = ({ representation }: Props) => {
           <p>{representation?.title}</p>
           <S.EditButtonContainer>
             <Button outline={true} type={"button"}>
-              <span onClick={() => console.log("opa")}>
+              <span onClick={handleOpenEditQuestionModal}>
                 Editar <BsPencil size={16} />
               </span>
             </Button>
