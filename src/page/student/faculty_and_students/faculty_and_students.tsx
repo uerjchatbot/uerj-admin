@@ -36,7 +36,6 @@ const FacultAndStudents = () => {
 
       setLoading(false);
     } catch (error) {
-      console.log("error:", error);
       toast.error("Houve um erro ao pegar as informações da FFP.");
       setLoading(false);
     }
@@ -53,14 +52,42 @@ const FacultAndStudents = () => {
 
       setLoading(false);
     } catch (error) {
-      console.log("error:", error);
       toast.error("Houve um erro ao pegar as informações da Coordenação.");
       setLoading(false);
     }
   };
 
-  const getrepresentationData = async (): Promise<void> => {};
-  const getTachersData = async (): Promise<void> => {};
+  const getRepresentationData = async (): Promise<void> => {
+    try {
+      setLoading(true);
+      const { data } = await TeachingStaffServices.getHomeData(homeData.childrens[2].id);
+
+      data.childrens = orderChildrens(data.childrens);
+
+      setRepresentation(data);
+
+      setLoading(false);
+    } catch (error) {
+      toast.error("Houve um erro ao pegar as informações da Representação Estudantil.");
+      setLoading(false);
+    }
+  };
+
+  const getTeachersData = async (): Promise<void> => {
+    try {
+      setLoading(true);
+      const { data } = await TeachingStaffServices.getHomeData(homeData.childrens[3].id);
+
+      data.childrens = orderChildrens(data.childrens);
+
+      setTeachers(data);
+
+      setLoading(false);
+    } catch (error) {
+      toast.error("Houve um erro ao pegar as informações dos Professores.");
+      setLoading(false);
+    }
+  };
 
   const getData = async () => {
     try {
@@ -87,8 +114,8 @@ const FacultAndStudents = () => {
     if (homeData.childrens) {
       getFfpData();
       getCoordinationData();
-      getrepresentationData();
-      getTachersData();
+      getRepresentationData();
+      getTeachersData();
     }
   }, [homeData]);
 
@@ -135,12 +162,10 @@ const FacultAndStudents = () => {
       )}
 
       {homeData.childrens && selectedStage === 2 && (
-        <SecondStepForm representation={homeData?.childrens[2]} />
+        <SecondStepForm representation={representation} setRepresentation={setRepresentation} />
       )}
 
-      {homeData.childrens && selectedStage === 3 && (
-        <ThirdStepForm teachers={homeData?.childrens[3]} />
-      )}
+      {homeData.childrens && selectedStage === 3 && <ThirdStepForm teachers={teachers} />}
     </S.Container>
   );
 };
