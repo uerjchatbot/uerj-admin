@@ -67,8 +67,6 @@ const EditThirdQuestion = ({ questionId, text, description, setRepresentation }:
     if (description && description.length > 0) setTextDescription(description);
   }, [description]);
 
-  // console.log("description:", description);
-
   return (
     <div>
       {renderTextEditor()}
