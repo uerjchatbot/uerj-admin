@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import * as S from "./styles";
 
 import { BsPencil, BsTrash } from "react-icons/bs";
-import { TeachingStaffServices } from "@/services/student/teachint-staff.service";
+import { TeachingStaffServices } from "@/services/student/teaching-staff.service";
 import { Button } from "@/components/button";
 import { FiEdit } from "react-icons/fi";
 import { formatIndexToLetter } from "@/utils/formarter";
