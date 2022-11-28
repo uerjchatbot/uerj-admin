@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { useLoading } from "@/hooks/useLoading";
@@ -11,8 +11,11 @@ import { ThirdStepForm } from "./steps/third_step_form";
 import { TeachingStaffServices } from "@/services/student/teaching-staff.service";
 import { orderChildrens } from "@/utils/order";
 import { ITeachingStaffData } from "@/models/teaching-staff";
+import { STUDENT_PATH } from "@/routes/paths/paths.private";
+import { Button } from "@/components/button";
 
 const FacultAndStudents = () => {
+  const navigate = useNavigate();
   const { setLoading } = useLoading();
   const { state }: { state: any } = useLocation();
 
@@ -24,6 +27,8 @@ const FacultAndStudents = () => {
     {} as ITeachingStaffData
   );
   const [teachers, setTeachers] = useState<ITeachingStaffData>({} as ITeachingStaffData);
+
+  const handleNavigateBack = () => navigate(STUDENT_PATH());
 
   const getFfpData = async (): Promise<void> => {
     try {
@@ -144,9 +149,11 @@ const FacultAndStudents = () => {
           </S.SwitchStageButton>
         </div>
 
-        <div>
-          <S.BackButton>Voltar</S.BackButton>
-        </div>
+        <S.ContainerButton>
+          <Button outline={true} type={"button"}>
+            <span onClick={handleNavigateBack}>Voltar</span>
+          </Button>
+        </S.ContainerButton>
       </S.HeaderContainer>
 
       {homeData.childrens && selectedStage === 1 && (

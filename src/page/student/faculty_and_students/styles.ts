@@ -38,6 +38,24 @@ export const SwitchStageButton = styled.button<{ isSelected: boolean }>`
   cursor: pointer;
 `;
 
+export const ContainerButton = styled.div`
+  width: 30%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: end;
+  button {
+    span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      svg {
+        margin-left: 12px;
+      }
+    }
+  }
+`;
+
 export const BackButton = styled.button`
   padding: 0 6rem;
   height: 48px;
