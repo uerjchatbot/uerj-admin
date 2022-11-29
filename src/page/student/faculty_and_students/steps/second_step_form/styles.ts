@@ -51,14 +51,15 @@ export const EditButton = styled.button`
 
 export const ContainerCards = styled.div`
   width: 90%;
-  margin: 0 auto;
   display: grid;
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-rows: repeat(1, 1fr);
   gap: 36px;
+
   @media (max-width: 1000px) {
     grid-template-columns: 1fr;
     gap: 90px;
   }
+
   padding-bottom: 48px;
 `;
 
