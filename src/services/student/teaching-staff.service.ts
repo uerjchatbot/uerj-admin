@@ -37,5 +37,15 @@ export const TeachingStaffServices = {
 
   updateFfpTeachers(id: number, teachers: any): AxiosPromise<ITeachingStaffData> {
     return api.put(`name-link/question/${id}`, { teachers });
+  },
+
+  //? update master data
+  updateMasterData(
+    classId: number,
+    questionId: number,
+    matter: string,
+    students: string[]
+  ): AxiosPromise<any> {
+    return api.put(`class/${classId}/question/${questionId}`, { matter, students });
   }
 };
