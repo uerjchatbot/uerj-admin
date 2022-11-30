@@ -6,6 +6,9 @@ import { TeachingStaffServices } from "@/services/student/teaching-staff.service
 import { useModal } from "@/hooks/useModal";
 import { IClassroomData } from "@/models/teaching-staff";
 
+import * as S from "./styles";
+import { EditTextButton } from "@/components/edit-text-button";
+
 type Props = {
   questionId?: number;
   classId?: number;
@@ -42,29 +45,29 @@ const EditClass = ({ classId, questionId, className, studentsList, setData, clas
 
   const renderAddStudent = useCallback(() => {
     return (
-      <div>
-        <input
+      <S.SetStudentNameContainer>
+        <S.Input
           type="text"
           placeholder="Nome do(a) representante"
           value={studentName}
           onChange={(e) => setStudentName(e.target.value)}
         />
 
-        <button onClick={() => addStudentToArray(studentName)}>Adicionar</button>
-      </div>
+        <S.Button onClick={() => addStudentToArray(studentName)}>Adicionar</S.Button>
+      </S.SetStudentNameContainer>
     );
   }, [studentName]);
 
   const renderStudentsList = useCallback(() => {
     return (
-      <ul>
+      <S.StudentsListContainer>
         {studentsListCopy.map((student, index) => (
           <div key={`student-${index}`}>
             <li>{student}</li>
             <BsFillTrashFill size={20} onClick={() => deleteStudentFromArray(index)} />
           </div>
         ))}
-      </ul>
+      </S.StudentsListContainer>
     );
   }, [studentsListCopy]);
 
@@ -102,24 +105,24 @@ const EditClass = ({ classId, questionId, className, studentsList, setData, clas
   }, [className]);
 
   return (
-    <div>
-      <div>
-        Os representantes da turma
-        <input
+    <S.Container>
+      <S.ClassNameContainer>
+        <p>Os representantes da turma</p>
+        <S.Input
           type="text"
           placeholder="Nome da turma"
           defaultValue={className}
           onChange={(e) => setClassNameCopy(e.target.value)}
         />
-        são:
-      </div>
+        <p>são:</p>
+      </S.ClassNameContainer>
 
       {renderAddStudent()}
 
       {renderStudentsList()}
 
-      <button onClick={updateData}>Salvar</button>
-    </div>
+      <EditTextButton event={updateData} />
+    </S.Container>
   );
 };
 
