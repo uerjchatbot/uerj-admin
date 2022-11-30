@@ -17,6 +17,7 @@ import { useModal } from "@/hooks/useModal";
 import { EditThirdQuestion } from "../../edit_modals/third_question";
 import { EditClass } from "../../edit_modals/third_question/edit_class";
 import { CreateClass } from "../../edit_modals/create_class";
+import { toast } from "react-toastify";
 
 type Props = {
   representation?: ITeachingStaffChildrenData;
@@ -115,6 +116,24 @@ const Form = ({ representation, setRepresentation }: Props) => {
     setIsVisible(true);
   };
 
+  const handleDeleteClass = async (classId: number, questionId: number, classType: string) => {
+    try {
+      await TeachingStaffServices.deleteClass(classId, questionId);
+
+      const { data } = await TeachingStaffServices.getClassroomChildrenData(questionId);
+
+      const dataCopy = Array.from(classroomData);
+
+      dataCopy[classType === "Mestrado" ? 0 : 1] = data;
+
+      setClassroomData(dataCopy as unknown as [IClassroomData[], IClassroomData[]]);
+
+      toast.success("Turma deletada com sucesso!");
+    } catch (error) {
+      toast.error("Houve um erro ao deletar a turma, tente novamente!");
+    }
+  };
+
   const renderClassList = useCallback(() => {
     return (
       <div>
@@ -152,7 +171,15 @@ const Form = ({ representation, setRepresentation }: Props) => {
                         />
                       </button>
                       <button>
-                        <BsTrash onClick={() => console.log(`Delete ${classroom.matter} class`)} />
+                        <BsTrash
+                          onClick={() =>
+                            handleDeleteClass(
+                              index2,
+                              childrenIds[index],
+                              representationClass.question
+                            )
+                          }
+                        />
                       </button>
                     </div>
                   </S.ClassDataHeaderContainer>

@@ -56,5 +56,10 @@ export const TeachingStaffServices = {
     students: string[]
   ): AxiosPromise<ITeachingStaffData> {
     return api.put(`class/question/${questionId}`, { matter, students });
+  },
+
+  //? delete class
+  deleteClass(classId: number, questionId: number): AxiosPromise<void> {
+    return api.delete(`class/${classId}/question/${questionId}`);
   }
 };
