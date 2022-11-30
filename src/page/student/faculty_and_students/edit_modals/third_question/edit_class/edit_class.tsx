@@ -21,14 +21,15 @@ const EditClass = ({ classId, questionId, className, studentsList, setData, clas
   const [classNameCopy, setClassNameCopy] = useState("");
   const [studentName, setStudentName] = useState("");
   const [studentsListCopy, setStudentsListCopy] = useState<string[]>([]);
-  const inputNameRef = useRef(null);
 
   const addStudentToArray = (name: string) => {
+    if (name.length < 3) {
+      toast.error("Digite um nome válido");
+      return;
+    }
+
     setStudentsListCopy((oldValue) => [...oldValue, name]);
     setStudentName("");
-    // if (inputNameRef.current) {
-    //   inputNameRef.current.value.reset();
-    // }
   };
 
   const deleteStudentFromArray = (index: number) => {
@@ -44,9 +45,8 @@ const EditClass = ({ classId, questionId, className, studentsList, setData, clas
       <div>
         <input
           type="text"
-          ref={inputNameRef}
           placeholder="Nome do(a) representante"
-          defaultValue={studentName}
+          value={studentName}
           onChange={(e) => setStudentName(e.target.value)}
         />
 
