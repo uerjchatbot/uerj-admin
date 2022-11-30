@@ -32,7 +32,7 @@ const Form = ({
   const { setTitle, setComponent, setIsVisible } = useModal();
 
   const handleOpenEditTitleModal = (): void => {
-    setTitle("Corpos Docentes e Discentes");
+    setTitle("Editar Corpos Docentes e Discentes");
 
     setComponent(
       <EditPageDescription questionId={homeDataId || 0} text={title || ""} setData={setData} />
@@ -42,7 +42,7 @@ const Form = ({
   };
 
   const handleOpenEditFirstQuestionModal = (): void => {
-    setTitle(ffp?.question || "");
+    setTitle(`Editar ${ffp?.question}`);
 
     setComponent(<EditFirstQuestion ffp={ffp} setFfp={setFfp} />);
 
@@ -50,7 +50,7 @@ const Form = ({
   };
 
   const handleOpenEditSecondQuestionModal = (): void => {
-    setTitle(coordination?.question || "");
+    setTitle(`Editar ${coordination?.question}`);
 
     setComponent(
       <EditSecondQuestion coordination={coordination} setCoordination={setCoordination} />

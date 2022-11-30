@@ -63,7 +63,7 @@ const Home: React.FC = () => {
 
   const handleEditTitle = async (): Promise<void> => {
     try {
-      setTitle("texto de boas vindas");
+      setTitle("Editar texto de boas vindas");
       setComponent(<EditHomeTitle data={data?.title} setData={setData} />);
       setIsVisible(true);
     } catch (error) {

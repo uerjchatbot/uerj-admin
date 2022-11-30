@@ -21,7 +21,7 @@ const EditTextModal = () => {
     <Modal size="lg" open={isVisible} onClose={handleClose}>
       <Modal.Header>
         <Modal.Title style={{ color: Theme.colors.blue.blueDark, fontSize: "1.5rem" }}>
-          Editar {title}
+          {title}
         </Modal.Title>
       </Modal.Header>
 

@@ -61,7 +61,7 @@ const Home: React.FC = () => {
   }, []);
 
   const handleOpenEditModal = () => {
-    setTitle("Início");
+    setTitle("Editar Início");
     setComponent(<EditHomeTitle title={homeData.title} setData={setHomeData} />);
     setIsVisible(true);
   };

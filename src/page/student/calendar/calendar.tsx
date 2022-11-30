@@ -105,7 +105,7 @@ const Calendar = () => {
 
   //? Edit Text's modals
   const handleOpenEditTitleModal = (questionId: number): void => {
-    setTitle(titleData.question);
+    setTitle(`Editar ${titleData.question}`);
 
     setComponent(
       <EditCalendarTitle data={titleData.title} setData={setTitleData} questionId={questionId} />
@@ -115,7 +115,7 @@ const Calendar = () => {
   };
 
   const handleOpenEditFirstQuestionModal = (): void => {
-    setTitle(firstQuestionData.question);
+    setTitle(`Editar ${firstQuestionData.question}`);
 
     setComponent(
       <EditFirstQuestion
@@ -132,7 +132,7 @@ const Calendar = () => {
   };
 
   const handleOpenEditSecondQuestionModal = (): void => {
-    setTitle(secondQuestionData.question);
+    setTitle(`Editar ${secondQuestionData.question}`);
 
     setComponent(
       <EditSecondQuestion
@@ -149,7 +149,7 @@ const Calendar = () => {
   };
 
   const handleOpenEditThirdQuestionModal = (): void => {
-    setTitle(secondQuestionData.question);
+    setTitle(`Editar ${secondQuestionData.question}`);
 
     setComponent(
       <EditThirdQuestion
@@ -168,7 +168,7 @@ const Calendar = () => {
   };
 
   const handleOpenEditFourthQuestionModal = (): void => {
-    setTitle(fourthQuestionData.question);
+    setTitle(`Editar ${fourthQuestionData.question}`);
 
     setComponent(
       <EditFourthQuestion
