@@ -16,6 +16,7 @@ import { formatIndexToLetter } from "@/utils/formarter";
 import { useModal } from "@/hooks/useModal";
 import { EditThirdQuestion } from "../../edit_modals/third_question";
 import { EditClass } from "../../edit_modals/third_question/edit_class";
+import { CreateClass } from "../../edit_modals/create_class";
 
 type Props = {
   representation?: ITeachingStaffChildrenData;
@@ -61,7 +62,7 @@ const Form = ({ representation, setRepresentation }: Props) => {
 
   const handleOpenEditQuestionModal = () => {
     if (representation) {
-      setTitle(representation.question);
+      setTitle(`Editar ${representation.question}`);
 
       setComponent(
         <EditThirdQuestion
@@ -83,7 +84,7 @@ const Form = ({ representation, setRepresentation }: Props) => {
     classType: string
   ) => {
     if (representation) {
-      setTitle(representation.question);
+      setTitle(`Editar ${representation.question}`);
 
       setComponent(
         <EditClass
@@ -100,6 +101,20 @@ const Form = ({ representation, setRepresentation }: Props) => {
     }
   };
 
+  const handleOpenAddClassModal = (representationId: number, classType: string) => {
+    setTitle(`Adicionar Turma de ${classType}`);
+
+    setComponent(
+      <CreateClass
+        questionId={childrenIds[representationId]}
+        classType={classType}
+        setData={setClassroomData}
+      />
+    );
+
+    setIsVisible(true);
+  };
+
   const renderClassList = useCallback(() => {
     return (
       <div>
@@ -108,8 +123,7 @@ const Form = ({ representation, setRepresentation }: Props) => {
             <S.ClassHeaderContainer>
               <p>{`${index + 1}- ${representationClass.question}`}</p>
 
-              <button
-                onClick={() => console.log(`Adicionar turma de ${representationClass.question}`)}>
+              <button onClick={() => handleOpenAddClassModal(index, representationClass.question)}>
                 Adicionar turma <IoIosPeople />
               </button>
             </S.ClassHeaderContainer>

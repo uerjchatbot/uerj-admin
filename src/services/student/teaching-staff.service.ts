@@ -47,5 +47,14 @@ export const TeachingStaffServices = {
     students: string[]
   ): AxiosPromise<any> {
     return api.put(`class/${classId}/question/${questionId}`, { matter, students });
+  },
+
+  //? Create class
+  createClass(
+    questionId: number,
+    matter: string,
+    students: string[]
+  ): AxiosPromise<ITeachingStaffData> {
+    return api.put(`class/question/${questionId}`, { matter, students });
   }
 };
