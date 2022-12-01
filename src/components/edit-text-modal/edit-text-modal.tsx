@@ -7,8 +7,6 @@ import Theme from "@/styles/theme";
 const EditTextModal = () => {
   const { isVisible, title, component, setIsVisible } = useModal();
 
-  console.log("component:", component);
-
   const handleClose = () => {
     try {
       setIsVisible(false);

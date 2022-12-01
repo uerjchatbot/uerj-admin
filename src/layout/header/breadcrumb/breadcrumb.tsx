@@ -8,7 +8,6 @@ import { PrivateRoutesComponents } from "@/routes/components/private.routes.comp
 
 const Breadcrumb: React.FC = () => {
   const breadcrumbs = useBreadcrumbs(PrivateRoutesComponents);
-  console.log(breadcrumbs);
   return (
     <div>
       {breadcrumbs
