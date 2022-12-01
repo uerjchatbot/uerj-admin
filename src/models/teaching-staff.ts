@@ -21,3 +21,9 @@ export interface IClassroomData {
   matter: string;
   students: string[];
 }
+
+export interface ITeacherData {
+  index: number;
+  teacher: string;
+  link: string;
+}
