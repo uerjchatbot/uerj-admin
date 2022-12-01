@@ -28,6 +28,11 @@ import { EditFirstQuestion } from "./questions/edit-first-question";
 import { EditSecondQuestion } from "./questions/edit-second-question";
 import { EditThirdQuestion } from "./questions/edit-third-question";
 import { EditFourthQuestion } from "./questions/edit-fourth-question";
+import { formateDatePickerObject } from "@/utils/formarter";
+
+const NOW_DATE = formateDatePickerObject(new Date());
+
+const verifyDateLength = (date: string): string => (date.length !== 10 ? NOW_DATE : date);
 
 const Calendar = () => {
   const navigate = useNavigate();
@@ -122,8 +127,8 @@ const Calendar = () => {
         question={firstQuestionData.question}
         setQuestion={setFirstQuestionData}
         title={firstQuestionData.title.split("|")[0]}
-        initial_date={firstQuestionData.title.split("|")[1]}
-        final_date={firstQuestionData.title.split("|")[3]}
+        initial_date={verifyDateLength(firstQuestionData.title.split("|")[1])}
+        final_date={verifyDateLength(firstQuestionData.title.split("|")[3])}
         questionId={firstQuestionData.id}
       />
     );
@@ -139,8 +144,8 @@ const Calendar = () => {
         question={secondQuestionData.question}
         setQuestion={setSecondQuestionData}
         title={secondQuestionData.title.split("|")[0]}
-        initial_date={secondQuestionData.title.split("|")[1]}
-        final_date={secondQuestionData.title.split("|")[3]}
+        initial_date={verifyDateLength(secondQuestionData.title.split("|")[1])}
+        final_date={verifyDateLength(secondQuestionData.title.split("|")[3])}
         questionId={secondQuestionData.id}
       />
     );
@@ -156,8 +161,8 @@ const Calendar = () => {
         question={thirdQuestionData.question}
         setQuestion={setThirdQuestionData}
         title={thirdQuestionData.title.split("|")[0]}
-        initial_date={thirdQuestionData.title.split("|")[1]}
-        final_date={thirdQuestionData.title.split("|")[3]}
+        initial_date={verifyDateLength(thirdQuestionData.title.split("|")[1])}
+        final_date={verifyDateLength(thirdQuestionData.title.split("|")[3])}
         childrenId={thirdQuestionData.childrens[0].id}
         childrenTitle={thirdQuestionData.childrens[0].title}
         questionId={thirdQuestionData.id}
