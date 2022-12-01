@@ -1,6 +1,6 @@
 import { AxiosPromise } from "axios";
 
-import { IClassroomData, ITeachingStaffData } from "@/models/teaching-staff";
+import { IClassroomData, ITeacherData, ITeachingStaffData } from "@/models/teaching-staff";
 import { api } from "../api";
 
 export const TeachingStaffServices = {
@@ -22,7 +22,7 @@ export const TeachingStaffServices = {
     return api.get(`class/question/${id}`);
   },
 
-  getTeachers(id: number): AxiosPromise<any> {
+  getTeachers(id: number): AxiosPromise<ITeacherData[]> {
     return api.get(`teacher/question/${id}`);
   },
 
@@ -61,5 +61,25 @@ export const TeachingStaffServices = {
   //? delete class
   deleteClass(classId: number, questionId: number): AxiosPromise<void> {
     return api.delete(`class/${classId}/question/${questionId}`);
+  },
+
+  //? create teacher
+  createTeacher(questionId: number, name: string, link: string): AxiosPromise<void> {
+    return api.put(`teacher/question/${questionId}`, { name, link });
+  },
+
+  //? update teacher data
+  updateTeacherData(
+    teacherId: number,
+    questionId: number,
+    name: string,
+    link: string
+  ): AxiosPromise<void> {
+    return api.put(`teacher/${teacherId}/question/${questionId}`, { name, link });
+  },
+
+  //? delete teacher
+  deleteTeacher(teacherId: number, questionId: number): AxiosPromise<void> {
+    return api.delete(`teacher/${teacherId}/question/${questionId}`);
   }
 };
