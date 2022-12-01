@@ -172,7 +172,9 @@ const FacultAndStudents = () => {
         <SecondStepForm representation={representation} setRepresentation={setRepresentation} />
       )}
 
-      {homeData.childrens && selectedStage === 3 && <ThirdStepForm teachers={teachers} />}
+      {homeData.childrens && selectedStage === 3 && (
+        <ThirdStepForm teachers={teachers} setTeachers={setTeachers} />
+      )}
     </S.Container>
   );
 };

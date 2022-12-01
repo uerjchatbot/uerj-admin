@@ -1,30 +1,101 @@
 import React, { useCallback, useEffect, useState } from "react";
-import * as S from "./styles";
-
 import { BsPencil, BsTrash } from "react-icons/bs";
-import { TeachingStaffServices } from "@/services/student/teaching-staff.service";
-import { Button } from "@/components/button";
 import { FiEdit } from "react-icons/fi";
+import { toast } from "react-toastify";
+
+import { TeachingStaffServices } from "@/services/student/teaching-staff.service";
 import { formatIndexToLetter } from "@/utils/formarter";
+import { Button } from "@/components/button";
+
+import { EditTeachers } from "../../edit_modals/fourth_question/edit_teachers";
+import { ITeacherData, ITeachingStaffData } from "@/models/teaching-staff";
+import { EditFourthQuestion } from "../../edit_modals/fourth_question";
+import { useModal } from "@/hooks/useModal";
+import * as S from "./styles";
+import { CreateTeacher } from "../../edit_modals/create_teacher";
+import { FaUserAlt } from "react-icons/fa";
 
 type Props = {
-  teachers: any;
+  teachers: ITeachingStaffData;
+  setTeachers: React.Dispatch<React.SetStateAction<ITeachingStaffData>>;
 };
 
-const Form = ({ teachers }: Props) => {
-  const [teachersData, setTeachersData] = useState<any[]>([]);
+const Form = ({ teachers, setTeachers }: Props) => {
+  const { setIsVisible, setTitle, setComponent } = useModal();
 
-  console.log("teachers:", teachers);
+  const [teachersData, setTeachersData] = useState<ITeacherData[]>([]);
+  const [teachersChildrenId, setTeachersChildrenId] = useState(0);
 
   const getTeachersData = useCallback(async (): Promise<void> => {
-    const response = await TeachingStaffServices.getHomeData(teachers.id);
+    try {
+      const response = await TeachingStaffServices.getHomeData(teachers.id);
 
-    const { data } = await TeachingStaffServices.getTeachers(response.data.childrens[0].id);
+      setTeachersChildrenId(response.data.childrens[0].id);
 
-    console.log("data:", data);
+      const { data } = await TeachingStaffServices.getTeachers(response.data.childrens[0].id);
 
-    setTeachersData(data);
+      setTeachersData(data);
+    } catch (error) {
+      toast.error("Houve um erro ao pegar as informações dos professores");
+    }
   }, [teachers]);
+
+  const handleOpenEditQuestionModal = () => {
+    if (teachers) {
+      setTitle(`Editar ${teachers.question}`);
+
+      setComponent(
+        <EditFourthQuestion
+          questionId={teachers.id}
+          text={teachers.question}
+          description={teachers.title}
+          setTeachers={setTeachers}
+        />
+      );
+
+      setIsVisible(true);
+    }
+  };
+
+  const handleOpenEditTeachersModal = (teacherId: number, name: string, link: string) => {
+    if (teachersData) {
+      setTitle(`Editar Professor(a)`);
+
+      setComponent(
+        <EditTeachers
+          questionId={teachersChildrenId}
+          teacherId={teacherId}
+          name={name}
+          link={link}
+          setData={setTeachersData}
+        />
+      );
+
+      setIsVisible(true);
+    }
+  };
+
+  const handleOpenAddTeacherModal = () => {
+    setTitle(`Adicionar Professor(a)`);
+
+    setComponent(<CreateTeacher questionId={teachersChildrenId} setData={setTeachersData} />);
+
+    setIsVisible(true);
+  };
+
+  const handleDeleteClass = async (teacherId: number) => {
+    try {
+      await TeachingStaffServices.deleteTeacher(teacherId, teachersChildrenId);
+
+      const { data } = await TeachingStaffServices.getTeachers(teachersChildrenId);
+
+      setTeachersData(data);
+
+      toast.success("Professo(a) deletado(a) com sucesso!");
+    } catch (error) {
+      toast.error("Houve um erro ao deletar o(a) professor(a), tente novamente!");
+    }
+  };
 
   useEffect(() => {
     getTeachersData();
@@ -40,12 +111,19 @@ const Form = ({ teachers }: Props) => {
 
         <S.DescriptionContainer>
           <p>{teachers?.title}</p>
+
           <S.ContainerButton>
             <Button outline={true} type={"button"}>
-              <span onClick={() => console.log("opa")}>
+              <span onClick={handleOpenEditQuestionModal}>
                 Editar <BsPencil size={16} />
               </span>
             </Button>
+
+            <S.AddTeacherButton type={"button"}>
+              <span onClick={() => handleOpenAddTeacherModal()}>
+                Adicionar professor(a) <FaUserAlt size={16} />
+              </span>
+            </S.AddTeacherButton>
           </S.ContainerButton>
         </S.DescriptionContainer>
 
@@ -59,10 +137,14 @@ const Form = ({ teachers }: Props) => {
 
               <div>
                 <button>
-                  <FiEdit onClick={() => console.log(`Edit teacher ${teacher.teacher}`)} />
+                  <FiEdit
+                    onClick={() =>
+                      handleOpenEditTeachersModal(teacher.index, teacher.teacher, teacher.link)
+                    }
+                  />
                 </button>
                 <button>
-                  <BsTrash onClick={() => console.log(`Delete teacher ${teacher.teacher}`)} />
+                  <BsTrash onClick={() => handleDeleteClass(teacher.index)} />
                 </button>
               </div>
             </S.ClassDataHeaderContainer>

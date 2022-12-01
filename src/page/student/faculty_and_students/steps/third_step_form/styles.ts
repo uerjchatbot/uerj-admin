@@ -19,14 +19,41 @@ export const DescriptionContainer = styled.div`
 `;
 
 export const ContainerButton = styled.div`
-  width: 90%;
+  width: 100%;
+  margin: 1rem 0;
+
+  display: flex;
+  justify-content: space-between;
 
   button {
-    width: 30%;
+    width: 25%;
 
     span {
       font-size: 1rem;
     }
+  }
+`;
+
+export const AddTeacherButton = styled.button`
+  width: 40% !important;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: ${({ theme }) => theme.colors.blue.blueDark};
+  background-color: ${({ theme }) => theme.colors.blue.extraLightBlue};
+  border: ${({ theme }) => `2px solid ${theme.colors.blue.blueDark}`};
+  border-radius: 8px;
+
+  span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  svg {
+    margin-left: 0.5rem;
   }
 `;
 
@@ -65,7 +92,6 @@ export const ContainerCards = styled.div`
 
 export const ContentCard = styled.div`
   width: 100%;
-  cursor: pointer;
 
   display: flex;
   align-items: flex-start;
