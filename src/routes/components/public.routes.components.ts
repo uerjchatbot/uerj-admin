@@ -5,6 +5,6 @@ import { RouteComponentInterface } from "@/types/interface/routes/route-componen
 export const PublicRoutesComponents: RouteComponentInterface[] = [
   {
     path: INITIAL_PATH(),
-    Component: Login,
-  },
+    Component: Login
+  }
 ];
