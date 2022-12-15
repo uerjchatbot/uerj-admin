@@ -16,7 +16,8 @@ import {
 import {
   HOME_PATH,
   STUDENT_CALENDAR_PATH,
-  STUDENT_FACULTY_AND_STUDENDS
+  STUDENT_FACULTY_AND_STUDENDS,
+  STUDENT_MATTERS
 } from "@/routes/paths/paths.private";
 import { StudentServices } from "@/services/student/home.service";
 import { IStudentHomeData } from "@/models/student";
@@ -29,7 +30,7 @@ import { Button } from "@/components/button";
 const navigateToPath = [
   STUDENT_CALENDAR_PATH(),
   STUDENT_FACULTY_AND_STUDENDS(),
-  "",
+  STUDENT_MATTERS(),
   "",
   "",
   "",
@@ -71,6 +72,9 @@ const Home: React.FC = () => {
     }
   };
 
+  console.log("teste:", STUDENT_CALENDAR_PATH());
+  console.log("teste1:", STUDENT_MATTERS());
+
   return (
     <Container>
       <ContainerButton>
@@ -95,7 +99,7 @@ const Home: React.FC = () => {
         {data?.childrens.map((children, index) => {
           return (
             <ContentCard
-              key={children.title}
+              key={`card-${index}`}
               onClick={() => {
                 navigate(navigateToPath[index], {
                   state: {
