@@ -17,3 +17,8 @@ export interface IMattersHomeData {
   updated_at: string;
   childrens: IMattersChildrenData[];
 }
+
+export interface IMatterData {
+  index: number;
+  matte: string;
+}

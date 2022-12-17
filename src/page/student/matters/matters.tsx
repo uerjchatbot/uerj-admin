@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
+import { BsPencil, BsTrash } from "react-icons/bs";
 
 import { Button } from "@/components/button";
 
 import * as S from "./styles";
 import MattersService from "@/services/student/matters.service";
-import { IMattersHomeData } from "@/models/matters";
-import { BsPencil, BsTrash } from "react-icons/bs";
+import { IMatterData, IMattersHomeData } from "@/models/matters";
 import { formatIndexToLetter } from "@/utils/formarter";
 
 // type Props = {};
@@ -15,13 +15,22 @@ import { formatIndexToLetter } from "@/utils/formarter";
 const Matters = () => {
   const { state }: { state: any } = useLocation();
   const [homeData, setHomeData] = useState<IMattersHomeData>({} as IMattersHomeData);
+  const [mastersData, setMastersData] = useState<IMatterData[]>([]);
+  const [doctorageData, setDoctorageData] = useState<IMatterData[]>([]);
 
   const getMattersData = useCallback(async () => {
-    const { data } = await MattersService.getHomeData(state.childrenId);
+    const response1 = await MattersService.getHomeData(state.childrenId);
 
-    console.log("data:", data);
+    const childrens = response1.data.childrens;
+    const mastersId = childrens[0].childrens[0].id;
+    const doctorateId = childrens[1].childrens[0].id;
 
-    setHomeData(data);
+    const response2 = await MattersService.getMatterData(mastersId);
+    const response3 = await MattersService.getMatterData(doctorateId);
+
+    setHomeData(response1.data);
+    setMastersData(response2.data);
+    setDoctorageData(response3.data);
   }, [state]);
 
   const handleNavigateBack = () => {};
@@ -34,6 +43,8 @@ const Matters = () => {
 
   // console.log("state:", state);
   console.log("homeData:", homeData);
+  console.log("mastersData:", mastersData);
+  console.log("doctorageData:", doctorageData);
 
   return (
     <S.Container>
@@ -75,37 +86,62 @@ const Matters = () => {
                   </span>
                 </Button>
 
-                <Button outline={true} type={"button"}>
+                <S.AddMatter type={"button"}>
                   {/* <span onClick={handleOpenEditFirstQuestionModal}> */}
                   <span>
                     Adicionar disciplina <AiOutlinePlus size={16} />
                   </span>
-                </Button>
+                </S.AddMatter>
               </S.MatterHeaderContainer>
 
               <S.MattersList>
-                {matter?.childrens?.map((matterData, index) => {
-                  return (
-                    <li key={`teste-${index}`}>
-                      <div>
-                        <strong>{formatIndexToLetter(index)} - </strong>
-                        <S.Title>{matterData.title}</S.Title>
-                      </div>
+                {matter.question === "Mestrado" &&
+                  mastersData?.map((matterData, index) => {
+                    return (
+                      <li key={`teste-${index}`}>
+                        <div>
+                          <strong>{formatIndexToLetter(index)} - </strong>
+                          <S.Title>{matterData.matter}</S.Title>
+                        </div>
 
-                      <button>
-                        <BsTrash
-                        // onClick={() =>
-                        //   handleDeleteClass(
-                        //     index2,
-                        //     childrenIds[index],
-                        //     representationClass.question
-                        //   )
-                        // }
-                        />
-                      </button>
-                    </li>
-                  );
-                })}
+                        <button>
+                          <BsTrash
+                          // onClick={() =>
+                          //   handleDeleteClass(
+                          //     index2,
+                          //     childrenIds[index],
+                          //     representationClass.question
+                          //   )
+                          // }
+                          />
+                        </button>
+                      </li>
+                    );
+                  })}
+
+                {matter.question === "Doutorado" &&
+                  doctorageData?.map((matterData, index) => {
+                    return (
+                      <li key={`teste-${index}`}>
+                        <div>
+                          <strong>{formatIndexToLetter(index)} - </strong>
+                          <S.Title>{matterData.matter}</S.Title>
+                        </div>
+
+                        <button>
+                          <BsTrash
+                          // onClick={() =>
+                          //   handleDeleteClass(
+                          //     index2,
+                          //     childrenIds[index],
+                          //     representationClass.question
+                          //   )
+                          // }
+                          />
+                        </button>
+                      </li>
+                    );
+                  })}
               </S.MattersList>
             </S.ContentBody>
           </S.Content>

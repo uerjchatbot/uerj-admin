@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 import { DotRounded as CommonDot } from "@/components/dot-rounded";
+import { Button } from "@/components/button";
 
 export const DotRounded = styled(CommonDot)`
   width: 80px;
@@ -29,6 +30,24 @@ export const Header = styled.section`
 export const ButtonContainer = styled.div`
   width: 25%;
   margin-bottom: 4rem;
+`;
+
+export const SignUpMatterButton = styled(Button)`
+  width: 100%;
+  background-color: red;
+  span {
+    color: red;
+  }
+`;
+
+export const AddMatter = styled.button`
+  width: 30% !important;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid ${({ theme }) => theme.colors.blue.blueDark};
+  background-color: ${({ theme }) => theme.colors.blue.lightBlue};
 `;
 
 export const TitleContainer = styled.div`
@@ -113,6 +132,7 @@ export const MattersList = styled.ul`
 
   li {
     font-size: 1.5rem;
+    margin-bottom: 1rem;
 
     display: flex;
     align-items: center;
