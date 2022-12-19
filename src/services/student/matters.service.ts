@@ -13,6 +13,10 @@ const MattersService = {
 
   updateTitle(id = 0, title: string): AxiosPromise<IMattersHomeData> {
     return api.put(`question/${id}`, { title });
+  },
+
+  deleteDiscipline(disciplineId: number, questionId: number) {
+    return api.delete(`matter/${disciplineId}/question/${questionId}`);
   }
 };
 

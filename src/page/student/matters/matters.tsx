@@ -1,20 +1,18 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import { AiOutlinePlus } from "react-icons/ai";
 import { BsPencil, BsTrash } from "react-icons/bs";
+import { AiOutlinePlus } from "react-icons/ai";
+import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
-import { Button } from "@/components/button";
-
-import * as S from "./styles";
-import MattersService from "@/services/student/matters.service";
 import { IMatterData, IMattersChildrenData, IMattersHomeData } from "@/models/matters";
-import { formatIndexToLetter } from "@/utils/formarter";
-import { useModal } from "@/hooks/useModal";
-import { HomeTitle } from "./edit-modals/home-title";
+import MattersService from "@/services/student/matters.service";
 import { EditMatterText } from "./edit-modals/matter-text";
+import { formatIndexToLetter } from "@/utils/formarter";
+import { HomeTitle } from "./edit-modals/home-title";
 import { orderChildrens } from "@/utils/order";
-
-// type Props = {};
+import { Button } from "@/components/button";
+import { useModal } from "@/hooks/useModal";
+import * as S from "./styles";
 
 const Matters = () => {
   const { state }: { state: any } = useLocation();
@@ -63,6 +61,26 @@ const Matters = () => {
     );
 
     setIsVisible(true);
+  };
+
+  const handleDeleteDiscipline = async (
+    matterType: string,
+    disciplineId: number,
+    questionId: number
+  ) => {
+    try {
+      await MattersService.deleteDiscipline(disciplineId, questionId);
+
+      const { data } = await MattersService.getMatterData(questionId);
+
+      if (matterType === "Mestrado") setMastersData(data);
+
+      if (matterType === "Doutorado") setDoctorateData(data);
+
+      toast.success("Disciplina excluida com sucesso");
+    } catch (error) {
+      toast.error("Houve um erro ao deletar a disciplina");
+    }
   };
 
   useEffect(() => {
@@ -132,13 +150,13 @@ const Matters = () => {
 
                         <button>
                           <BsTrash
-                          // onClick={() =>
-                          //   handleDeleteClass(
-                          //     index2,
-                          //     childrenIds[index],
-                          //     representationClass.question
-                          //   )
-                          // }
+                            onClick={() =>
+                              handleDeleteDiscipline(
+                                "Mestrado",
+                                matterData.index,
+                                homeData.childrens[0].childrens[0].id
+                              )
+                            }
                           />
                         </button>
                       </li>
@@ -156,13 +174,13 @@ const Matters = () => {
 
                         <button>
                           <BsTrash
-                          // onClick={() =>
-                          //   handleDeleteClass(
-                          //     index2,
-                          //     childrenIds[index],
-                          //     representationClass.question
-                          //   )
-                          // }
+                            onClick={() =>
+                              handleDeleteDiscipline(
+                                "Doutorado",
+                                matterData.index,
+                                homeData.childrens[1].childrens[0].id
+                              )
+                            }
                           />
                         </button>
                       </li>
