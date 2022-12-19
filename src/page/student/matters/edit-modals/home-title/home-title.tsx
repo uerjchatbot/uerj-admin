@@ -31,8 +31,6 @@ const HomeTitle = ({ questionId, title, setData }: Props) => {
     try {
       const response = await MattersService.updateTitle(questionId, text);
 
-      // setData(response.data);
-
       setData((oldValue) => {
         return { ...oldValue, ...response.data };
       });
@@ -50,8 +48,6 @@ const HomeTitle = ({ questionId, title, setData }: Props) => {
       setText(title);
     }
   }, [title]);
-
-  console.log("questionId:", questionId);
 
   return (
     <div>
