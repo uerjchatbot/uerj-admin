@@ -7,10 +7,12 @@ import { Button } from "@/components/button";
 
 import * as S from "./styles";
 import MattersService from "@/services/student/matters.service";
-import { IMatterData, IMattersHomeData } from "@/models/matters";
+import { IMatterData, IMattersChildrenData, IMattersHomeData } from "@/models/matters";
 import { formatIndexToLetter } from "@/utils/formarter";
 import { useModal } from "@/hooks/useModal";
 import { HomeTitle } from "./edit-modals/home-title";
+import { EditMatterText } from "./edit-modals/matter-text";
+import { orderChildrens } from "@/utils/order";
 
 // type Props = {};
 
@@ -19,12 +21,12 @@ const Matters = () => {
   const { setTitle, setComponent, setIsVisible } = useModal();
   const [homeData, setHomeData] = useState<IMattersHomeData>({} as IMattersHomeData);
   const [mastersData, setMastersData] = useState<IMatterData[]>([]);
-  const [doctorageData, setDoctorageData] = useState<IMatterData[]>([]);
+  const [doctorateData, setDoctorateData] = useState<IMatterData[]>([]);
 
   const getMattersData = useCallback(async () => {
     const response1 = await MattersService.getHomeData(state.childrenId);
 
-    const childrens = response1.data.childrens;
+    const childrens = orderChildrens(response1.data.childrens);
     const mastersId = childrens[0].childrens[0].id;
     const doctorateId = childrens[1].childrens[0].id;
 
@@ -33,18 +35,31 @@ const Matters = () => {
 
     setHomeData(response1.data);
     setMastersData(response2.data);
-    setDoctorageData(response3.data);
+    setDoctorateData(response3.data);
   }, [state]);
 
   const handleNavigateBack = () => {};
-
-  const handleOpenAddMatterModal = () => {};
 
   const handleOpenEditHomeTitle = () => {
     setTitle("Editar Disciplinas");
 
     setComponent(
       <HomeTitle questionId={homeData.id} title={homeData.title} setData={setHomeData} />
+    );
+
+    setIsVisible(true);
+  };
+
+  const handleEditMatterText = (data: IMattersChildrenData) => {
+    setTitle(`Editar texto das turmas de ${data.question}`);
+
+    setComponent(
+      <EditMatterText
+        title={data.title}
+        fatherQuestionId={homeData.id}
+        questionId={data.id}
+        setData={setHomeData}
+      />
     );
 
     setIsVisible(true);
@@ -92,8 +107,7 @@ const Matters = () => {
 
               <S.MatterHeaderContainer>
                 <Button outline={true} type={"button"}>
-                  {/* <span onClick={handleOpenEditFirstQuestionModal}> */}
-                  <span>
+                  <span onClick={() => handleEditMatterText(matter)}>
                     Editar <BsPencil size={16} />
                   </span>
                 </Button>
@@ -132,7 +146,7 @@ const Matters = () => {
                   })}
 
                 {matter.question === "Doutorado" &&
-                  doctorageData?.map((matterData, index) => {
+                  doctorateData?.map((matterData, index) => {
                     return (
                       <li key={`teste-${index}`}>
                         <div>

@@ -4,7 +4,7 @@ export interface IMattersChildrenData {
   father_question: number;
   title: string;
   response: boolean;
-  childrens?: IMattersChildrenData[];
+  childrens: IMattersChildrenData[];
 }
 
 export interface IMattersHomeData {
@@ -13,10 +13,10 @@ export interface IMattersHomeData {
   father_question: number;
   title: string;
   response: boolean;
-  childrens?: IMattersChildrenData[];
+  childrens: IMattersChildrenData[];
 }
 
 export interface IMatterData {
   index: number;
-  matte: string;
+  matter: string;
 }
