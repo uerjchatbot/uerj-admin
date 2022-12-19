@@ -15,6 +15,10 @@ const MattersService = {
     return api.put(`question/${id}`, { title });
   },
 
+  storeDiscipline(questionId: number, matter: string) {
+    return api.put(`matter/question/${questionId}`, { matter });
+  },
+
   deleteDiscipline(disciplineId: number, questionId: number) {
     return api.delete(`matter/${disciplineId}/question/${questionId}`);
   }

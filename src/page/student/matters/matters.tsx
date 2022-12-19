@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 
 import { IMatterData, IMattersChildrenData, IMattersHomeData } from "@/models/matters";
 import MattersService from "@/services/student/matters.service";
+import { CreateDisciplineModal } from "./create-discipline";
 import { EditMatterText } from "./edit-modals/matter-text";
 import { formatIndexToLetter } from "@/utils/formarter";
 import { HomeTitle } from "./edit-modals/home-title";
@@ -43,6 +44,24 @@ const Matters = () => {
 
     setComponent(
       <HomeTitle questionId={homeData.id} title={homeData.title} setData={setHomeData} />
+    );
+
+    setIsVisible(true);
+  };
+
+  const handleOpenAddDisciplineModal = (matterType?: string) => {
+    const questionId =
+      matterType === "Mestrado"
+        ? homeData.childrens[0].childrens[0].id
+        : homeData.childrens[1].childrens[0].id;
+
+    setTitle(`Criar disciplina de ${matterType}`);
+
+    setComponent(
+      <CreateDisciplineModal
+        questionId={questionId}
+        setData={matterType === "Mestrado" ? setMastersData : setDoctorateData}
+      />
     );
 
     setIsVisible(true);
@@ -87,11 +106,6 @@ const Matters = () => {
     getMattersData();
   }, [getMattersData]);
 
-  // console.log("state:", state);
-  // console.log("homeData:", homeData);
-  // console.log("mastersData:", mastersData);
-  // console.log("doctorageData:", doctorageData);
-
   return (
     <S.Container>
       <S.Header>
@@ -131,8 +145,7 @@ const Matters = () => {
                 </Button>
 
                 <S.AddMatter type={"button"}>
-                  {/* <span onClick={handleOpenEditFirstQuestionModal}> */}
-                  <span>
+                  <span onClick={() => handleOpenAddDisciplineModal(matter.question)}>
                     Adicionar disciplina <AiOutlinePlus size={16} />
                   </span>
                 </S.AddMatter>
