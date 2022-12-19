@@ -9,11 +9,14 @@ import * as S from "./styles";
 import MattersService from "@/services/student/matters.service";
 import { IMatterData, IMattersHomeData } from "@/models/matters";
 import { formatIndexToLetter } from "@/utils/formarter";
+import { useModal } from "@/hooks/useModal";
+import { HomeTitle } from "./edit-modals/home-title";
 
 // type Props = {};
 
 const Matters = () => {
   const { state }: { state: any } = useLocation();
+  const { setTitle, setComponent, setIsVisible } = useModal();
   const [homeData, setHomeData] = useState<IMattersHomeData>({} as IMattersHomeData);
   const [mastersData, setMastersData] = useState<IMatterData[]>([]);
   const [doctorageData, setDoctorageData] = useState<IMatterData[]>([]);
@@ -37,14 +40,24 @@ const Matters = () => {
 
   const handleOpenAddMatterModal = () => {};
 
+  const handleOpenEditHomeTitle = () => {
+    setTitle("Editar Disciplinas");
+
+    setComponent(
+      <HomeTitle questionId={homeData.id} title={homeData.title} setData={setHomeData} />
+    );
+
+    setIsVisible(true);
+  };
+
   useEffect(() => {
     getMattersData();
   }, [getMattersData]);
 
   // console.log("state:", state);
-  console.log("homeData:", homeData);
-  console.log("mastersData:", mastersData);
-  console.log("doctorageData:", doctorageData);
+  // console.log("homeData:", homeData);
+  // console.log("mastersData:", mastersData);
+  // console.log("doctorageData:", doctorageData);
 
   return (
     <S.Container>
@@ -59,8 +72,7 @@ const Matters = () => {
           <S.Title>{homeData.title}</S.Title>
 
           <Button outline={true} type={"button"}>
-            {/* <span onClick={handleOpenEditFirstQuestionModal}> */}
-            <span>
+            <span onClick={handleOpenEditHomeTitle}>
               Editar <BsPencil size={16} />
             </span>
           </Button>

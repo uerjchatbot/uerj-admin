@@ -9,6 +9,10 @@ const MattersService = {
 
   getMatterData(id: number): AxiosPromise<IMatterData[]> {
     return api.get(`matter/question/${id}`);
+  },
+
+  updateTitle(id = 0, title: string): AxiosPromise<IMattersHomeData> {
+    return api.put(`question/${id}`, { title });
   }
 };
 
