@@ -43,3 +43,7 @@ export const formateDatePickerObject = (date: Date) => {
 
 export const formatIndexToLetter = (index: number) =>
   INDEX_TO_LETTERS[index as keyof typeof INDEX_TO_LETTERS];
+
+export const formatStringDateToPtBr = (date: string) => {
+  return new Intl.DateTimeFormat("pt-br").format(formateStringToDate(date));
+};
