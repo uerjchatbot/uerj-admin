@@ -13,12 +13,7 @@ import {
   Title
 } from "./styles";
 
-import {
-  HOME_PATH,
-  STUDENT_CALENDAR_PATH,
-  STUDENT_FACULTY_AND_STUDENDS,
-  STUDENT_MATTERS
-} from "@/routes/paths/paths.private";
+import * as Private from "@/routes/paths/paths.private";
 import { StudentServices } from "@/services/student/home.service";
 import { IStudentHomeData } from "@/models/student";
 import { useModal } from "@/hooks/useModal";
@@ -28,10 +23,10 @@ import { orderChildrens } from "@/utils/order";
 import { Button } from "@/components/button";
 
 const navigateToPath = [
-  STUDENT_CALENDAR_PATH(),
-  STUDENT_FACULTY_AND_STUDENDS(),
-  STUDENT_MATTERS(),
-  "",
+  Private.STUDENT_CALENDAR_PATH(),
+  Private.STUDENT_FACULTY_AND_STUDENDS(),
+  Private.STUDENT_MATTERS(),
+  Private.STUDENT_EVENTS(),
   "",
   "",
   ""
@@ -60,7 +55,7 @@ const Home: React.FC = () => {
     getData();
   }, []);
 
-  const handleBackNavigation = () => navigate(HOME_PATH());
+  const handleBackNavigation = () => navigate(Private.HOME_PATH());
 
   const handleEditTitle = async (): Promise<void> => {
     try {
@@ -71,9 +66,6 @@ const Home: React.FC = () => {
       toast.error("Houve um erro ao editar o texto");
     }
   };
-
-  console.log("teste:", STUDENT_CALENDAR_PATH());
-  console.log("teste1:", STUDENT_MATTERS());
 
   return (
     <Container>
