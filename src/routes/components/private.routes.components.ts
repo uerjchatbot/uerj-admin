@@ -6,6 +6,7 @@ import * as Private from "@/routes/paths/paths.private";
 import { RouteComponentInterface } from "@/types/interface/routes/route-component.interface";
 import { FacultAndStudents } from "@/page/student/faculty_and_students";
 import { Matters } from "@/page/student/matters";
+import { Events } from "@/page/student/events";
 
 export const PrivateRoutesComponents: RouteComponentInterface[] = [
   {
@@ -37,5 +38,10 @@ export const PrivateRoutesComponents: RouteComponentInterface[] = [
     path: Private.STUDENT_MATTERS(),
     Component: Matters,
     breadcrumb: " / 3 - Disciplinas"
+  },
+  {
+    path: Private.STUDENT_EVENTS(),
+    Component: Events,
+    breadcrumb: " / 4 - Eventos"
   }
 ];
