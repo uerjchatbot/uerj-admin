@@ -22,3 +22,7 @@ export interface IEventData {
   link: string;
   name: string;
 }
+
+export interface IEditHomeDataResponse {
+  oneQuestion: Omit<IEventsHomeData, "childrens">;
+}
