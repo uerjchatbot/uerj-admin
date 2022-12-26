@@ -23,7 +23,7 @@ export const EventServices = {
     return api.get(`event/question/${id}`);
   },
 
-  getEventBoardData(id: number): AxiosPromise<IEventBoardData> {
+  getEventBoardData(id = 0): AxiosPromise<IEventBoardData> {
     return api.get(`event/board/question/${id}`);
   },
 
@@ -33,5 +33,13 @@ export const EventServices = {
 
   updateEventHourAndDate(id = 0, hour: string, date: string): AxiosPromise<IEditHomeDataResponse> {
     return api.put(`event/question/${id}`, { hour, date });
+  },
+
+  addTeacherToEvent(id = 0, teacher: string): AxiosPromise<any> {
+    return api.put(`event/board/question/${id}`, { teacher });
+  },
+
+  deleteTeacher(teacherId: number, id: number): AxiosPromise<any> {
+    return api.delete(`event/board/${teacherId}/question/${id}`);
   }
 };

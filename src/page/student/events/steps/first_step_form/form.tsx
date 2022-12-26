@@ -12,6 +12,7 @@ import { formatIndexToLetter, formatStringDateToPtBr } from "@/utils/formarter";
 import { AiOutlinePlus } from "react-icons/ai";
 import { EditFirstStepEvent } from "../../edit_modals/first_step_event";
 import { EventServices } from "@/services/student/events.service";
+import { CreateBanking } from "../../edit_modals/create_banking";
 
 type Props = {
   title?: string;
@@ -53,12 +54,41 @@ const Form = ({ title, questionId, firstEvent, secondEvent, setHomeData }: Props
     }
   };
 
+  const handleDeleteTeacher = async (
+    teacherId: number,
+    id: number,
+    setData: React.Dispatch<React.SetStateAction<IFirstStepEventData>>
+  ) => {
+    try {
+      await EventServices.deleteTeacher(teacherId, id);
+
+      const { data } = await EventServices.getEventBoardData(id);
+
+      setData((oldValue) => {
+        return { ...oldValue, ...data };
+      });
+    } catch (error) {
+      toast.error("Houve um erro ao deletar o(a) professor(a)");
+    }
+  };
+
   const handleOpenEditPageDescription = () => {
     setTitle("Editar Eventos");
 
     setComponent(
       <EditPageDescription questionId={questionId || 0} text={title || ""} setData={setHomeData} />
     );
+
+    setIsVisible(true);
+  };
+
+  const handleOpenAddBanking = (
+    id = 0,
+    setData: React.Dispatch<React.SetStateAction<IFirstStepEventData>>
+  ) => {
+    setTitle("Adicionar Banca");
+
+    setComponent(<CreateBanking questionId={id} setData={setData} />);
 
     setIsVisible(true);
   };
@@ -126,7 +156,10 @@ const Form = ({ title, questionId, firstEvent, secondEvent, setHomeData }: Props
                   <S.EventData>{formatStringDateToPtBr(firstEventData?.date)}</S.EventData>
                 </div>
 
-                <S.AddBankingButton>
+                <S.AddBankingButton
+                  onClick={() =>
+                    handleOpenAddBanking(firstEvent?.childrens[1].id, setFirstEventData)
+                  }>
                   Adicionar banca <AiOutlinePlus size={20} />
                 </S.AddBankingButton>
               </S.HourAndDateContainer>
@@ -147,7 +180,14 @@ const Form = ({ title, questionId, firstEvent, secondEvent, setHomeData }: Props
                         <S.EventData className="banking-data">{teacher.teacher}</S.EventData>
                       </div>
 
-                      <button>
+                      <button
+                        onClick={() =>
+                          handleDeleteTeacher(
+                            teacher.index,
+                            firstEvent?.childrens[1].id,
+                            setFirstEventData
+                          )
+                        }>
                         <BsTrash size={20} />
                       </button>
                     </S.BankingTeachers>
@@ -199,7 +239,10 @@ const Form = ({ title, questionId, firstEvent, secondEvent, setHomeData }: Props
                   <S.EventData>{formatStringDateToPtBr(secondEventData.date)}</S.EventData>
                 </div>
 
-                <S.AddBankingButton>
+                <S.AddBankingButton
+                  onClick={() =>
+                    handleOpenAddBanking(secondEvent?.childrens[1].id, setSecondEventData)
+                  }>
                   Adicionar banca <AiOutlinePlus size={20} />
                 </S.AddBankingButton>
               </S.HourAndDateContainer>
@@ -220,7 +263,14 @@ const Form = ({ title, questionId, firstEvent, secondEvent, setHomeData }: Props
                         <S.EventData className="banking-data">{teacher.teacher}</S.EventData>
                       </div>
 
-                      <button>
+                      <button
+                        onClick={() =>
+                          handleDeleteTeacher(
+                            teacher.index,
+                            secondEvent?.childrens[1].id,
+                            setSecondEventData
+                          )
+                        }>
                         <BsTrash size={20} />
                       </button>
                     </S.BankingTeachers>
