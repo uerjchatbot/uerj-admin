@@ -99,8 +99,6 @@ export const HourAndDateContainer = styled.div`
 
   div {
     width: fit-content;
-
-    /* background-color: red; */
   }
 `;
 

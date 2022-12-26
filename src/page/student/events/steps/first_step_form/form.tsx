@@ -1,26 +1,89 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BsPencil, BsTrash } from "react-icons/bs";
+import { toast } from "react-toastify";
 
 import * as S from "./styles";
 
 import { Button } from "@/components/button";
 import { useModal } from "@/hooks/useModal";
 import { EditPageDescription } from "../../edit_modals/page_description";
-import { EditFirstQuestion } from "../../edit_modals/first_question";
-import { EditSecondQuestion } from "../../edit_modals/second_question";
-import { IEventChildrenData } from "@/models/events";
-import { EventServices } from "@/services/student/events.service";
+import { IEventChildrenData, IEventsHomeData, IFirstStepEventData } from "@/models/events";
 import { formatIndexToLetter, formatStringDateToPtBr } from "@/utils/formarter";
 import { AiOutlinePlus } from "react-icons/ai";
+import { EditFirstStepEvent } from "../../edit_modals/first_step_event";
+import { EventServices } from "@/services/student/events.service";
 
 type Props = {
   title?: string;
+  questionId?: number;
   firstEvent?: IEventChildrenData;
   secondEvent?: IEventChildrenData;
+  setHomeData: React.Dispatch<React.SetStateAction<IEventsHomeData>>;
 };
 
-const Form = ({ title, firstEvent, secondEvent }: Props) => {
+const Form = ({ title, questionId, firstEvent, secondEvent, setHomeData }: Props) => {
   const { setTitle, setComponent, setIsVisible } = useModal();
+
+  const [firstEventData, setFirstEventData] = useState<IFirstStepEventData>(
+    {} as IFirstStepEventData
+  );
+  const [secondEventData, setSecondEventData] = useState<IFirstStepEventData>(
+    {} as IFirstStepEventData
+  );
+
+  const getEventData = async (
+    id: number,
+    boardId: number,
+    setData: React.Dispatch<React.SetStateAction<IFirstStepEventData>>
+  ) => {
+    try {
+      const response1 = await EventServices.getEventData(id);
+
+      const response2 = await EventServices.getEventBoardData(boardId);
+
+      const formatedData = {
+        hour: response1.data.hour,
+        date: response1.data.date,
+        teachers: response2.data.teachers
+      };
+
+      setData(formatedData);
+    } catch (error) {
+      toast.error("Houve um erro ao pegar os dados do evento");
+    }
+  };
+
+  const handleOpenEditPageDescription = () => {
+    setTitle("Editar Eventos");
+
+    setComponent(
+      <EditPageDescription questionId={questionId || 0} text={title || ""} setData={setHomeData} />
+    );
+
+    setIsVisible(true);
+  };
+
+  const handleOpenEditEventInfo = (questionId = 0, hour: string, date: string, setData: any) => {
+    setTitle(`Editar ${firstEvent?.question}`);
+
+    setComponent(
+      <EditFirstStepEvent questionId={questionId} hour={hour} date={date} setData={setData} />
+    );
+
+    setIsVisible(true);
+  };
+
+  useEffect(() => {
+    if (firstEvent?.childrens) {
+      getEventData(firstEvent.childrens[0].id, firstEvent.childrens[1].id, setFirstEventData);
+    }
+  }, [firstEvent]);
+
+  useEffect(() => {
+    if (secondEvent?.childrens) {
+      getEventData(secondEvent.childrens[0].id, secondEvent.childrens[1].id, setSecondEventData);
+    }
+  }, [secondEvent]);
 
   return (
     <>
@@ -30,8 +93,7 @@ const Form = ({ title, firstEvent, secondEvent }: Props) => {
 
         <S.ContainerButton>
           <Button outline={true} type={"button"}>
-            {/* <span onClick={handleOpenEditTitleModal}> */}
-            <span>
+            <span onClick={handleOpenEditPageDescription}>
               Editar <BsPencil size={16} />
             </span>
           </Button>
@@ -48,21 +110,21 @@ const Form = ({ title, firstEvent, secondEvent }: Props) => {
           {firstEvent?.childrens && (
             <>
               <S.HourAndDateContainer>
-                {firstEvent?.childrens[0].title.split("|").map((test: string, index) => {
-                  return (
-                    <div key={`section - ${test}`}>
-                      <S.EventTitle>
-                        <strong>{index + 1} - </strong>
-                        {test.split("/")[0]}
-                      </S.EventTitle>
-                      <S.EventData>
-                        {test.split("/")[1].includes("-")
-                          ? formatStringDateToPtBr(test.split("/")[1])
-                          : test.split("/")[1]}
-                      </S.EventData>
-                    </div>
-                  );
-                })}
+                <div>
+                  <S.EventTitle>
+                    <strong>1 - </strong>
+                    Horário
+                  </S.EventTitle>
+                  <S.EventData>{firstEventData.hour}</S.EventData>
+                </div>
+
+                <div>
+                  <S.EventTitle>
+                    <strong>2 - </strong>
+                    Data
+                  </S.EventTitle>
+                  <S.EventData>{formatStringDateToPtBr(firstEventData?.date)}</S.EventData>
+                </div>
 
                 <S.AddBankingButton>
                   Adicionar banca <AiOutlinePlus size={20} />
@@ -75,14 +137,14 @@ const Form = ({ title, firstEvent, secondEvent }: Props) => {
               </S.EventTitle>
 
               <S.BankingTeachersContainer>
-                {firstEvent?.childrens[1].title.split("|").map((test: string, index) => {
+                {firstEventData?.teachers?.map((teacher, index) => {
                   return (
-                    <S.BankingTeachers key={`section - ${test}`}>
+                    <S.BankingTeachers key={`teacher-${teacher}-${teacher.index}`}>
                       <div>
                         <S.EventTitle>
-                          <strong>{formatIndexToLetter(index)} - </strong> {test.split("/")[0]}
+                          <strong>{formatIndexToLetter(index)} - </strong> Professor(a)
                         </S.EventTitle>
-                        <S.EventData className="banking-data">{test.split("/")[1]}</S.EventData>
+                        <S.EventData className="banking-data">{teacher.teacher}</S.EventData>
                       </div>
 
                       <button>
@@ -97,8 +159,15 @@ const Form = ({ title, firstEvent, secondEvent }: Props) => {
 
           <S.ContainerButton>
             <Button outline={true} type={"button"}>
-              {/* <span onClick={handleOpenEditFirstQuestionModal}> */}
-              <span>
+              <span
+                onClick={() =>
+                  handleOpenEditEventInfo(
+                    firstEvent?.childrens[0].id,
+                    firstEventData.hour,
+                    firstEventData.date,
+                    setFirstEventData
+                  )
+                }>
                 Editar <BsPencil size={16} />
               </span>
             </Button>
@@ -114,21 +183,21 @@ const Form = ({ title, firstEvent, secondEvent }: Props) => {
           {secondEvent?.childrens && (
             <>
               <S.HourAndDateContainer>
-                {secondEvent?.childrens[0].title.split("|").map((test: string, index) => {
-                  return (
-                    <div key={`section - ${test}`}>
-                      <S.EventTitle>
-                        <strong>{index + 1} - </strong>
-                        {test.split("/")[0]}
-                      </S.EventTitle>
-                      <S.EventData>
-                        {test.split("/")[1].includes("-")
-                          ? formatStringDateToPtBr(test.split("/")[1])
-                          : test.split("/")[1]}
-                      </S.EventData>
-                    </div>
-                  );
-                })}
+                <div>
+                  <S.EventTitle>
+                    <strong>1 - </strong>
+                    Horário
+                  </S.EventTitle>
+                  <S.EventData>{secondEventData.hour}</S.EventData>
+                </div>
+
+                <div>
+                  <S.EventTitle>
+                    <strong>2 - </strong>
+                    Data
+                  </S.EventTitle>
+                  <S.EventData>{formatStringDateToPtBr(secondEventData.date)}</S.EventData>
+                </div>
 
                 <S.AddBankingButton>
                   Adicionar banca <AiOutlinePlus size={20} />
@@ -141,14 +210,14 @@ const Form = ({ title, firstEvent, secondEvent }: Props) => {
               </S.EventTitle>
 
               <S.BankingTeachersContainer>
-                {secondEvent?.childrens[1].title.split("|").map((test: string, index) => {
+                {secondEventData?.teachers?.map((teacher, index) => {
                   return (
-                    <S.BankingTeachers key={`section - ${test}`}>
+                    <S.BankingTeachers key={`teacher-${teacher}-${teacher.index}`}>
                       <div>
                         <S.EventTitle>
-                          <strong>{formatIndexToLetter(index)} - </strong> {test.split("/")[0]}
+                          <strong>{formatIndexToLetter(index)} - </strong> Professor(a)
                         </S.EventTitle>
-                        <S.EventData className="banking-data">{test.split("/")[1]}</S.EventData>
+                        <S.EventData className="banking-data">{teacher.teacher}</S.EventData>
                       </div>
 
                       <button>
@@ -163,8 +232,15 @@ const Form = ({ title, firstEvent, secondEvent }: Props) => {
 
           <S.ContainerButton>
             <Button outline={true} type={"button"}>
-              {/* <span onClick={handleOpenEditSecondQuestionModal}> */}
-              <span>
+              <span
+                onClick={() =>
+                  handleOpenEditEventInfo(
+                    secondEvent?.childrens[0].id,
+                    secondEventData.hour,
+                    secondEventData.date,
+                    setSecondEventData
+                  )
+                }>
                 Editar <BsPencil size={16} />
               </span>
             </Button>
