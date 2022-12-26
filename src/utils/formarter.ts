@@ -41,9 +41,13 @@ export const formateDatePickerObject = (date: Date) => {
   return date.toISOString().split("T")[0].split("-").reverse().join().replaceAll(",", "/");
 };
 
+export const formatDateToEn_UsFormat = (date = new Date()) => {
+  return new Intl.DateTimeFormat("en-US").format(date).replaceAll("/", "-");
+};
+
 export const formatIndexToLetter = (index: number) =>
   INDEX_TO_LETTERS[index as keyof typeof INDEX_TO_LETTERS];
 
-export const formatStringDateToPtBr = (date: string) => {
+export const formatStringDateToPtBr = (date = new Date().toISOString()) => {
   return new Intl.DateTimeFormat("pt-br").format(formateStringToDate(date));
 };

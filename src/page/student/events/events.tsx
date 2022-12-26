@@ -37,7 +37,6 @@ const Events = () => {
 
       setLoading(false);
     } catch (error) {
-      console.log("error:", error);
       toast.error("Houve um erro ao pegar as informações.");
       setLoading(false);
     }
@@ -74,8 +73,10 @@ const Events = () => {
       {selectedStage === 1 && (
         <FirstStepForm
           title={homeData.title}
+          questionId={homeData.id}
           firstEvent={homeData.childrens && homeData.childrens[0]}
           secondEvent={homeData.childrens && homeData.childrens[1]}
+          setHomeData={setHomeData}
         />
       )}
 

@@ -1,3 +1,8 @@
+interface ITeacherData {
+  index: number;
+  teacher: string;
+}
+
 export interface IEventChildrenData {
   id: number;
   question: string;
@@ -25,4 +30,14 @@ export interface IEventData {
 
 export interface IEditHomeDataResponse {
   oneQuestion: Omit<IEventsHomeData, "childrens">;
+}
+
+export interface IFirstStepEventData {
+  date: string;
+  hour: string;
+  teachers: ITeacherData[];
+}
+
+export interface IEventBoardData {
+  teachers: ITeacherData[];
 }
