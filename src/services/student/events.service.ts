@@ -35,6 +35,16 @@ export const EventServices = {
     return api.put(`event/question/${id}`, { hour, date });
   },
 
+  updateEventBoard(
+    id = 0,
+    hour: string,
+    date: string,
+    link: string,
+    name: string
+  ): AxiosPromise<any> {
+    return api.put(`event/question/${id}`, { hour, date, link, name });
+  },
+
   addTeacherToEvent(id = 0, teacher: string): AxiosPromise<any> {
     return api.put(`event/board/question/${id}`, { teacher });
   },

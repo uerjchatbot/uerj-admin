@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { BsPencil } from "react-icons/bs";
+import { toast } from "react-toastify";
 
 import { Button } from "@/components/button";
 import * as S from "./styles";
-import { formatIndexToLetter, formatStringDateToPtBr } from "@/utils/formarter";
+import { formatStringDateToPtBr } from "@/utils/formarter";
 import { useModal } from "@/hooks/useModal";
-import { EditThirdQuestion } from "../../edit_modals/third_question";
-import { EditClass } from "../../edit_modals/third_question/edit_class";
-import { CreateClass } from "../../edit_modals/create_class";
-import { toast } from "react-toastify";
 import { IEventChildrenData, IEventData } from "@/models/events";
 import { EventServices } from "@/services/student/events.service";
+import { EditSecondStepEvent } from "../../edit_modals/second_step_event";
 
 type Props = {
   thirdEvent?: IEventChildrenData;
@@ -19,6 +17,8 @@ type Props = {
 };
 
 const Form = ({ thirdEvent, fourthEvent, fifthEvent }: Props) => {
+  const { setTitle, setComponent, setIsVisible } = useModal();
+
   const [thirdEventData, setThirdEventData] = useState<IEventData>({} as IEventData);
   const [fourthEventData, setFourthEventData] = useState<IEventData>({} as IEventData);
   const [fifthEventData, setFifthEventData] = useState<IEventData>({} as IEventData);
@@ -30,10 +30,22 @@ const Form = ({ thirdEvent, fourthEvent, fifthEvent }: Props) => {
     try {
       const { data } = await EventServices.getEventData(id);
 
-      setData(data);
+      setData(data as IEventData);
     } catch (error) {
       toast.error("Houve um erro ao pegar os dados do evento");
     }
+  };
+
+  const handleOpenEditEventModal = async (
+    id = 0,
+    data: IEventData,
+    setData: React.Dispatch<React.SetStateAction<IEventData>>
+  ) => {
+    setTitle(`Editar ${data.name}`);
+
+    setComponent(<EditSecondStepEvent id={id} data={data} setData={setData} />);
+
+    setIsVisible(true);
   };
 
   useEffect(() => {
@@ -89,8 +101,14 @@ const Form = ({ thirdEvent, fourthEvent, fifthEvent }: Props) => {
 
           <S.EditButtonContainer>
             <Button outline={true} type={"button"}>
-              {/* <span onClick={handleOpenEditQuestionModal}> */}
-              <span>
+              <span
+                onClick={() =>
+                  handleOpenEditEventModal(
+                    thirdEvent?.childrens[0].id,
+                    thirdEventData,
+                    setThirdEventData
+                  )
+                }>
                 Editar <BsPencil size={16} />
               </span>
             </Button>
@@ -131,8 +149,14 @@ const Form = ({ thirdEvent, fourthEvent, fifthEvent }: Props) => {
 
           <S.EditButtonContainer>
             <Button outline={true} type={"button"}>
-              {/* <span onClick={handleOpenEditQuestionModal}> */}
-              <span>
+              <span
+                onClick={() =>
+                  handleOpenEditEventModal(
+                    fourthEvent?.childrens[0].id,
+                    fourthEventData,
+                    setFourthEventData
+                  )
+                }>
                 Editar <BsPencil size={16} />
               </span>
             </Button>
@@ -173,8 +197,14 @@ const Form = ({ thirdEvent, fourthEvent, fifthEvent }: Props) => {
 
           <S.EditButtonContainer>
             <Button outline={true} type={"button"}>
-              {/* <span onClick={handleOpenEditQuestionModal}> */}
-              <span>
+              <span
+                onClick={() =>
+                  handleOpenEditEventModal(
+                    fifthEvent?.childrens[0].id,
+                    fifthEventData,
+                    setFifthEventData
+                  )
+                }>
                 Editar <BsPencil size={16} />
               </span>
             </Button>
