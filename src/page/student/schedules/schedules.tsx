@@ -5,22 +5,15 @@ import { FiEdit } from "react-icons/fi";
 import { toast } from "react-toastify";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import {
-  IClassroomData,
-  ITeachingStaffChildrenData,
-  ITeachingStaffData
-} from "@/models/teaching-staff";
 import { Button } from "@/components/button";
 import * as S from "./styles";
 import { formatIndexToLetter } from "@/utils/formarter";
 import { useModal } from "@/hooks/useModal";
-import { EditThirdQuestion } from "../../edit_modals/third_question";
-import { EditClass } from "../../edit_modals/third_question/edit_class";
-import { CreateClass } from "../../edit_modals/create_class";
 import { useLoading } from "@/hooks/useLoading";
 import { SchedulesServices } from "@/services/student/schedules.service";
 import { ISchedulesHomeData, ISchedulesHoursData } from "@/models/students/schedules";
 import { STUDENT_PATH } from "@/routes/paths/paths.private";
+import { EditHomeTitle } from "./edit-modals/home-title";
 
 const Schedules = () => {
   const { state }: { state: any } = useLocation();
@@ -33,6 +26,40 @@ const Schedules = () => {
 
   const handleNavigateBack = () => navigate(STUDENT_PATH());
 
+  const handleOpenAddHourModal = () => {
+    setTitle("");
+
+    setComponent(<></>);
+
+    setIsVisible(true);
+  };
+
+  const handleOpenEditTitleModal = () => {
+    setTitle("Editar Horários");
+
+    setComponent(
+      <EditHomeTitle id={state.childrenId} data={schedulesData.title} setData={setSchedulesData} />
+    );
+
+    setIsVisible(true);
+  };
+
+  const handleOpenEditHourModal = () => {
+    setTitle("");
+
+    setComponent(<></>);
+
+    setIsVisible(true);
+  };
+
+  const handleDeleteHour = () => {
+    setTitle("");
+
+    setComponent(<></>);
+
+    setIsVisible(true);
+  };
+
   const getSchedulesData = async (): Promise<void> => {
     try {
       setLoading(true);
@@ -43,7 +70,6 @@ const Schedules = () => {
 
       setLoading(false);
     } catch (error) {
-      // console.log("error:", error);
       toast.error("Houve um erro ao pegar os dados dos horários");
       setLoading(false);
     }
@@ -170,23 +196,13 @@ const Schedules = () => {
                 <div>
                   <button>
                     <FiEdit
-                    // onClick={() => {
-                    //   handleOpenEditClassModal(
-                    //     index,
-                    //     hour.index,
-                    //     hour.matter,
-                    //     hour.students,
-                    //     representationClass.question
-                    //   );
-                    // }}
+                      onClick={() => {
+                        handleOpenEditHourModal();
+                      }}
                     />
                   </button>
                   <button>
-                    <BsTrash
-                    // onClick={() =>
-                    //   handleDeleteClass(index, childrenIds[index], representationClass.question)
-                    // }
-                    />
+                    <BsTrash onClick={() => handleDeleteHour()} />
                   </button>
                 </div>
               </S.ClassDataHeaderContainer>
@@ -238,14 +254,12 @@ const Schedules = () => {
 
           <S.EditButtonContainer>
             <Button outline={true} type={"button"}>
-              {/* <span onClick={handleOpenEditQuestionModal}> */}
-              <span>
+              <span onClick={handleOpenEditTitleModal}>
                 Editar <BsPencil size={16} />
               </span>
             </Button>
             <S.AddSchedulesButton type={"button"}>
-              {/* <span onClick={handleOpenEditQuestionModal}> */}
-              <span>
+              <span onClick={handleOpenAddHourModal}>
                 Adicionar horário <IoIosPeople size={16} />
               </span>
             </S.AddSchedulesButton>

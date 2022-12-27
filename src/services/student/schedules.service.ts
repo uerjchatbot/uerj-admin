@@ -9,5 +9,9 @@ export const SchedulesServices = {
 
   getSchedulesHours(id = 0): AxiosPromise<ISchedulesHoursData[]> {
     return api.get(`hour/question/${id}`);
+  },
+
+  updateTitle(id = 0, title: string): AxiosPromise<ISchedulesHomeData> {
+    return api.put(`question/${id}`, { title });
   }
 };
