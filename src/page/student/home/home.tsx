@@ -27,7 +27,7 @@ const navigateToPath = [
   Private.STUDENT_FACULTY_AND_STUDENDS(),
   Private.STUDENT_MATTERS(),
   Private.STUDENT_EVENTS(),
-  "",
+  Private.STUDENT_SCHEDULES(),
   "",
   ""
 ];
