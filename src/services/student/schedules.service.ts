@@ -28,5 +28,9 @@ export const SchedulesServices = {
 
   updateTitle(id = 0, title: string): AxiosPromise<ISchedulesHomeData> {
     return api.put(`question/${id}`, { title });
+  },
+
+  deleteHour(hourId = 0, id = 0): AxiosPromise<void> {
+    return api.delete(`hour/${hourId}/question/${id}`);
   }
 };

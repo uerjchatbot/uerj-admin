@@ -58,12 +58,22 @@ const Schedules = () => {
     setIsVisible(true);
   };
 
-  const handleDeleteHour = () => {
-    setTitle("");
+  const handleDeleteHour = async (hourId: number) => {
+    try {
+      setLoading(true);
 
-    setComponent(<></>);
+      await SchedulesServices.deleteHour(hourId, schedulesData.childrens[0].id);
 
-    setIsVisible(true);
+      const { data } = await SchedulesServices.getSchedulesHours(schedulesData.childrens[0].id);
+
+      setSchedulesHoursData(data);
+
+      toast.success("Horário excluido com sucesso!");
+
+      setLoading(false);
+    } catch (error) {
+      toast.error("Houve um erro ao deletar o horário");
+    }
   };
 
   const getSchedulesData = async (): Promise<void> => {
@@ -208,7 +218,7 @@ const Schedules = () => {
                     />
                   </button>
                   <button>
-                    <BsTrash onClick={() => handleDeleteHour()} />
+                    <BsTrash onClick={() => handleDeleteHour(hour.index)} />
                   </button>
                 </div>
               </S.ClassDataHeaderContainer>
