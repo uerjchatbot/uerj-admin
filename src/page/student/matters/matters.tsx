@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { BsPencil, BsTrash } from "react-icons/bs";
 import { AiOutlinePlus } from "react-icons/ai";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { IMatterData, IMattersChildrenData, IMattersHomeData } from "@/models/matters";
@@ -14,9 +14,11 @@ import { orderChildrens } from "@/utils/order";
 import { Button } from "@/components/button";
 import { useModal } from "@/hooks/useModal";
 import * as S from "./styles";
+import { STUDENT_PATH } from "@/routes/paths/paths.private";
 
 const Matters = () => {
   const { state }: { state: any } = useLocation();
+  const navigate = useNavigate();
   const { setTitle, setComponent, setIsVisible } = useModal();
   const [homeData, setHomeData] = useState<IMattersHomeData>({} as IMattersHomeData);
   const [mastersData, setMastersData] = useState<IMatterData[]>([]);
@@ -37,7 +39,7 @@ const Matters = () => {
     setDoctorateData(response3.data);
   }, [state]);
 
-  const handleNavigateBack = () => {};
+  const handleNavigateBack = () => navigate(STUDENT_PATH());
 
   const handleOpenEditHomeTitle = () => {
     setTitle("Editar Disciplinas");
