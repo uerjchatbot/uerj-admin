@@ -11,6 +11,21 @@ export const SchedulesServices = {
     return api.get(`hour/question/${id}`);
   },
 
+  createHour(
+    id = 0,
+    group: string,
+    mastermind: string,
+    day_week: string,
+    hour: string
+  ): AxiosPromise<ISchedulesHoursData> {
+    return api.put(`hour/question/${id}`, {
+      hour,
+      group,
+      mastermind,
+      day_week
+    });
+  },
+
   updateTitle(id = 0, title: string): AxiosPromise<ISchedulesHomeData> {
     return api.put(`question/${id}`, { title });
   }

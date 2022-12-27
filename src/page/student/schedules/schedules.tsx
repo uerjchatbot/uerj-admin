@@ -14,6 +14,7 @@ import { SchedulesServices } from "@/services/student/schedules.service";
 import { ISchedulesHomeData, ISchedulesHoursData } from "@/models/students/schedules";
 import { STUDENT_PATH } from "@/routes/paths/paths.private";
 import { EditHomeTitle } from "./edit-modals/home-title";
+import { CreateHourModal } from "./edit-modals/create-hour";
 
 const Schedules = () => {
   const { state }: { state: any } = useLocation();
@@ -27,9 +28,14 @@ const Schedules = () => {
   const handleNavigateBack = () => navigate(STUDENT_PATH());
 
   const handleOpenAddHourModal = () => {
-    setTitle("");
+    setTitle("Adicionar horário");
 
-    setComponent(<></>);
+    setComponent(
+      <CreateHourModal
+        questionId={schedulesData?.childrens[0].id}
+        setData={setSchedulesHoursData}
+      />
+    );
 
     setIsVisible(true);
   };
