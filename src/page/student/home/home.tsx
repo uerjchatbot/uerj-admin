@@ -29,7 +29,7 @@ const navigateToPath = [
   Private.STUDENT_EVENTS(),
   Private.STUDENT_SCHEDULES(),
   "",
-  ""
+  Private.STUDENT_SELECTIVE_PROCESS()
 ];
 
 const Home: React.FC = () => {
