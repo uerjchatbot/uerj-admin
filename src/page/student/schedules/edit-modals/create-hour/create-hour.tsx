@@ -7,6 +7,7 @@ import { useLoading } from "@/hooks/useLoading";
 import { SchedulesServices } from "@/services/student/schedules.service";
 import { ISchedulesHoursData } from "@/models/students/schedules";
 import { useModal } from "@/hooks/useModal";
+import * as S from "./styles";
 
 type Props = {
   questionId: number;
@@ -52,40 +53,48 @@ const CreateHour = ({ questionId, setData }: Props) => {
 
   return (
     <div>
-      <div>
-        <input
-          type="text"
-          placeholder="Nome"
-          value={group}
-          onChange={(e) => setGroup(e.target.value)}
-        />
+      <S.InputsContainer>
+        <S.InputColumnContainer>
+          <S.Input
+            type="text"
+            placeholder="Nome"
+            value={group}
+            onChange={(e) => setGroup(e.target.value)}
+          />
 
-        <input
-          type="text"
-          placeholder="Orientador"
-          value={mastermind}
-          onChange={(e) => setMastermind(e.target.value)}
-        />
+          <S.Input
+            type="text"
+            placeholder="Orientador"
+            value={mastermind}
+            onChange={(e) => setMastermind(e.target.value)}
+          />
+        </S.InputColumnContainer>
 
-        <input
-          type="text"
-          placeholder="Dia da semana"
-          value={dayWeek}
-          onChange={(e) => setDayWeek(e.target.value)}
-        />
+        <S.InputColumnContainer>
+          <S.Input
+            type="text"
+            placeholder="Dia da semana"
+            value={dayWeek}
+            onChange={(e) => setDayWeek(e.target.value)}
+          />
 
-        <DatePicker
-          format="HH:mm"
-          defaultValue={new Date()}
-          style={{ width: 150 }}
-          onChange={(e) => {
-            const hours = e?.getHours();
-            const minutes = e?.getMinutes();
+          <div>
+            <p>Horário</p>
 
-            setHour(`${hours}:${minutes}`);
-          }}
-        />
-      </div>
+            <DatePicker
+              format="HH:mm"
+              defaultValue={new Date()}
+              style={{ width: 120 }}
+              onChange={(e) => {
+                const hours = e?.getHours();
+                const minutes = e?.getMinutes();
+
+                setHour(`${hours}:${minutes}`);
+              }}
+            />
+          </div>
+        </S.InputColumnContainer>
+      </S.InputsContainer>
 
       <EditTextButton event={handleCreateHour} />
     </div>
