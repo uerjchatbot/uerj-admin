@@ -15,6 +15,7 @@ import { ISchedulesHomeData, ISchedulesHoursData } from "@/models/students/sched
 import { STUDENT_PATH } from "@/routes/paths/paths.private";
 import { EditHomeTitle } from "./edit-modals/home-title";
 import { CreateHourModal } from "./edit-modals/create-hour";
+import { EditHourModal } from "./edit-modals/edit-hour";
 
 const Schedules = () => {
   const { state }: { state: any } = useLocation();
@@ -50,10 +51,16 @@ const Schedules = () => {
     setIsVisible(true);
   };
 
-  const handleOpenEditHourModal = () => {
-    setTitle("");
+  const handleOpenEditHourModal = (data: ISchedulesHoursData) => {
+    setTitle("Editar Horário");
 
-    setComponent(<></>);
+    setComponent(
+      <EditHourModal
+        hourData={data}
+        questionId={schedulesData?.childrens[0].id}
+        setData={setSchedulesHoursData}
+      />
+    );
 
     setIsVisible(true);
   };
@@ -105,98 +112,6 @@ const Schedules = () => {
       toast.error("Houve um erro ao pegar os dados dos horários");
     }
   };
-
-  // const getChildrenId = async (): Promise<number[]> => {
-  //   if (representation?.childrens) {
-  //     const response1 = await TeachingStaffServices.getClassroomChildrenId(
-  //       representation.childrens[0].id
-  //     );
-  //     const response2 = await TeachingStaffServices.getClassroomChildrenId(
-  //       representation.childrens[1].id
-  //     );
-
-  //     setChildrenIds([response1.data.childrens[0].id, response2.data.childrens[0].id]);
-
-  //     return [response1.data.childrens[0].id, response2.data.childrens[0].id];
-  //   } else {
-  //     return [0, 0];
-  //   }
-  // };
-
-  // const handleOpenEditQuestionModal = () => {
-  //   if (representation) {
-  //     setTitle(`Editar ${representation.question}`);
-
-  //     setComponent(
-  //       <EditThirdQuestion
-  //         questionId={representation.id}
-  //         text={representation.question}
-  //         description={representation.title}
-  //         setRepresentation={setRepresentation}
-  //       />
-  //     );
-
-  //     setIsVisible(true);
-  //   }
-  // };
-
-  // const handleOpenEditClassModal = (
-  //   representationId: number,
-  //   classId: number,
-  //   className: string,
-  //   studentsList: string[],
-  //   classType: string
-  // ) => {
-  //   if (representation) {
-  //     setTitle(`Editar ${representation.question}`);
-
-  //     setComponent(
-  //       <EditClass
-  //         questionId={childrenIds[representationId]}
-  //         classId={classId}
-  //         className={className}
-  //         studentsList={studentsList}
-  //         setData={setClassroomData}
-  //         classType={classType}
-  //       />
-  //     );
-
-  //     setIsVisible(true);
-  //   }
-  // };
-
-  // const handleOpenAddClassModal = (representationId: number, classType: string) => {
-  //   setTitle(`Adicionar Turma de ${classType}`);
-
-  //   setComponent(
-  //     <CreateClass
-  //       questionId={childrenIds[representationId]}
-  //       classType={classType}
-  //       setData={setClassroomData}
-  //     />
-  //   );
-
-  //   setIsVisible(true);
-  // };
-
-  // const handleDeleteClass = async (classId: number, questionId: number, classType: string) => {
-  //   try {
-  //     await TeachingStaffServices.deleteClass(classId, questionId);
-
-  //     const { data } = await TeachingStaffServices.getClassroomChildrenData(questionId);
-
-  //     const dataCopy = Array.from(classroomData);
-
-  //     dataCopy[classType === "Mestrado" ? 0 : 1] = data;
-
-  //     setClassroomData(dataCopy as unknown as [IClassroomData[], IClassroomData[]]);
-
-  //     toast.success("Turma deletada com sucesso!");
-  //   } catch (error) {
-  //     toast.error("Houve um erro ao deletar a turma, tente novamente!");
-  //   }
-  // };
-
   const renderHoursList = useCallback(() => {
     return (
       <div>
@@ -213,7 +128,7 @@ const Schedules = () => {
                   <button>
                     <FiEdit
                       onClick={() => {
-                        handleOpenEditHourModal();
+                        handleOpenEditHourModal(hour);
                       }}
                     />
                   </button>
