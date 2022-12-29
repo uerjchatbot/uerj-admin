@@ -14,4 +14,6 @@ export const STUDENT_EVENTS = () => `${STUDENT_PATH()}/events`;
 
 export const STUDENT_SCHEDULES = () => `${STUDENT_PATH()}/schedules`;
 
+export const STUDENT_TUTORIALS = () => `${STUDENT_PATH()}/tutorials`;
+
 export const STUDENT_SELECTIVE_PROCESS = () => `${STUDENT_PATH()}/selective_process`;

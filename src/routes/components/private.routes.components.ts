@@ -9,6 +9,7 @@ import { Matters } from "@/page/student/matters";
 import { Events } from "@/page/student/events";
 import { Schedules } from "@/page/student/schedules";
 import { SelectiveProcess } from "@/page/student/selective_process";
+import { Tutorials } from "@/page/student/tutorials";
 
 export const PrivateRoutesComponents: RouteComponentInterface[] = [
   {
@@ -50,6 +51,11 @@ export const PrivateRoutesComponents: RouteComponentInterface[] = [
     path: Private.STUDENT_SCHEDULES(),
     Component: Schedules,
     breadcrumb: " / 5 - Horários"
+  },
+  {
+    path: Private.STUDENT_TUTORIALS(),
+    Component: Tutorials,
+    breadcrumb: " / 6 - Instruções e tutoriais"
   },
   {
     path: Private.STUDENT_SELECTIVE_PROCESS(),
