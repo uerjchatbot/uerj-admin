@@ -1,15 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { BsPencil } from "react-icons/bs";
-import { toast } from "react-toastify";
 
 import { Button } from "@/components/button";
 import * as S from "./styles";
-import { formatStringDateToPtBr } from "@/utils/formarter";
 import { useModal } from "@/hooks/useModal";
-import { IEventChildrenData, IEventData, IEventsHomeData } from "@/models/events";
-import { EventServices } from "@/services/student/events.service";
-import { EditSecondStepEvent } from "../../edit_modals/second_step_event";
-import { IQuestionData } from "@/models/students/selective_process";
+import { IQuestionData, ISelectiveProcessHomeData } from "@/models/students/selective_process";
+import { EditQuestion } from "../../edit-modals/edit-question";
 
 type Props = {
   id?: number;
@@ -17,7 +13,7 @@ type Props = {
   fifthQuestion?: IQuestionData;
   sixthQuestion?: IQuestionData;
   seventhQuestion?: IQuestionData;
-  setHomeData: React.Dispatch<React.SetStateAction<IEventsHomeData>>;
+  setHomeData: React.Dispatch<React.SetStateAction<ISelectiveProcessHomeData>>;
 };
 
 const Form = ({
@@ -28,56 +24,29 @@ const Form = ({
   seventhQuestion,
   setHomeData
 }: Props) => {
-  // const { setTitle, setComponent, setIsVisible } = useModal();
+  const { setTitle, setComponent, setIsVisible } = useModal();
 
-  // const [thirdEventData, setThirdEventData] = useState<IEventData>({} as IEventData);
-  // const [fourthEventData, setFourthEventData] = useState<IEventData>({} as IEventData);
-  // const [fifthEventData, setFifthEventData] = useState<IEventData>({} as IEventData);
+  const handleOpenEditQuestionModal = (
+    questionIndex: number,
+    questionId = 0,
+    question = "",
+    text = ""
+  ) => {
+    setTitle(`Editar ${question}`);
 
-  // const getEventData = async (
-  //   id: number,
-  //   setData: React.Dispatch<React.SetStateAction<IEventData>>
-  // ) => {
-  //   try {
-  //     const { data } = await EventServices.getEventData(id);
+    const data = {
+      id: id,
+      index: questionIndex,
+      questionId: questionId,
+      question: question,
+      title: text,
+      setData: setHomeData
+    };
 
-  //     setData(data as IEventData);
-  //   } catch (error) {
-  //     toast.error("Houve um erro ao pegar os dados do evento");
-  //   }
-  // };
+    setComponent(<EditQuestion data={data} />);
 
-  // const handleOpenEditEventModal = async (
-  //   id = 0,
-  //   data: IEventData,
-  //   setData: React.Dispatch<React.SetStateAction<IEventData>>
-  // ) => {
-  //   setTitle(`Editar ${data.name}`);
-
-  //   setComponent(<EditSecondStepEvent id={id} data={data} setData={setData} />);
-
-  //   setIsVisible(true);
-  // };
-
-  // useEffect(() => {
-  //   if (thirdEvent?.childrens) {
-  //     getEventData(thirdEvent.childrens[0].id, setThirdEventData);
-  //   }
-  // }, [thirdEvent]);
-
-  // useEffect(() => {
-  //   if (fourthEvent?.childrens) {
-  //     getEventData(fourthEvent.childrens[0].id, setFourthEventData);
-  //   }
-  // }, [fourthEvent]);
-
-  // useEffect(() => {
-  //   if (fifthEvent?.childrens) {
-  //     getEventData(fifthEvent.childrens[0].id, setFifthEventData);
-  //   }
-  // }, [fifthEvent]);
-
-  const handleOpenEditQuestionModal = (id = 0) => {};
+    setIsVisible(true);
+  };
 
   return (
     <S.Container>
@@ -92,7 +61,15 @@ const Form = ({
         </div>
 
         <Button outline={true} type={"button"}>
-          <span onClick={() => handleOpenEditQuestionModal(fourthQuestion?.id)}>
+          <span
+            onClick={() =>
+              handleOpenEditQuestionModal(
+                4,
+                fourthQuestion?.id,
+                fourthQuestion?.question,
+                fourthQuestion?.text
+              )
+            }>
             Editar <BsPencil size={16} />
           </span>
         </Button>
@@ -109,7 +86,15 @@ const Form = ({
         </div>
 
         <Button outline={true} type={"button"}>
-          <span onClick={() => handleOpenEditQuestionModal(fifthQuestion?.id)}>
+          <span
+            onClick={() =>
+              handleOpenEditQuestionModal(
+                5,
+                fifthQuestion?.id,
+                fifthQuestion?.question,
+                fifthQuestion?.text
+              )
+            }>
             Editar <BsPencil size={16} />
           </span>
         </Button>
@@ -126,7 +111,15 @@ const Form = ({
         </div>
 
         <Button outline={true} type={"button"}>
-          <span onClick={() => handleOpenEditQuestionModal(sixthQuestion?.id)}>
+          <span
+            onClick={() =>
+              handleOpenEditQuestionModal(
+                6,
+                sixthQuestion?.id,
+                sixthQuestion?.question,
+                sixthQuestion?.text
+              )
+            }>
             Editar <BsPencil size={16} />
           </span>
         </Button>
@@ -143,7 +136,15 @@ const Form = ({
         </div>
 
         <Button outline={true} type={"button"}>
-          <span onClick={() => handleOpenEditQuestionModal(seventhQuestion?.id)}>
+          <span
+            onClick={() =>
+              handleOpenEditQuestionModal(
+                7,
+                seventhQuestion?.id,
+                seventhQuestion?.question,
+                seventhQuestion?.text
+              )
+            }>
             Editar <BsPencil size={16} />
           </span>
         </Button>

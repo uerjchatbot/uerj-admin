@@ -1,19 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { BsPencil, BsTrash } from "react-icons/bs";
-import { toast } from "react-toastify";
+import React from "react";
+import { BsPencil } from "react-icons/bs";
 
 import * as S from "./styles";
 
 import { Button } from "@/components/button";
 import { useModal } from "@/hooks/useModal";
-import { EditPageDescription } from "../../edit_modals/page_description";
-import { IEventChildrenData, IEventsHomeData, IFirstStepEventData } from "@/models/events";
-import { formatIndexToLetter, formatStringDateToPtBr } from "@/utils/formarter";
-import { AiOutlinePlus } from "react-icons/ai";
-import { EditFirstStepEvent } from "../../edit_modals/first_step_event";
-import { EventServices } from "@/services/student/events.service";
-import { CreateBanking } from "../../edit_modals/create_banking";
-import { IQuestionData } from "@/models/students/selective_process";
+import { IQuestionData, ISelectiveProcessHomeData } from "@/models/students/selective_process";
+import { EditQuestion } from "../../edit-modals/edit-question";
 
 type Props = {
   id?: number;
@@ -21,106 +14,48 @@ type Props = {
   firstQuestion?: IQuestionData;
   secondQuestion?: IQuestionData;
   thirdQuestion?: IQuestionData;
-  setHomeData: React.Dispatch<React.SetStateAction<IEventsHomeData>>;
+  setHomeData: React.Dispatch<React.SetStateAction<ISelectiveProcessHomeData>>;
 };
 
-// const Form = ({ title, questionId, firstEvent, secondEvent, setHomeData }: Props) => {
 const Form = ({ id, title, firstQuestion, secondQuestion, thirdQuestion, setHomeData }: Props) => {
-  // const { setTitle, setComponent, setIsVisible } = useModal();
+  const { setTitle, setComponent, setIsVisible } = useModal();
 
-  // const [firstEventData, setFirstEventData] = useState<IFirstStepEventData>(
-  //   {} as IFirstStepEventData
-  // );
-  // const [secondEventData, setSecondEventData] = useState<IFirstStepEventData>(
-  //   {} as IFirstStepEventData
-  // );
+  const handleEditHomeTitle = () => {
+    setTitle(`Editar Processo seletivo de bolsas`);
 
-  // const getEventData = async (
-  //   id: number,
-  //   boardId: number,
-  //   setData: React.Dispatch<React.SetStateAction<IFirstStepEventData>>
-  // ) => {
-  //   try {
-  //     const response1 = await EventServices.getEventData(id);
+    const data = {
+      id: id,
+      questionId: id,
+      title: title,
+      setData: setHomeData
+    };
 
-  //     const response2 = await EventServices.getEventBoardData(boardId);
+    setComponent(<EditQuestion data={data} />);
 
-  //     const formatedData = {
-  //       hour: response1.data.hour,
-  //       date: response1.data.date,
-  //       teachers: response2.data.teachers
-  //     };
+    setIsVisible(true);
+  };
 
-  //     setData(formatedData);
-  //   } catch (error) {
-  //     toast.error("Houve um erro ao pegar os dados do evento");
-  //   }
-  // };
+  const handleOpenEditQuestionModal = (
+    questionIndex: number,
+    questionId = 0,
+    question = "",
+    text = ""
+  ) => {
+    setTitle(`Editar ${question}`);
 
-  // const handleDeleteTeacher = async (
-  //   teacherId: number,
-  //   id: number,
-  //   setData: React.Dispatch<React.SetStateAction<IFirstStepEventData>>
-  // ) => {
-  //   try {
-  //     await EventServices.deleteTeacher(teacherId, id);
+    const data = {
+      id: id,
+      index: questionIndex,
+      questionId: questionId,
+      question: question,
+      title: text,
+      setData: setHomeData
+    };
 
-  //     const { data } = await EventServices.getEventBoardData(id);
+    setComponent(<EditQuestion data={data} />);
 
-  //     setData((oldValue) => {
-  //       return { ...oldValue, ...data };
-  //     });
-  //   } catch (error) {
-  //     toast.error("Houve um erro ao deletar o(a) professor(a)");
-  //   }
-  // };
-
-  // const handleOpenEditPageDescription = () => {
-  //   setTitle("Editar Eventos");
-
-  //   setComponent(
-  //     <EditPageDescription questionId={questionId || 0} text={title || ""} setData={setHomeData} />
-  //   );
-
-  //   setIsVisible(true);
-  // };
-
-  // const handleOpenAddBanking = (
-  //   id = 0,
-  //   setData: React.Dispatch<React.SetStateAction<IFirstStepEventData>>
-  // ) => {
-  //   setTitle("Adicionar Banca");
-
-  //   setComponent(<CreateBanking questionId={id} setData={setData} />);
-
-  //   setIsVisible(true);
-  // };
-
-  // const handleOpenEditEventInfo = (questionId = 0, hour: string, date: string, setData: any) => {
-  //   setTitle(`Editar ${firstEvent?.question}`);
-
-  //   setComponent(
-  //     <EditFirstStepEvent questionId={questionId} hour={hour} date={date} setData={setData} />
-  //   );
-
-  //   setIsVisible(true);
-  // };
-
-  // useEffect(() => {
-  //   if (firstEvent?.childrens) {
-  //     getEventData(firstEvent.childrens[0].id, firstEvent.childrens[1].id, setFirstEventData);
-  //   }
-  // }, [firstEvent]);
-
-  // useEffect(() => {
-  //   if (secondEvent?.childrens) {
-  //     getEventData(secondEvent.childrens[0].id, secondEvent.childrens[1].id, setSecondEventData);
-  //   }
-  // }, [secondEvent]);
-
-  const handleEditHomeTitle = () => {};
-
-  const handleOpenEditQuestionModal = (id = 0) => {};
+    setIsVisible(true);
+  };
 
   return (
     <S.Container>
@@ -147,7 +82,15 @@ const Form = ({ id, title, firstQuestion, secondQuestion, thirdQuestion, setHome
         </div>
 
         <Button outline={true} type={"button"}>
-          <span onClick={() => handleOpenEditQuestionModal(firstQuestion?.id)}>
+          <span
+            onClick={() =>
+              handleOpenEditQuestionModal(
+                1,
+                firstQuestion?.id,
+                firstQuestion?.question,
+                firstQuestion?.text
+              )
+            }>
             Editar <BsPencil size={16} />
           </span>
         </Button>
@@ -164,7 +107,15 @@ const Form = ({ id, title, firstQuestion, secondQuestion, thirdQuestion, setHome
         </div>
 
         <Button outline={true} type={"button"}>
-          <span onClick={() => handleOpenEditQuestionModal(secondQuestion?.id)}>
+          <span
+            onClick={() =>
+              handleOpenEditQuestionModal(
+                2,
+                secondQuestion?.id,
+                secondQuestion?.question,
+                secondQuestion?.text
+              )
+            }>
             Editar <BsPencil size={16} />
           </span>
         </Button>
@@ -181,7 +132,15 @@ const Form = ({ id, title, firstQuestion, secondQuestion, thirdQuestion, setHome
         </div>
 
         <Button outline={true} type={"button"}>
-          <span onClick={() => handleOpenEditQuestionModal(thirdQuestion?.id)}>
+          <span
+            onClick={() =>
+              handleOpenEditQuestionModal(
+                3,
+                thirdQuestion?.id,
+                thirdQuestion?.question,
+                thirdQuestion?.text
+              )
+            }>
             Editar <BsPencil size={16} />
           </span>
         </Button>

@@ -45,8 +45,6 @@ const SelectiveProcess = () => {
     getSelectiveProcessData();
   }, [state]);
 
-  console.log("selectiveProcessData:", selectiveProcessData);
-
   return (
     <S.Container>
       <S.HeaderContainer>

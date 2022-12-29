@@ -1,3 +1,5 @@
+import React from "react";
+
 export interface ISelectiveProcessHomeChildrenData {
   id: number;
   question: string;
@@ -20,4 +22,13 @@ export interface IQuestionData {
   id?: number;
   question?: string;
   text?: string;
+}
+
+export interface IEditModalData {
+  id?: number;
+  index?: number;
+  questionId?: number;
+  question?: string;
+  title?: string;
+  setData: React.Dispatch<React.SetStateAction<ISelectiveProcessHomeData>>;
 }
