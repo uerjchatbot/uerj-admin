@@ -45,6 +45,10 @@ export const formatDateToEn_UsFormat = (date = new Date()) => {
   return new Intl.DateTimeFormat("en-US").format(date).replaceAll("/", "-");
 };
 
+export const formatDateToPt_BrFormat = (date = new Date()) => {
+  return new Intl.DateTimeFormat("pt-BR").format(date);
+};
+
 export const formatIndexToLetter = (index: number) =>
   INDEX_TO_LETTERS[index as keyof typeof INDEX_TO_LETTERS];
 
