@@ -46,7 +46,13 @@ const EditTitle = ({ data }: Props) => {
             format="dd/MM/yyyy"
             defaultValue={formateStringToDate(processPeriodDate)}
             style={{ width: 150 }}
-            onChange={(e) => setProcessPeriodDate(formatDateToPt_BrFormat(e || new Date()))}
+            onChange={(e) => {
+              handleEditDate(
+                data.datesArr.childrens[0].id,
+                formatDateToPt_BrFormat(e || new Date())
+              );
+              setProcessPeriodDate(formatDateToPt_BrFormat(e || new Date()));
+            }}
           />
         </S.DateContainer>
 
@@ -57,9 +63,13 @@ const EditTitle = ({ data }: Props) => {
             format="dd/MM/yyyy"
             defaultValue={formateStringToDate(documentSubmissionDeadlineDate)}
             style={{ width: 150 }}
-            onChange={(e) =>
-              setDocumentSubmissionDeadlineDate(formatDateToPt_BrFormat(e || new Date()))
-            }
+            onChange={(e) => {
+              handleEditDate(
+                data.datesArr.childrens[1].id,
+                formatDateToPt_BrFormat(e || new Date())
+              );
+              setDocumentSubmissionDeadlineDate(formatDateToPt_BrFormat(e || new Date()));
+            }}
           />
         </S.DateContainer>
 
@@ -70,7 +80,13 @@ const EditTitle = ({ data }: Props) => {
             format="dd/MM/yyyy"
             defaultValue={formateStringToDate(documentationEvaluationDate)}
             style={{ width: 150 }}
-            onChange={(e) => setDocumentEvaluationDate(formatDateToPt_BrFormat(e || new Date()))}
+            onChange={(e) => {
+              handleEditDate(
+                data.datesArr.childrens[2].id,
+                formatDateToPt_BrFormat(e || new Date())
+              );
+              setDocumentEvaluationDate(formatDateToPt_BrFormat(e || new Date()));
+            }}
           />
         </S.DateContainer>
 
@@ -81,7 +97,13 @@ const EditTitle = ({ data }: Props) => {
             format="dd/MM/yyyy"
             defaultValue={formateStringToDate(analysisResultDate)}
             style={{ width: 150 }}
-            onChange={(e) => setAnalysisResultDate(formatDateToPt_BrFormat(e || new Date()))}
+            onChange={(e) => {
+              handleEditDate(
+                data.datesArr.childrens[3].id,
+                formatDateToPt_BrFormat(e || new Date())
+              );
+              setAnalysisResultDate(formatDateToPt_BrFormat(e || new Date()));
+            }}
           />
         </S.DateContainer>
 
@@ -92,7 +114,13 @@ const EditTitle = ({ data }: Props) => {
             format="dd/MM/yyyy"
             defaultValue={formateStringToDate(resubmissionDocumentsDate)}
             style={{ width: 150 }}
-            onChange={(e) => setResubmissionDocumentsDate(formatDateToPt_BrFormat(e || new Date()))}
+            onChange={(e) => {
+              handleEditDate(
+                data.datesArr.childrens[4].id,
+                formatDateToPt_BrFormat(e || new Date())
+              );
+              setResubmissionDocumentsDate(formatDateToPt_BrFormat(e || new Date()));
+            }}
           />
         </S.DateContainer>
 
@@ -103,7 +131,13 @@ const EditTitle = ({ data }: Props) => {
             format="dd/MM/yyyy"
             defaultValue={formateStringToDate(projectPresentationDate)}
             style={{ width: 150 }}
-            onChange={(e) => setProjectPresentationDate(formatDateToPt_BrFormat(e || new Date()))}
+            onChange={(e) => {
+              handleEditDate(
+                data.datesArr.childrens[5].id,
+                formatDateToPt_BrFormat(e || new Date())
+              );
+              setProjectPresentationDate(formatDateToPt_BrFormat(e || new Date()));
+            }}
           />
         </S.DateContainer>
       </S.DatesContainer>
@@ -121,29 +155,30 @@ const EditTitle = ({ data }: Props) => {
     try {
       setLoading(true);
 
-      const dates = [
-        processPeriodDate,
-        documentSubmissionDeadlineDate,
-        documentationEvaluationDate,
-        analysisResultDate,
-        resubmissionDocumentsDate,
-        projectPresentationDate
-      ];
+      const response = await TutorialServices.getHomeData(data.datesArr.id);
 
-      // await TutorialServices.updateCalendarData(data.questionId, textInfo);
-
-      // const response = await TutorialServices.getHomeData(data.id);
-
-      // data.setData(response.data);
+      data.setData(response.data);
 
       setIsVisible(false);
 
-      toast.success("Tutorial atualizado com sucesso");
+      toast.success("Datas atualizadas com sucesso");
 
       setLoading(false);
     } catch (error) {
       toast.error("Houve um erro ao atualizar o tutorial");
       setLoading(false);
+    }
+  };
+
+  const handleEditDate = async (dateId: number, newDate: string) => {
+    try {
+      await TutorialServices.updateCalendarData(dateId, newDate);
+
+      const response = await TutorialServices.getHomeData(data.datesArr.id);
+
+      data.setData(response.data);
+    } catch (error) {
+      toast.error("Houve um erro ao atualizar a data");
     }
   };
 
@@ -180,9 +215,6 @@ const EditTitle = ({ data }: Props) => {
       });
     }
   }, [data]);
-
-  // console.log("data:", data.datesArr.childrens[0].title.split("|")[1]);
-  // console.log("processPeriodDate:", processPeriodDate);
 
   return (
     <S.Container>
