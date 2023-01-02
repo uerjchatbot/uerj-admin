@@ -1,3 +1,5 @@
+import React from "react";
+
 export interface ITutorialHomeChildrenData {
   id: number;
   question: string;
@@ -23,4 +25,11 @@ export interface ICalendarData {
   title: string;
   response: boolean;
   childrens: ITutorialHomeChildrenData[];
+}
+
+export interface IEditCalendarModalData {
+  id: number | undefined;
+  questionId: number;
+  datesArr: ITutorialHomeData;
+  setData: React.Dispatch<React.SetStateAction<ITutorialHomeData>>;
 }
