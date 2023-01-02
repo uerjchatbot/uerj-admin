@@ -10,7 +10,9 @@ import { ITutorialHomeChildrenData, ITutorialHomeData } from "@/models/students/
 import { formatIndexToLetter } from "@/utils/formarter";
 import { useLoading } from "@/hooks/useLoading";
 import { TutorialServices } from "@/services/student/tutorial.service";
-// import { EditQuestion } from "../../edit-modals/edit-question";
+import { EditQuestion } from "../../edit-modals/edit-question";
+import { EditQuestionChildren } from "../../edit-modals/edit-question-children";
+import { EditCalendar } from "../../edit-modals/edit-calendar";
 
 type Props = {
   id?: number;
@@ -24,22 +26,6 @@ const Form = ({ id, thirdQuestion, fourthQuestion, setHomeData }: Props) => {
   const { setTitle, setComponent, setIsVisible } = useModal();
 
   const [calendarData, setCalendarData] = useState<ITutorialHomeData>({} as ITutorialHomeData);
-
-  const handleEditHomeTitle = () => {
-    setTitle(`Editar Instruções e tutoriais`);
-
-    const data = {
-      id: id,
-      questionId: id,
-      // title: title,
-      setData: setHomeData
-    };
-
-    // setComponent(<EditQuestion data={data} />);
-    setComponent(<></>);
-
-    setIsVisible(true);
-  };
 
   const getTutorialCalendarData = async () => {
     try {
@@ -56,31 +42,61 @@ const Form = ({ id, thirdQuestion, fourthQuestion, setHomeData }: Props) => {
     }
   };
 
-  // const handleOpenEditQuestionModal = (
-  //   questionIndex: number,
-  //   questionId = 0,
-  //   question = "",
-  //   text = ""
-  // ) => {
-  //   setTitle(`Editar ${question}`);
+  const handleOpenEditQuestionModal = (
+    questionIndex: number,
+    questionId = 0,
+    question = "",
+    text = ""
+  ) => {
+    setTitle(`Editar ${question}`);
 
-  //   const data = {
-  //     id: id,
-  //     index: questionIndex,
-  //     questionId: questionId,
-  //     question: question,
-  //     title: text,
-  //     setData: setHomeData
-  //   };
+    const data = {
+      id: id,
+      index: questionIndex,
+      questionId: questionId,
+      question: question,
+      title: text,
+      setData: setHomeData
+    };
 
-  //   setComponent(<EditQuestion data={data} />);
+    setComponent(<EditQuestion data={data} />);
 
-  //   setIsVisible(true);
-  // };
+    setIsVisible(true);
+  };
+
+  const handleOpenEditQuestionChildrenModal = (questionId = 0, question: string, text = "") => {
+    setTitle(`Editar ${question}`);
+
+    const data = {
+      id: id,
+      questionId: questionId,
+      title: text,
+      setData: setHomeData
+    };
+
+    setComponent(<EditQuestionChildren data={data} />);
+
+    setIsVisible(true);
+  };
+
+  const handleOpenEditQuestionCalendarModal = (questionId = 0, question: string, text = "") => {
+    setTitle(`Editar ${question}`);
+
+    const data = {
+      id: id,
+      questionId: questionId,
+      title: text,
+      datesArr: calendarData,
+      setData: setCalendarData
+    };
+
+    setComponent(<EditCalendar data={data} />);
+
+    setIsVisible(true);
+  };
 
   useEffect(() => {
     getTutorialCalendarData();
-    // }, []);
   }, [thirdQuestion]);
 
   // console.log("thirdQuestion:", thirdQuestion);
@@ -97,17 +113,18 @@ const Form = ({ id, thirdQuestion, fourthQuestion, setHomeData }: Props) => {
         <div>
           <p>{thirdQuestion?.title}</p>
         </div>
-        <Button outline={true} type={"button"}>
-          <span
-          //  onClick={() =>
-          //    handleOpenEditQuestionModal(
-          //      1,
-          //      firstQuestion?.id,
-          //      firstQuestion?.question,
-          //      firstQuestion?.text
-          //    )
-          //  }
-          >
+        <Button
+          outline={true}
+          type={"button"}
+          onClick={() =>
+            handleOpenEditQuestionModal(
+              1,
+              thirdQuestion?.id,
+              thirdQuestion?.question,
+              thirdQuestion?.title
+            )
+          }>
+          <span>
             Editar <BsPencil size={16} />
           </span>
         </Button>
@@ -140,7 +157,24 @@ const Form = ({ id, thirdQuestion, fourthQuestion, setHomeData }: Props) => {
                   <p>{children.title}</p>
                 )}
 
-                <Button outline={true} type={"button"}>
+                <Button
+                  outline={true}
+                  type={"button"}
+                  onClick={() => {
+                    if (children.question !== "Calendário") {
+                      handleOpenEditQuestionChildrenModal(
+                        children?.id,
+                        children?.question,
+                        children?.title
+                      );
+                    } else {
+                      handleOpenEditQuestionCalendarModal(
+                        children?.id,
+                        children?.question,
+                        children?.title
+                      );
+                    }
+                  }}>
                   <span>
                     Editar <BsPencil size={16} />
                   </span>
@@ -159,17 +193,18 @@ const Form = ({ id, thirdQuestion, fourthQuestion, setHomeData }: Props) => {
         <div>
           <p>{fourthQuestion?.title}</p>
         </div>
-        <Button outline={true} type={"button"}>
-          <span
-          //  onClick={() =>
-          //    handleOpenEditQuestionModal(
-          //      1,
-          //      firstQuestion?.id,
-          //      firstQuestion?.question,
-          //      firstQuestion?.text
-          //    )
-          //  }
-          >
+        <Button
+          outline={true}
+          type={"button"}
+          onClick={() =>
+            handleOpenEditQuestionModal(
+              1,
+              fourthQuestion?.id,
+              fourthQuestion?.question,
+              fourthQuestion?.title
+            )
+          }>
+          <span>
             Editar <BsPencil size={16} />
           </span>
         </Button>
