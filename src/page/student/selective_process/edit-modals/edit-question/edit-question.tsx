@@ -5,7 +5,7 @@ import { DotRounded } from "../../styles";
 import { EditTextButton } from "@/components/edit-text-button";
 import { TextEditor } from "@/components/text-editor";
 import { useModal } from "@/hooks/useModal";
-import { Container, QuestionContainer } from "./style";
+import { Container, QuestionContainer } from "./styles";
 import { IEditModalData } from "@/models/students/selective_process";
 import { SelectiveProcessServices } from "@/services/student/selective-process.service";
 import { useLoading } from "@/hooks/useLoading";
