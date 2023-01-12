@@ -21,3 +21,7 @@ export const STUDENT_SELECTIVE_PROCESS = () => `${STUDENT_PATH()}/selective_proc
 export const MASTER_PATH = () => `/master`;
 
 export const MASTER_CALENDAR_PATH = () => `${MASTER_PATH()}/calendar`;
+
+export const DOCTOR_PATH = () => `/doctor`;
+
+export const DOCTOR_CALENDAR_PATH = () => `${DOCTOR_PATH()}/calendar`;

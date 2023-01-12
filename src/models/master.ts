@@ -1,17 +1,17 @@
-export interface IChildrenData {
+export interface IMasterDefaultData {
   id: number;
   question: string;
   father_question: number;
   title: string;
   response: boolean;
-  childrens: IChildrenData[];
+  childrens: IMasterDefaultData[];
 }
 
-export interface IMasterHomeData {
-  id: number;
-  question: string;
-  father_question: number;
-  title: string;
-  response: boolean;
-  childrens: IChildrenData[];
+export interface ICalendarTitleData extends IMasterDefaultData {}
+
+export interface IMasterHomeData extends IMasterDefaultData {}
+
+export interface IMasterUpdateData {
+  title?: string;
+  link?: string;
 }

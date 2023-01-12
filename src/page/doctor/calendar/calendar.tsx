@@ -5,9 +5,9 @@ import { BsPencil } from "react-icons/bs";
 import { toast } from "react-toastify";
 
 import { Container, ContainerButton, DescriptionContainer, Input } from "./styles";
-import { ICalendarTitleData } from "@/models/master";
-import { CalendarServices } from "@/services/master/calendar.service";
-import { MASTER_PATH } from "@/routes/paths/paths.private";
+import { ICalendarTitleData } from "@/models/doctor";
+import { CalendarServices } from "@/services/doctor/calentar.service";
+import { DOCTOR_PATH } from "@/routes/paths/paths.private";
 import { EditCalendarLink } from "./edit-calendar-link";
 import { useLoading } from "@/hooks/useLoading";
 import { Button } from "@/components/button";
@@ -21,7 +21,7 @@ const Calendar = () => {
 
   const [calendarData, setCalendarData] = useState<ICalendarTitleData>({} as ICalendarTitleData);
 
-  const handleNavigateBack = () => navigate(MASTER_PATH());
+  const handleNavigateBack = () => navigate(DOCTOR_PATH());
 
   const getData = useCallback(async () => {
     try {

@@ -2,8 +2,8 @@ import React, { useCallback, useState } from "react";
 import { toast } from "react-toastify";
 import * as S from "./styles";
 import { useModal } from "@/hooks/useModal";
-import { ICalendarTitleData } from "@/models/master";
-import { CalendarServices } from "@/services/master/calendar.service";
+import { ICalendarTitleData } from "@/models/doctor";
+import { CalendarServices } from "@/services/doctor/calentar.service";
 import { EditTextButton } from "@/components/edit-text-button";
 import { IMasterUpdateData } from "@/models/master";
 
