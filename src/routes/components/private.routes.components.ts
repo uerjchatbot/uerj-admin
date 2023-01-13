@@ -10,6 +10,10 @@ import { Events } from "@/page/student/events";
 import { Schedules } from "@/page/student/schedules";
 import { SelectiveProcess } from "@/page/student/selective_process";
 import { Tutorials } from "@/page/student/tutorials";
+import { HomeMaster } from "@/page/master/home";
+import { MasterCalendarPage } from "@/page/master/calendar";
+import { HomeDoctor } from "@/page/doctor/home";
+import { DoctorCalendarPage } from "@/page/doctor/calendar";
 
 export const PrivateRoutesComponents: RouteComponentInterface[] = [
   {
@@ -61,5 +65,25 @@ export const PrivateRoutesComponents: RouteComponentInterface[] = [
     path: Private.STUDENT_SELECTIVE_PROCESS(),
     Component: SelectiveProcess,
     breadcrumb: " / 7 - Processo seletivo de bolsas"
+  },
+  {
+    path: Private.MASTER_PATH(),
+    Component: HomeMaster,
+    breadcrumb: "3 - Candidato Mestrado"
+  },
+  {
+    path: Private.MASTER_CALENDAR_PATH(),
+    Component: MasterCalendarPage,
+    breadcrumb: " / 1 - Cronograma"
+  },
+  {
+    path: Private.DOCTOR_PATH(),
+    Component: HomeDoctor,
+    breadcrumb: "2 - Candidato Doutorado"
+  },
+  {
+    path: Private.DOCTOR_CALENDAR_PATH(),
+    Component: DoctorCalendarPage,
+    breadcrumb: " / 1 - Cronograma"
   }
 ];

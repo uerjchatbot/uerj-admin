@@ -17,3 +17,11 @@ export const STUDENT_SCHEDULES = () => `${STUDENT_PATH()}/schedules`;
 export const STUDENT_TUTORIALS = () => `${STUDENT_PATH()}/tutorials`;
 
 export const STUDENT_SELECTIVE_PROCESS = () => `${STUDENT_PATH()}/selective_process`;
+
+export const MASTER_PATH = () => `/master`;
+
+export const MASTER_CALENDAR_PATH = () => `${MASTER_PATH()}/calendar`;
+
+export const DOCTOR_PATH = () => `/doctor`;
+
+export const DOCTOR_CALENDAR_PATH = () => `${DOCTOR_PATH()}/calendar`;

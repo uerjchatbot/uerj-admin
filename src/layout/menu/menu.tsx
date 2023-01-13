@@ -5,7 +5,7 @@ import Theme from "@/styles/theme";
 import Logo from "@/assets/images/logo.png";
 import LogoMarca from "@/assets/images/logo-marca.png";
 
-import { STUDENT_PATH, HOME_PATH } from "@/routes/paths/paths.private";
+import { STUDENT_PATH, HOME_PATH, MASTER_PATH } from "@/routes/paths/paths.private";
 import { StudentIcon, GraduateCapIcon, MedalIcon, RepeatIcon } from "@/page/home/icons/home-icons";
 
 import { IconInterface } from "@/types/interface/icons/icons.interface";
@@ -34,7 +34,7 @@ const Icons: IconProps[] = [
   {
     Icon: MedalIcon,
     text: "3 - Canditado de Mestrado",
-    path: HOME_PATH()
+    path: MASTER_PATH()
   },
   {
     Icon: RepeatIcon,

@@ -16,7 +16,12 @@ import {
   Card
 } from "./styles";
 import { useNavigate } from "react-router-dom";
-import { STUDENT_PATH, VIEW_HOME_PATH } from "@/routes/paths/paths.private";
+import {
+  STUDENT_PATH,
+  VIEW_HOME_PATH,
+  MASTER_PATH,
+  DOCTOR_PATH
+} from "@/routes/paths/paths.private";
 import { HomeServices } from "@/services/home/home.service";
 import { IHomeData } from "@/models/home";
 import { convertToHtml } from "@/utils/formarter";
@@ -38,7 +43,7 @@ const convertIcon = {
 //   2: " ",
 //   3: " "
 // };
-const convertPath = [STUDENT_PATH(), " ", " ", " "];
+const convertPath = [STUDENT_PATH(), DOCTOR_PATH(), MASTER_PATH(), " "];
 
 const Home: React.FC = () => {
   const { setTitle, setComponent, setIsVisible } = useModal();
