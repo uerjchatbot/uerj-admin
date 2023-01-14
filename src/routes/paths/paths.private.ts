@@ -22,6 +22,10 @@ export const MASTER_PATH = () => `/master`;
 
 export const MASTER_CALENDAR_PATH = () => `${MASTER_PATH()}/calendar`;
 
+export const MASTER_CONTACT = () => `${MASTER_PATH()}/contact`;
+
 export const DOCTOR_PATH = () => `/doctor`;
 
 export const DOCTOR_CALENDAR_PATH = () => `${DOCTOR_PATH()}/calendar`;
+
+export const DOCTOR_CONTACT = () => `${DOCTOR_PATH()}/contact`;

@@ -22,7 +22,12 @@ import { convertToHtml } from "@/utils/formarter";
 import { orderChildrens } from "@/utils/order";
 import { Button } from "@/components/button";
 
-const navigateToPath = [Private.MASTER_CALENDAR_PATH()];
+const navigateToPath = [
+  Private.MASTER_CALENDAR_PATH(),
+  Private.MASTER_CALENDAR_PATH(),
+  Private.MASTER_CALENDAR_PATH(),
+  Private.MASTER_CONTACT()
+];
 
 const Home: React.FC = () => {
   const navigate = useNavigate();

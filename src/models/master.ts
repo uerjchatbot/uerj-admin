@@ -14,4 +14,5 @@ export interface IMasterHomeData extends IMasterDefaultData {}
 export interface IMasterUpdateData {
   title?: string;
   link?: string;
+  question?: string;
 }

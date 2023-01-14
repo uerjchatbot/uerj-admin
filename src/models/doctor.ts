@@ -14,4 +14,5 @@ export interface IDoctorHomeData extends IDoctorDefaultData {}
 export interface IDoctorUpdateData {
   title?: string;
   link?: string;
+  question?: string;
 }
