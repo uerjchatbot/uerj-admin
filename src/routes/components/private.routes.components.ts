@@ -16,6 +16,7 @@ import { HomeDoctor } from "@/page/doctor/home";
 import { DoctorCalendarPage } from "@/page/doctor/calendar";
 import { DoctorContactPage } from "@/page/doctor/contact";
 import { MasterContactPage } from "@/page/master/contact";
+import { DoctorProcessSelectivePage } from "@/page/doctor/selective_process";
 
 export const PrivateRoutesComponents: RouteComponentInterface[] = [
   {
@@ -83,6 +84,7 @@ export const PrivateRoutesComponents: RouteComponentInterface[] = [
     Component: MasterContactPage,
     breadcrumb: " / 4 - Contato"
   },
+
   {
     path: Private.DOCTOR_PATH(),
     Component: HomeDoctor,
@@ -92,6 +94,11 @@ export const PrivateRoutesComponents: RouteComponentInterface[] = [
     path: Private.DOCTOR_CALENDAR_PATH(),
     Component: DoctorCalendarPage,
     breadcrumb: " / 1 - Cronograma"
+  },
+  {
+    path: Private.DOCTOR_SELECTIVE_PROCESS(),
+    Component: DoctorProcessSelectivePage,
+    breadcrumb: " / 2 - Processo seletivo"
   },
   {
     path: Private.DOCTOR_CONTACT(),

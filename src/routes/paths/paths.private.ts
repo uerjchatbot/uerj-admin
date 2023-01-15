@@ -29,3 +29,5 @@ export const DOCTOR_PATH = () => `/doctor`;
 export const DOCTOR_CALENDAR_PATH = () => `${DOCTOR_PATH()}/calendar`;
 
 export const DOCTOR_CONTACT = () => `${DOCTOR_PATH()}/contact`;
+
+export const DOCTOR_SELECTIVE_PROCESS = () => `${DOCTOR_PATH()}/selective_process`;
