@@ -1,48 +1,61 @@
-import React from "react";
+import React, { useState } from "react";
 import { BsPencil } from "react-icons/bs";
 
 import * as S from "./styles";
 
-import {
-  IFirstStepData,
-  ITeachingStaffChildrenData,
-  ITeachingStaffData
-} from "@/models/teaching-staff";
+import { IDoctorDefaultData, IFirstStepData } from "@/models/doctor";
 import { Button } from "@/components/button";
 import { useModal } from "@/hooks/useModal";
-// import { EditPageDescription } from "../../edit_modals/page_description";
-// import { EditFirstQuestion } from "../../edit_modals/first_question";
-// import { EditSecondQuestion } from "../../edit_modals/second_question";
+import { EditNoticeQuestion } from "../../edit-modals/notice";
+import { EditQuotasQuestion } from "../../edit-modals/quotas";
+import { EditRegistrationQuestion } from "../../edit-modals/registration";
+import { EditVacanciesQuestion } from "../../edit-modals/vacancies";
 
 type Props = {
   data?: IFirstStepData;
-  setData: React.Dispatch<React.SetStateAction<IFirstStepData>>;
-  // coordination?: ITeachingStaffChildrenData;
-  // setCoordination: React.Dispatch<React.SetStateAction<ITeachingStaffData>>;
 };
 
-const Form = ({
-  data,
-  setData
-}: // coordination,
-// setCoordination,
-Props) => {
+const Form = ({ data }: Props) => {
   const { setTitle, setComponent, setIsVisible } = useModal();
+  const [notice, setNotice] = useState<IDoctorDefaultData>(data?.notice as IDoctorDefaultData);
+  const [quotas, setQuotas] = useState<IDoctorDefaultData>(data?.quotas as IDoctorDefaultData);
+  const [registration, setRegistration] = useState<IDoctorDefaultData>(
+    data?.registration as IDoctorDefaultData
+  );
+  const [vacancies, setVacancies] = useState<IDoctorDefaultData>(
+    data?.vacancies as IDoctorDefaultData
+  );
 
-  const handleOpenEditFirstQuestionModal = (): void => {
-    // setTitle(`Editar ${ffp?.question}`);
+  const handleOpenEditVacanciesQuestionModal = (): void => {
+    setTitle(`Editar ${vacancies.question}`);
 
-    // setComponent(<EditFirstQuestion ffp={ffp} setFfp={setFfp} />);
+    setComponent(<EditVacanciesQuestion vacancies={vacancies} setVacancies={setVacancies} />);
 
     setIsVisible(true);
   };
 
-  const handleOpenEditSecondQuestionModal = (): void => {
-    // setTitle(`Editar ${coordination?.question}`);
+  const handleOpenEditNoticeQuestionModal = (): void => {
+    setTitle(`Editar ${notice.question}`);
 
-    // setComponent(
-    //   <EditSecondQuestion coordination={coordination} setCoordination={setCoordination} />
-    // );
+    setComponent(<EditNoticeQuestion setNotice={setNotice} notice={notice} />);
+
+    setIsVisible(true);
+  };
+
+  const handleOpenEditQuotasQuestionModal = (): void => {
+    setTitle(`Editar ${quotas?.question}`);
+
+    setComponent(<EditQuotasQuestion quotas={quotas} setQuotas={setQuotas} />);
+
+    setIsVisible(true);
+  };
+
+  const handleOpenEditRegistrationQuestionModal = (): void => {
+    setTitle(`Editar ${registration?.question}`);
+
+    setComponent(
+      <EditRegistrationQuestion registration={registration} setRegistration={setRegistration} />
+    );
 
     setIsVisible(true);
   };
@@ -53,15 +66,15 @@ Props) => {
         <S.ContentCard>
           <S.ContentCardHeader>
             <S.DotRounded>1</S.DotRounded>
-            {data && <span>{data.notice.question}</span>}
+            {notice && <span>{notice.question}</span>}
           </S.ContentCardHeader>
 
-          <p>{data && data.notice.title}</p>
-          <p>{data && data.quotas.childrens[0].title}</p>
+          <p>{notice && notice.title}</p>
+          <p>{notice && notice.childrens[0].title}</p>
 
           <S.ContainerButton>
             <Button outline={true} type={"button"}>
-              <span onClick={handleOpenEditSecondQuestionModal}>
+              <span onClick={handleOpenEditNoticeQuestionModal}>
                 Editar <BsPencil size={16} />
               </span>
             </Button>
@@ -71,24 +84,22 @@ Props) => {
         <S.ContentCard>
           <S.ContentCardHeader>
             <S.DotRounded>2</S.DotRounded>
-            {data && <span>{data.vacancies.question}</span>}
+            {vacancies && <span>{vacancies.question}</span>}
           </S.ContentCardHeader>
 
           <S.FlexRowCard>
-            <p>{data && data.vacancies.title.split("|")[0]}</p>
-            {data && data.vacancies?.childrens && (
-              <S.Input
-                placeholder="Nome do diretor(a)"
-                disabled
-                defaultValue={data.vacancies.title.split("|")[1]}
-              />
-            )}
-            <p>{data && data.vacancies.title.split("|")[2]}</p>
+            <p>{vacancies && vacancies.title.split("|")[0]}</p>
+            <S.Input
+              placeholder="Quantidade"
+              disabled
+              defaultValue={vacancies.title.split("|")[1]}
+            />
+            <p>{vacancies && vacancies.title.split("|")[2]}</p>
           </S.FlexRowCard>
 
           <S.ContainerButton>
             <Button outline={true} type={"button"}>
-              <span onClick={handleOpenEditSecondQuestionModal}>
+              <span onClick={handleOpenEditVacanciesQuestionModal}>
                 Editar <BsPencil size={16} />
               </span>
             </Button>
@@ -98,19 +109,15 @@ Props) => {
         <S.ContentCard>
           <S.ContentCardHeader>
             <S.DotRounded>3</S.DotRounded>
-            {data && <span>{data.quotas.question}</span>}
+            {quotas && <span>{quotas.question}</span>}
           </S.ContentCardHeader>
 
-          {data?.quotas?.childrens && (
-            <>
-              <p>{data.quotas.title}</p>
-              <p>{data.quotas.childrens[0].title}</p>
-            </>
-          )}
+          <p>{quotas.title}</p>
+          <p>{quotas.childrens[0].title}</p>
 
           <S.ContainerButton>
             <Button outline={true} type={"button"}>
-              <span onClick={handleOpenEditSecondQuestionModal}>
+              <span onClick={handleOpenEditQuotasQuestionModal}>
                 Editar <BsPencil size={16} />
               </span>
             </Button>
@@ -120,19 +127,15 @@ Props) => {
         <S.ContentCard>
           <S.ContentCardHeader>
             <S.DotRounded>4</S.DotRounded>
-            {data && <span>{data.registration.question}</span>}
+            {registration && <span>{registration.question}</span>}
           </S.ContentCardHeader>
 
-          {data?.registration?.childrens && (
-            <>
-              <p>{data.registration.title}</p>
-              <p>{data.registration.childrens[0].title}</p>
-            </>
-          )}
+          <p>{registration.title}</p>
+          <p>{registration.childrens[0].title}</p>
 
           <S.ContainerButton>
             <Button outline={true} type={"button"}>
-              <span onClick={handleOpenEditSecondQuestionModal}>
+              <span onClick={handleOpenEditRegistrationQuestionModal}>
                 Editar <BsPencil size={16} />
               </span>
             </Button>

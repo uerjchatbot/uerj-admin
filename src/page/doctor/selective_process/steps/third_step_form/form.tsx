@@ -1,39 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import { BsPencil } from "react-icons/bs";
 
-import { useLoading } from "@/hooks/useLoading";
 import * as S from "./styles";
 
-import { IThirdStepData } from "@/models/teaching-staff";
+import { IDoctorDefaultData, IThirdStepData } from "@/models/doctor";
 import { Button } from "@/components/button";
 import { useModal } from "@/hooks/useModal";
-// import { EditPageDescription } from "../../edit_modals/page_description";
-// import { EditFirstQuestion } from "../../edit_modals/first_question";
-// import { EditSecondQuestion } from "../../edit_modals/second_question";
+import { EditResourcesQuestion } from "../../edit-modals/resources";
+import { EditResultsQuestion } from "../../edit-modals/results";
 
 type Props = {
   data?: IThirdStepData;
-  setData: React.Dispatch<React.SetStateAction<IThirdStepData>>;
 };
 
-const Form = ({ data, setData }: Props) => {
+const Form = ({ data }: Props) => {
   const { setTitle, setComponent, setIsVisible } = useModal();
-  const { setLoading } = useLoading();
 
-  const handleOpenEditFirstQuestionModal = (): void => {
-    // setTitle(`Editar ${ffp?.question}`);
+  const [resources, setResources] = useState<IDoctorDefaultData>(
+    data?.resources as IDoctorDefaultData
+  );
 
-    // setComponent(<EditFirstQuestion ffp={ffp} setFfp={setFfp} />);
+  const [results, setResults] = useState<IDoctorDefaultData>(data?.results as IDoctorDefaultData);
+
+  const handleOpenEditResultsQuestionModal = (): void => {
+    setTitle(`Editar ${results?.question}`);
+
+    setComponent(<EditResultsQuestion results={results} setResults={setResults} />);
 
     setIsVisible(true);
   };
 
-  const handleOpenEditSecondQuestionModal = (): void => {
-    // setTitle(`Editar ${coordination?.question}`);
+  const handleOpenEditResourcesQuestionModal = (): void => {
+    setTitle(`Editar ${resources?.question}`);
 
-    // setComponent(
-    //   <EditSecondQuestion coordination={coordination} setCoordination={setCoordination} />
-    // );
+    setComponent(<EditResourcesQuestion resources={resources} setResources={setResources} />);
 
     setIsVisible(true);
   };
@@ -44,68 +44,68 @@ const Form = ({ data, setData }: Props) => {
         <S.ContentCard>
           <S.ContentCardHeader>
             <S.DotRounded>9</S.DotRounded>
-            {data && <span>{data.results.question}</span>}
+            {results && <span>{results.question}</span>}
           </S.ContentCardHeader>
 
-          <p>{data && data.results.title}</p>
+          <p>{results && results.title}</p>
 
-          {data && data.results.childrens[0] && (
+          {results && results.childrens[0] && (
             <S.CardItem>
               <span>
-                <strong>1</strong> - {data.results.childrens[0].question}
+                <strong>1</strong> - {results.childrens[0].question}
               </span>
-              <p>{data.results.childrens[0].title}</p>
+              <p>{results.childrens[0].title}</p>
             </S.CardItem>
           )}
 
-          {data && (
+          {results && (
             <S.CardItem>
               <span>
-                <strong>2</strong> - {data.results.childrens[1].question}
+                <strong>2</strong> - {results.childrens[1].question}
               </span>
-              <p>{data.results.childrens[1].title}</p>
+              <p>{results.childrens[1].title}</p>
             </S.CardItem>
           )}
 
-          {data && (
+          {results && (
             <S.CardItem>
               <span>
-                <strong>3</strong> - {data.results.childrens[2].question}
+                <strong>3</strong> - {results.childrens[2].question}
               </span>
-              <p>{data.results.childrens[2].title}</p>
+              <p>{results.childrens[2].title}</p>
             </S.CardItem>
           )}
 
-          {data && (
+          {results && (
             <S.CardItem>
               <span>
-                <strong>4</strong> - {data.results.childrens[3].question}
+                <strong>4</strong> - {results.childrens[3].question}
               </span>
-              <p>{data.results.childrens[3].title}</p>
+              <p>{results.childrens[3].title}</p>
             </S.CardItem>
           )}
 
-          {data && (
+          {results && (
             <S.CardItem>
               <span>
-                <strong>5</strong> - {data.results.childrens[4].question}
+                <strong>5</strong> - {results.childrens[4].question}
               </span>
-              <p>{data.results.childrens[4].title}</p>
+              <p>{results.childrens[4].title}</p>
             </S.CardItem>
           )}
 
-          {data && (
+          {results && (
             <S.CardItem>
               <span>
-                <strong>6</strong> - {data.results.childrens[5].question}
+                <strong>6</strong> - {results.childrens[5].question}
               </span>
-              <p>{data.results.childrens[5].title}</p>
+              <p>{results.childrens[5].title}</p>
             </S.CardItem>
           )}
 
           <S.ContainerButton>
             <Button outline={true} type={"button"}>
-              <span onClick={handleOpenEditFirstQuestionModal}>
+              <span onClick={handleOpenEditResultsQuestionModal}>
                 Editar <BsPencil size={16} />
               </span>
             </Button>
@@ -115,14 +115,14 @@ const Form = ({ data, setData }: Props) => {
         <S.ContentCard>
           <S.ContentCardHeader>
             <S.DotRounded>10</S.DotRounded>
-            {data && <span>{data.resources.question}</span>}
+            {resources && <span>{resources.question}</span>}
           </S.ContentCardHeader>
 
-          <p>{(data && data.resources.title) || "Um texto aqui"}</p>
+          <p>{(resources && resources.title) || "Um texto aqui"}</p>
 
           <S.ContainerButton>
             <Button outline={true} type={"button"}>
-              <span onClick={handleOpenEditSecondQuestionModal}>
+              <span onClick={handleOpenEditResourcesQuestionModal}>
                 Editar <BsPencil size={16} />
               </span>
             </Button>

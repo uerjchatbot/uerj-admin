@@ -24,7 +24,7 @@ import { Button } from "@/components/button";
 
 const navigateToPath = [
   Private.MASTER_CALENDAR_PATH(),
-  Private.MASTER_CALENDAR_PATH(),
+  Private.MASTER_SELECTIVE_PROCESS(),
   Private.MASTER_CALENDAR_PATH(),
   Private.MASTER_CONTACT()
 ];

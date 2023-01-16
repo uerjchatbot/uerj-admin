@@ -1,44 +1,68 @@
-import React from "react";
+import React, { useState } from "react";
 import { BsPencil } from "react-icons/bs";
 
 import * as S from "./styles";
 
-import { IFirstStepData, ISecondStepData } from "@/models/teaching-staff";
+import { IDoctorDefaultData, ISecondStepData } from "@/models/doctor";
 import { Button } from "@/components/button";
 import { useModal } from "@/hooks/useModal";
-// import { EditPageDescription } from "../../edit_modals/page_description";
-// import { EditFirstQuestion } from "../../edit_modals/first_question";
-// import { EditSecondQuestion } from "../../edit_modals/second_question";
+import { EditDocumentationQuestion } from "../../edit-modals/documentation";
+import { EditStepQuestion } from "../../edit-modals/step";
+import { EditDiscretionQuestion } from "../../edit-modals/discretion";
+import { EditEnrollmentQuestion } from "../../edit-modals/enrollment";
 
 type Props = {
   data?: ISecondStepData;
-  setData: React.Dispatch<React.SetStateAction<ISecondStepData>>;
-  // coordination?: ITeachingStaffChildrenData;
-  // setCoordination: React.Dispatch<React.SetStateAction<ITeachingStaffData>>;
 };
 
-const Form = ({
-  data,
-  setData
-}: // coordination,
-// setCoordination,
-Props) => {
+const Form = ({ data }: Props) => {
   const { setTitle, setComponent, setIsVisible } = useModal();
 
-  const handleOpenEditFirstQuestionModal = (): void => {
-    // setTitle(`Editar ${ffp?.question}`);
+  const [documentation, setDocumentation] = useState<IDoctorDefaultData>(
+    data?.documentation as IDoctorDefaultData
+  );
+  const [step, setStep] = useState<IDoctorDefaultData>(data?.steps as IDoctorDefaultData);
+  const [discretion, setDiscretion] = useState<IDoctorDefaultData>(
+    data?.discretion as IDoctorDefaultData
+  );
 
-    // setComponent(<EditFirstQuestion ffp={ffp} setFfp={setFfp} />);
+  const [enrollment, setEnrollment] = useState<IDoctorDefaultData>(
+    data?.enrollment as IDoctorDefaultData
+  );
+
+  const handleOpenEditDocumentationQuestionModal = (): void => {
+    setTitle(`Editar ${documentation.question}`);
+
+    setComponent(
+      <EditDocumentationQuestion
+        setDocumentation={setDocumentation}
+        documentation={documentation}
+      />
+    );
 
     setIsVisible(true);
   };
 
-  const handleOpenEditSecondQuestionModal = (): void => {
-    // setTitle(`Editar ${coordination?.question}`);
+  const handleOpenEditDiscretionQuestionModal = (): void => {
+    setTitle(`Editar ${discretion?.question}`);
 
-    // setComponent(
-    //   <EditSecondQuestion coordination={coordination} setCoordination={setCoordination} />
-    // );
+    setComponent(<EditDiscretionQuestion discretion={discretion} setDiscretion={setDiscretion} />);
+
+    setIsVisible(true);
+  };
+
+  const handleOpenEditStepQuestionModal = (): void => {
+    setTitle(`Editar ${step?.question}`);
+
+    setComponent(<EditStepQuestion step={step} setStep={setStep} />);
+
+    setIsVisible(true);
+  };
+
+  const handleOpenEditEnrollmentQuestionModal = (): void => {
+    setTitle(`Editar ${enrollment?.question}`);
+
+    setComponent(<EditEnrollmentQuestion enrollment={enrollment} setEnrollment={setEnrollment} />);
 
     setIsVisible(true);
   };
@@ -49,14 +73,14 @@ Props) => {
         <S.ContentCard>
           <S.ContentCardHeader>
             <S.DotRounded>5</S.DotRounded>
-            {data && <span>{data.documentation.question}</span>}
+            {documentation && <span>{documentation.question}</span>}
           </S.ContentCardHeader>
 
-          <p>{data && data.documentation.title}</p>
+          <p>{documentation && documentation.title}</p>
 
           <S.ContainerButton>
             <Button outline={true} type={"button"}>
-              <span onClick={handleOpenEditFirstQuestionModal}>
+              <span onClick={handleOpenEditDocumentationQuestionModal}>
                 Editar <BsPencil size={16} />
               </span>
             </Button>
@@ -66,14 +90,14 @@ Props) => {
         <S.ContentCard>
           <S.ContentCardHeader>
             <S.DotRounded>6</S.DotRounded>
-            {data && <span>{data.steps.question}</span>}
+            {step && <span>{step.question}</span>}
           </S.ContentCardHeader>
 
-          <p>{(data && data.steps.title) || "Um texto aqui"}</p>
+          <p>{(step && step.title) || "Um texto aqui"}</p>
 
           <S.ContainerButton>
             <Button outline={true} type={"button"}>
-              <span onClick={handleOpenEditSecondQuestionModal}>
+              <span onClick={handleOpenEditStepQuestionModal}>
                 Editar <BsPencil size={16} />
               </span>
             </Button>
@@ -83,14 +107,14 @@ Props) => {
         <S.ContentCard>
           <S.ContentCardHeader>
             <S.DotRounded>7</S.DotRounded>
-            {data && <span>{data.discretion.question}</span>}
+            {discretion && <span>{discretion.question}</span>}
           </S.ContentCardHeader>
 
-          <p>{(data && data.discretion.title) || "Um texto Aqui"}</p>
+          <p>{(discretion && discretion.title) || "Um texto Aqui"}</p>
 
           <S.ContainerButton>
             <Button outline={true} type={"button"}>
-              <span onClick={handleOpenEditSecondQuestionModal}>
+              <span onClick={handleOpenEditDiscretionQuestionModal}>
                 Editar <BsPencil size={16} />
               </span>
             </Button>
@@ -100,14 +124,14 @@ Props) => {
         <S.ContentCard>
           <S.ContentCardHeader>
             <S.DotRounded>8</S.DotRounded>
-            {data && <span>{data.registration.question}</span>}
+            {enrollment && <span>{enrollment.question}</span>}
           </S.ContentCardHeader>
 
-          <p>{(data && data.registration.title) || "Um texto aqui"}</p>
+          <p>{(enrollment && enrollment.title) || "Um texto aqui"}</p>
 
           <S.ContainerButton>
             <Button outline={true} type={"button"}>
-              <span onClick={handleOpenEditSecondQuestionModal}>
+              <span onClick={handleOpenEditEnrollmentQuestionModal}>
                 Editar <BsPencil size={16} />
               </span>
             </Button>

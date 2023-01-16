@@ -8,14 +8,14 @@ import * as S from "./styles";
 import { FirstStepForm } from "./steps/first_step_form";
 import { SecondStepForm } from "./steps/second_step_form";
 import { ThirdStepForm } from "./steps/third_step_form";
-import { TeachingStaffServices } from "@/services/student/teaching-staff.service";
+import { DoctorProcessServices } from "@/services/doctor/process.service";
 import { orderChildrens } from "@/utils/order";
 import {
   IFirstStepData,
   ISecondStepData,
-  ITeachingStaffData,
+  IDoctorDefaultData,
   IThirdStepData
-} from "@/models/teaching-staff";
+} from "@/models/doctor";
 import { DOCTOR_PATH } from "@/routes/paths/paths.private";
 import { Button } from "@/components/button";
 
@@ -25,7 +25,7 @@ const SelectiveProcesss = () => {
   const { state }: { state: any } = useLocation();
 
   const [selectedStage, setSelectedStage] = useState(1);
-  const [homeData, setHomeData] = useState<ITeachingStaffData>({} as ITeachingStaffData);
+  const [homeData, setHomeData] = useState<IDoctorDefaultData>({} as IDoctorDefaultData);
   const [firstStepData, setFirstStepData] = useState<IFirstStepData>({} as IFirstStepData);
   const [secondStepData, setSecondStepData] = useState<ISecondStepData>({} as ISecondStepData);
   const [thirdStepData, setThirdStepData] = useState<IThirdStepData>({} as IThirdStepData);
@@ -34,7 +34,7 @@ const SelectiveProcesss = () => {
   const getData = async () => {
     try {
       setLoading(true);
-      const { data } = await TeachingStaffServices.getHomeData(state.childrenId);
+      const { data } = await DoctorProcessServices.getData(state.childrenId);
 
       data.childrens = orderChildrens(data.childrens);
 
@@ -51,7 +51,7 @@ const SelectiveProcesss = () => {
         documentation: data.childrens[4],
         steps: data.childrens[5],
         discretion: data.childrens[6],
-        registration: data.childrens[7]
+        enrollment: data.childrens[7]
       });
 
       setThirdStepData({
@@ -103,17 +103,11 @@ const SelectiveProcesss = () => {
         </S.ContainerButton>
       </S.HeaderContainer>
 
-      {homeData.childrens && selectedStage === 1 && (
-        <FirstStepForm data={firstStepData} setData={setFirstStepData} />
-      )}
+      {homeData.childrens && selectedStage === 1 && <FirstStepForm data={firstStepData} />}
 
-      {homeData.childrens && selectedStage === 2 && (
-        <SecondStepForm data={secondStepData} setData={setSecondStepData} />
-      )}
+      {homeData.childrens && selectedStage === 2 && <SecondStepForm data={secondStepData} />}
 
-      {homeData.childrens && selectedStage === 3 && (
-        <ThirdStepForm data={thirdStepData} setData={setThirdStepData} />
-      )}
+      {homeData.childrens && selectedStage === 3 && <ThirdStepForm data={thirdStepData} />}
     </S.Container>
   );
 };
