@@ -45,3 +45,15 @@ export interface IDoctorProcessResults {
   language: IDoctorDefaultData;
   outcome: IDoctorDefaultData;
 }
+
+export interface IDoctorProgram {
+  program: IDoctorDefaultData;
+  lines: IDoctorDefaultData;
+  project: IDoctorDefaultData;
+  handbag: IDoctorDefaultData;
+}
+
+export interface IDoctorTeacher {
+  index: number;
+  teacher: string;
+}

@@ -18,6 +18,8 @@ import { DoctorContactPage } from "@/page/doctor/contact";
 import { MasterContactPage } from "@/page/master/contact";
 import { DoctorProcessSelectivePage } from "@/page/doctor/selective_process";
 import { MasterProcessSelectivePage } from "@/page/master/selective_process";
+import { DoctorPogramPage } from "@/page/doctor/program";
+import { MasterPogramPage } from "@/page/master/program";
 
 export const PrivateRoutesComponents: RouteComponentInterface[] = [
   {
@@ -86,6 +88,11 @@ export const PrivateRoutesComponents: RouteComponentInterface[] = [
     breadcrumb: " / 2 - Processo seletivo"
   },
   {
+    path: Private.MASTER_PROGRAM(),
+    Component: MasterPogramPage,
+    breadcrumb: " / 3 - Programa"
+  },
+  {
     path: Private.MASTER_CONTACT(),
     Component: MasterContactPage,
     breadcrumb: " / 4 - Contato"
@@ -105,6 +112,11 @@ export const PrivateRoutesComponents: RouteComponentInterface[] = [
     path: Private.DOCTOR_SELECTIVE_PROCESS(),
     Component: DoctorProcessSelectivePage,
     breadcrumb: " / 2 - Processo seletivo"
+  },
+  {
+    path: Private.DOCTOR_PROGRAM(),
+    Component: DoctorPogramPage,
+    breadcrumb: " / 3 - Programa"
   },
   {
     path: Private.DOCTOR_CONTACT(),
