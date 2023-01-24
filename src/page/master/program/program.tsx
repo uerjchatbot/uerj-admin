@@ -218,7 +218,7 @@ const Program = () => {
               <TeacherListContainer>
                 {firstTeachers &&
                   firstTeachers.map((item) => (
-                    <TeacherItem key={item.index}>
+                    <TeacherItem key={`${item.index}-${item.teacher}`}>
                       {item.teacher}{" "}
                       <button>
                         <BsTrash
@@ -242,7 +242,7 @@ const Program = () => {
               <TeacherListContainer>
                 {secondTeachers &&
                   secondTeachers.map((item) => (
-                    <TeacherItem key={item.index}>
+                    <TeacherItem key={`${item.index}-${item.teacher}`}>
                       {item.teacher}
                       <button>
                         <BsTrash
