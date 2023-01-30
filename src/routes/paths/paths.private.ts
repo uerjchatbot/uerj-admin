@@ -37,3 +37,7 @@ export const DOCTOR_SELECTIVE_PROCESS = () => `${DOCTOR_PATH()}/selective_proces
 export const DOCTOR_PROGRAM = () => `${DOCTOR_PATH()}/program`;
 
 export const DOCTOR_CONTACT = () => `${DOCTOR_PATH()}/contact`;
+
+export const EGRESS_PATH = () => `/egress`;
+
+export const EGRESS_FORMS = () => `${EGRESS_PATH()}/forms`;

@@ -20,7 +20,8 @@ import {
   STUDENT_PATH,
   VIEW_HOME_PATH,
   MASTER_PATH,
-  DOCTOR_PATH
+  DOCTOR_PATH,
+  EGRESS_PATH
 } from "@/routes/paths/paths.private";
 import { HomeServices } from "@/services/home/home.service";
 import { IHomeData } from "@/models/home";
@@ -43,7 +44,7 @@ const convertIcon = {
 //   2: " ",
 //   3: " "
 // };
-const convertPath = [STUDENT_PATH(), DOCTOR_PATH(), MASTER_PATH(), " "];
+const convertPath = [STUDENT_PATH(), DOCTOR_PATH(), MASTER_PATH(), EGRESS_PATH()];
 
 const Home: React.FC = () => {
   const { setTitle, setComponent, setIsVisible } = useModal();

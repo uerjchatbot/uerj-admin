@@ -20,6 +20,8 @@ import { DoctorProcessSelectivePage } from "@/page/doctor/selective_process";
 import { MasterProcessSelectivePage } from "@/page/master/selective_process";
 import { DoctorPogramPage } from "@/page/doctor/program";
 import { MasterPogramPage } from "@/page/master/program";
+import { HomeEgress } from "@/page/egress/home";
+import { EgressFormsPage } from "@/page/egress/forms";
 
 export const PrivateRoutesComponents: RouteComponentInterface[] = [
   {
@@ -122,5 +124,15 @@ export const PrivateRoutesComponents: RouteComponentInterface[] = [
     path: Private.DOCTOR_CONTACT(),
     Component: DoctorContactPage,
     breadcrumb: " / 4 - Contato"
+  },
+  {
+    path: Private.EGRESS_PATH(),
+    Component: HomeEgress,
+    breadcrumb: "4 - Egresso"
+  },
+  {
+    path: Private.EGRESS_FORMS(),
+    Component: EgressFormsPage,
+    breadcrumb: " / 1 - Formulários"
   }
 ];

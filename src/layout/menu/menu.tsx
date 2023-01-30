@@ -6,7 +6,7 @@ import LogoMarca from "@/assets/images/logo-marca.png";
 import Logo from "@/assets/images/logo.png";
 
 import { GraduateCapIcon, MedalIcon, RepeatIcon, StudentIcon } from "@/page/home/icons/home-icons";
-import { DOCTOR_PATH, HOME_PATH, MASTER_PATH, STUDENT_PATH } from "@/routes/paths/paths.private";
+import { DOCTOR_PATH, EGRESS_PATH, MASTER_PATH, STUDENT_PATH } from "@/routes/paths/paths.private";
 
 import { IconInterface } from "@/types/interface/icons/icons.interface";
 
@@ -39,7 +39,7 @@ const Icons: IconProps[] = [
   {
     Icon: RepeatIcon,
     text: "4 - Egresso",
-    path: HOME_PATH()
+    path: EGRESS_PATH()
   }
 ];
 
