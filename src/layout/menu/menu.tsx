@@ -2,17 +2,17 @@ import React from "react";
 
 import Theme from "@/styles/theme";
 
-import Logo from "@/assets/images/logo.png";
 import LogoMarca from "@/assets/images/logo-marca.png";
+import Logo from "@/assets/images/logo.png";
 
-import { STUDENT_PATH, HOME_PATH, MASTER_PATH } from "@/routes/paths/paths.private";
-import { StudentIcon, GraduateCapIcon, MedalIcon, RepeatIcon } from "@/page/home/icons/home-icons";
+import { GraduateCapIcon, MedalIcon, RepeatIcon, StudentIcon } from "@/page/home/icons/home-icons";
+import { DOCTOR_PATH, HOME_PATH, MASTER_PATH, STUDENT_PATH } from "@/routes/paths/paths.private";
 
 import { IconInterface } from "@/types/interface/icons/icons.interface";
 
-import { Container, MenuIcon, LogoContainer, ExitCotainer, MenuContainer } from "./styles";
 import { INITIAL_PATH } from "@/routes/paths/paths.public";
 import { useNavigate } from "react-router-dom";
+import { Container, ExitCotainer, LogoContainer, MenuContainer, MenuIcon } from "./styles";
 
 interface IconProps {
   Icon: React.FC<IconInterface>;
@@ -29,7 +29,7 @@ const Icons: IconProps[] = [
   {
     Icon: GraduateCapIcon,
     text: "2 - Canditado de Doutorado",
-    path: HOME_PATH()
+    path: DOCTOR_PATH()
   },
   {
     Icon: MedalIcon,
@@ -50,7 +50,7 @@ const Menu: React.FC = () => {
   const renderIcon = ({ Icon, path, text }: IconProps) => {
     const isActive = location.pathname.includes(path);
     return (
-      <MenuIcon active={isActive} key={text}>
+      <MenuIcon active={isActive} key={text} onClick={() => navigate(path)}>
         <Icon size={32} color={isActive ? Theme.colors.blue.blueDark : Theme.colors.white.white} />
         <span>{text}</span>
       </MenuIcon>
