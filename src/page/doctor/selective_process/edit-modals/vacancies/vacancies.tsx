@@ -3,12 +3,12 @@ import { toast } from "react-toastify";
 
 import * as S from "./styles";
 
-import { TextEditor } from "@/components/text-editor";
 import { EditTextButton } from "@/components/edit-text-button";
+import { TextEditor } from "@/components/text-editor";
 import { useModal } from "@/hooks/useModal";
+import { IDoctorDefaultData } from "@/models/doctor";
 import { DoctorProcessServices } from "@/services/doctor/process.service";
 import { DotRounded } from "../../styles";
-import { IDoctorDefaultData } from "@/models/doctor";
 
 type Props = {
   vacancies?: IDoctorDefaultData;
@@ -60,7 +60,7 @@ const EditVacanciesQuestion = ({ vacancies, setVacancies }: Props) => {
   const handleEditText = async (): Promise<void> => {
     try {
       if (question && title) {
-        const newTitle = [partTitle1, ` |${partTitle2}| `, partTitle3].join("");
+        const newTitle = [partTitle1, `|${partTitle2}|`, partTitle3].join("");
 
         setTitle(newTitle);
 

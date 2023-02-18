@@ -60,7 +60,7 @@ const EditVacanciesQuestion = ({ vacancies, setVacancies }: Props) => {
   const handleEditText = async (): Promise<void> => {
     try {
       if (question && title) {
-        const newTitle = [partTitle1, ` |${partTitle2}| `, partTitle3].join("");
+        const newTitle = [partTitle1, `|${partTitle2}|`, partTitle3].join("");
 
         setTitle(newTitle);
 
@@ -73,9 +73,6 @@ const EditVacanciesQuestion = ({ vacancies, setVacancies }: Props) => {
         const data: IMasterDefaultData = {
           ...node.data
         };
-
-        //
-        console.log({ vacancies, data });
 
         setVacancies(data);
         setIsVisible(false);

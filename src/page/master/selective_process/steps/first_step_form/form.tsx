@@ -61,6 +61,8 @@ const Form = ({ data }: Props) => {
     setIsVisible(true);
   };
 
+  console.log(vacancies.title.split("|"));
+
   return (
     <>
       <S.ContainerCards>
@@ -93,7 +95,8 @@ const Form = ({ data }: Props) => {
             <S.Input
               placeholder="Quantidade"
               disabled
-              defaultValue={vacancies.title.split("|")[1]}
+              // defaultValue={vacancies.title.split("|")[1]}
+              value={vacancies.title.split("|")[1]}
             />
             <p>{vacancies && vacancies.title.split("|")[2]}</p>
           </S.FlexRowCard>

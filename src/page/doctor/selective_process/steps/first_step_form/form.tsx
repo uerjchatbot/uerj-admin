@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { BsPencil } from "react-icons/bs";
 
 import * as S from "./styles";
 
-import { IDoctorDefaultData, IFirstStepData } from "@/models/doctor";
 import { Button } from "@/components/button";
 import { useModal } from "@/hooks/useModal";
+import { IDoctorDefaultData, IFirstStepData } from "@/models/doctor";
 import { EditNoticeQuestion } from "../../edit-modals/notice";
 import { EditQuotasQuestion } from "../../edit-modals/quotas";
 import { EditRegistrationQuestion } from "../../edit-modals/registration";
@@ -92,7 +92,8 @@ const Form = ({ data }: Props) => {
             <S.Input
               placeholder="Quantidade"
               disabled
-              defaultValue={vacancies.title.split("|")[1]}
+              // defaultValue={vacancies.title.split("|")[1]}
+              value={vacancies.title.split("|")[1]}
             />
             <p>{vacancies && vacancies.title.split("|")[2]}</p>
           </S.FlexRowCard>
