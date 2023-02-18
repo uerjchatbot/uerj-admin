@@ -3,12 +3,12 @@ import { toast } from "react-toastify";
 
 import * as S from "./styles";
 
-import { TextEditor } from "@/components/text-editor";
 import { EditTextButton } from "@/components/edit-text-button";
+import { TextEditor } from "@/components/text-editor";
 import { useModal } from "@/hooks/useModal";
+import { IMasterDefaultData } from "@/models/master";
 import { MasterProcessServices } from "@/services/master/process.service";
 import { DotRounded } from "../../styles";
-import { IMasterDefaultData } from "@/models/master";
 
 type Props = {
   vacancies?: IMasterDefaultData;
@@ -30,7 +30,7 @@ const EditVacanciesQuestion = ({ vacancies, setVacancies }: Props) => {
     return (
       <>
         <S.QuestionContainer>
-          <DotRounded>5</DotRounded>
+          <DotRounded>2</DotRounded>
 
           <TextEditor value={question} setValue={setQuestion} />
         </S.QuestionContainer>
@@ -73,6 +73,9 @@ const EditVacanciesQuestion = ({ vacancies, setVacancies }: Props) => {
         const data: IMasterDefaultData = {
           ...node.data
         };
+
+        //
+        console.log({ vacancies, data });
 
         setVacancies(data);
         setIsVisible(false);

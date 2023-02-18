@@ -23,12 +23,13 @@ export const ContainerCards = styled.div`
   width: 90%;
   margin: 0 auto;
   display: grid;
-  grid-template-rows: repeat(2, 1fr);
   gap: 36px;
+
   @media (max-width: 1000px) {
     grid-template-columns: 1fr;
     gap: 90px;
   }
+
   padding-bottom: 48px;
 `;
 
@@ -44,6 +45,7 @@ export const ContentCard = styled.div`
     font-size: 1.5rem;
     margin-left: 1rem;
   }
+
   p {
     color: ${({ theme }) => theme.colors.grey.grey};
     font-size: 1.4rem;

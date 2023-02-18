@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { BsPencil } from "react-icons/bs";
 
 import * as S from "./styles";
 
-import { IMasterDefaultData, IFirstStepData } from "@/models/master";
 import { Button } from "@/components/button";
 import { useModal } from "@/hooks/useModal";
+import { IFirstStepData, IMasterDefaultData } from "@/models/master";
 import { EditNoticeQuestion } from "../../edit-modals/notice";
 import { EditQuotasQuestion } from "../../edit-modals/quotas";
 import { EditRegistrationQuestion } from "../../edit-modals/registration";
@@ -22,6 +22,7 @@ const Form = ({ data }: Props) => {
   const [registration, setRegistration] = useState<IMasterDefaultData>(
     data?.registration as IMasterDefaultData
   );
+
   const [vacancies, setVacancies] = useState<IMasterDefaultData>(
     data?.vacancies as IMasterDefaultData
   );
