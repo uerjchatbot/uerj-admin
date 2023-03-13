@@ -2,14 +2,16 @@ import React, { useRef } from "react";
 
 import SunEditor from "suneditor-react";
 import SetOptions from "suneditor-react/dist/types/SetOptions";
-import SunEditorCore from "suneditor/src/lib/core";
-import { pt_br } from "suneditor/src/lang";
-import plugins from "suneditor/src/plugins";
 import "suneditor/dist/css/suneditor.min.css";
+import { pt_br } from "suneditor/src/lang";
+import SunEditorCore from "suneditor/src/lib/core";
+import plugins from "suneditor/src/plugins";
 
 type Props = {
   value: string;
   setValue: React.Dispatch<React.SetStateAction<string>>;
+  placeholder?: string;
+  fontSize?: number;
 };
 
 const options = {
@@ -19,17 +21,19 @@ const options = {
   minHeight: "100%"
 };
 
-const TextEditor = ({ value, setValue }: Props) => {
+const TextEditor = ({ value, setValue, placeholder = "Digite aqui", fontSize = 24 }: Props) => {
   const editorRef = useRef<SunEditorCore>();
 
   const getSunEditorInstance = (sunEditor: SunEditorCore) => (editorRef.current = sunEditor);
 
+  const setDefaultStyle = `font-size: ${fontSize}px; font-family: Lato`;
+
   return (
     <SunEditor
       defaultValue={value}
-      placeholder="Digite aqui"
+      placeholder={placeholder}
       setOptions={options as SetOptions}
-      setDefaultStyle="font-size: 24px; font-family: Lato"
+      setDefaultStyle={setDefaultStyle}
       getSunEditorInstance={getSunEditorInstance}
       onChange={() => {
         if (editorRef.current && editorRef.current.getText().length > 0) {

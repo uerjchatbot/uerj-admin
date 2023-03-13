@@ -1,27 +1,30 @@
+import { DoctorCalendarPage } from "@/page/doctor/calendar";
+import { DoctorContactPage } from "@/page/doctor/contact";
+import { HomeDoctor } from "@/page/doctor/home";
+import { DoctorPogramPage } from "@/page/doctor/program";
+import { DoctorProcessSelectivePage } from "@/page/doctor/selective_process";
+import { EgressComunicationsPage } from "@/page/egress/comunication";
+import NewComunication from "@/page/egress/comunication/new-comunication";
+import { EgressFormsPage } from "@/page/egress/forms";
+import NewForm from "@/page/egress/forms/new-form";
+import { HomeEgress } from "@/page/egress/home";
 import { Home } from "@/page/home/main";
 import { ViewHome } from "@/page/home/view";
-import { HomeStudent } from "@/page/student/home";
+import { MasterCalendarPage } from "@/page/master/calendar";
+import { MasterContactPage } from "@/page/master/contact";
+import { HomeMaster } from "@/page/master/home";
+import { MasterPogramPage } from "@/page/master/program";
+import { MasterProcessSelectivePage } from "@/page/master/selective_process";
 import { CalendarPage } from "@/page/student/calendar";
-import * as Private from "@/routes/paths/paths.private";
-import { RouteComponentInterface } from "@/types/interface/routes/route-component.interface";
-import { FacultAndStudents } from "@/page/student/faculty_and_students";
-import { Matters } from "@/page/student/matters";
 import { Events } from "@/page/student/events";
+import { FacultAndStudents } from "@/page/student/faculty_and_students";
+import { HomeStudent } from "@/page/student/home";
+import { Matters } from "@/page/student/matters";
 import { Schedules } from "@/page/student/schedules";
 import { SelectiveProcess } from "@/page/student/selective_process";
 import { Tutorials } from "@/page/student/tutorials";
-import { HomeMaster } from "@/page/master/home";
-import { MasterCalendarPage } from "@/page/master/calendar";
-import { HomeDoctor } from "@/page/doctor/home";
-import { DoctorCalendarPage } from "@/page/doctor/calendar";
-import { DoctorContactPage } from "@/page/doctor/contact";
-import { MasterContactPage } from "@/page/master/contact";
-import { DoctorProcessSelectivePage } from "@/page/doctor/selective_process";
-import { MasterProcessSelectivePage } from "@/page/master/selective_process";
-import { DoctorPogramPage } from "@/page/doctor/program";
-import { MasterPogramPage } from "@/page/master/program";
-import { HomeEgress } from "@/page/egress/home";
-import { EgressFormsPage } from "@/page/egress/forms";
+import * as Private from "@/routes/paths/paths.private";
+import { RouteComponentInterface } from "@/types/interface/routes/route-component.interface";
 
 export const PrivateRoutesComponents: RouteComponentInterface[] = [
   {
@@ -134,5 +137,23 @@ export const PrivateRoutesComponents: RouteComponentInterface[] = [
     path: Private.EGRESS_FORMS(),
     Component: EgressFormsPage,
     breadcrumb: " / 1 - Formulários"
+  },
+
+  {
+    path: Private.EGRESS_NEW_FORM(),
+    Component: NewForm,
+    breadcrumb: " / Novo Formulário"
+  },
+
+  {
+    path: Private.EGRESS_COMUNICATIONS(),
+    Component: EgressComunicationsPage,
+    breadcrumb: " / 2 - Comunicações"
+  },
+
+  {
+    path: Private.EGRESS_NEW_COMUNICATION(),
+    Component: NewComunication,
+    breadcrumb: " / Nova Comunicação"
   }
 ];

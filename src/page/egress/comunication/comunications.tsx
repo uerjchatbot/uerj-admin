@@ -6,12 +6,12 @@ import { FiSend } from "react-icons/fi";
 import { useLocation, useNavigate } from "react-router-dom";
 import * as S from "./styles";
 
-const Forms: React.FC = () => {
+const Comunications: React.FC = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
   function handleToNewForm(): void {
-    navigate(`${pathname}/new-form`);
+    navigate(`${pathname}/new-comunication`);
   }
 
   const handleBackNavigation = () => navigate(Private.EGRESS_PATH());
@@ -44,7 +44,7 @@ const Forms: React.FC = () => {
         <table>
           <thead>
             <tr>
-              <th>Modelo</th>
+              <th>Título</th>
               <th>Enviado para</th>
               <th></th>
             </tr>
@@ -102,4 +102,4 @@ const Forms: React.FC = () => {
   );
 };
 
-export default Forms;
+export default Comunications;

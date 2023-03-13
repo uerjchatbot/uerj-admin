@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { toast } from "react-toastify";
+import React, { useCallback, useEffect, useState } from "react";
 import { BsPencil } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import {
   Container,
@@ -13,18 +13,18 @@ import {
   Title
 } from "./styles";
 
+import { Button } from "@/components/button";
+import { useModal } from "@/hooks/useModal";
+import { IEgressDefaultData } from "@/models/egress";
 import * as Private from "@/routes/paths/paths.private";
 import { EgressHomeServices } from "@/services/egress/home.service";
-import { IEgressDefaultData } from "@/models/egress";
-import { useModal } from "@/hooks/useModal";
-import EditHomeTitle from "./edit-home-title/edit-home-title";
 import { convertToHtml } from "@/utils/formarter";
 import { orderChildrens } from "@/utils/order";
-import { Button } from "@/components/button";
+import EditHomeTitle from "./edit-home-title/edit-home-title";
 
 const navigateToPath = [
-  Private.EGRESS_FORMS()
-  // Private.DOCTOR_SELECTIVE_PROCESS(),
+  Private.EGRESS_FORMS(),
+  Private.EGRESS_COMUNICATIONS()
   // Private.DOCTOR_PROGRAM(),
   // Private.DOCTOR_CONTACT()
 ];
