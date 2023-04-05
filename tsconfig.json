@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     /* Language and Environment */
+    "outDir": "./build",
     "target": "esnext",
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
     "jsx": "react-jsx",
