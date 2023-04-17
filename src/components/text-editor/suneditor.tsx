@@ -1,3 +1,4 @@
+import { convertWhatsappTextToHtml } from "@/utils/formarter";
 import React, { useRef } from "react";
 
 import SunEditor from "suneditor-react";
@@ -17,7 +18,7 @@ type Props = {
 const options = {
   plugins: plugins,
   lang: pt_br,
-  buttonList: [["bold", "italic", "underline", "undo", "redo", "fullScreen"]],
+  buttonList: [["bold", "italic"]],
   minHeight: "100%"
 };
 
@@ -30,14 +31,14 @@ const TextEditor = ({ value, setValue, placeholder = "Digite aqui", fontSize = 2
 
   return (
     <SunEditor
-      defaultValue={value}
+      defaultValue={convertWhatsappTextToHtml(value)}
       placeholder={placeholder}
       setOptions={options as SetOptions}
       setDefaultStyle={setDefaultStyle}
       getSunEditorInstance={getSunEditorInstance}
       onChange={() => {
         if (editorRef.current && editorRef.current.getText().length > 0) {
-          const text = editorRef?.current?.getText();
+          const text = editorRef?.current?.getContents(true);
           setValue(text);
         }
       }}

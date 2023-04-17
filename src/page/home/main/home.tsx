@@ -1,35 +1,29 @@
 import React, { useCallback, useEffect, useState } from "react";
 
-import { BsPencil } from "react-icons/bs";
-import { GraduateCapIcon, MedalIcon, RepeatIcon, StudentIcon } from "@/page/home/icons/home-icons";
 import { Button } from "@/components/button";
+import { GraduateCapIcon, MedalIcon, RepeatIcon, StudentIcon } from "@/page/home/icons/home-icons";
+import { BsPencil } from "react-icons/bs";
 
 import Theme from "@/styles/theme";
 
+import { useModal } from "@/hooks/useModal";
+import { IHomeData } from "@/models/home";
+import { DOCTOR_PATH, EGRESS_PATH, MASTER_PATH, STUDENT_PATH } from "@/routes/paths/paths.private";
+import { HomeServices } from "@/services/home/home.service";
+import { convertWhatsappTextToHtml } from "@/utils/formarter";
+import { orderChildrens } from "@/utils/order";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { EditHomeTitle } from "./edit-title";
 import {
+  Card,
   Container,
   ContainerButton,
-  DescriptionContainer,
   ContainerCards,
   ContentCard,
-  DotRounded,
-  Card
+  DescriptionContainer,
+  DotRounded
 } from "./styles";
-import { useNavigate } from "react-router-dom";
-import {
-  STUDENT_PATH,
-  VIEW_HOME_PATH,
-  MASTER_PATH,
-  DOCTOR_PATH,
-  EGRESS_PATH
-} from "@/routes/paths/paths.private";
-import { HomeServices } from "@/services/home/home.service";
-import { IHomeData } from "@/models/home";
-import { convertToHtml } from "@/utils/formarter";
-import { orderChildrens } from "@/utils/order";
-import { toast } from "react-toastify";
-import { useModal } from "@/hooks/useModal";
-import { EditHomeTitle } from "./edit-title";
 
 const convertIcon = {
   1: <StudentIcon size={48} color={Theme.colors.blue.blueDark} />,
@@ -80,7 +74,7 @@ const Home: React.FC = () => {
     <Container>
       <DescriptionContainer>
         {homeData.title && (
-          <div dangerouslySetInnerHTML={{ __html: convertToHtml(homeData.title) }} />
+          <div dangerouslySetInnerHTML={{ __html: convertWhatsappTextToHtml(homeData.title) }} />
         )}
         <ContainerButton>
           <Button outline={true} onClick={handleOpenEditModal} type={"button"}>

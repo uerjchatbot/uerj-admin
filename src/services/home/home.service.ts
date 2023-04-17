@@ -1,4 +1,5 @@
 import { IHomeData } from "@/models/home";
+import { formatTextForWhatsApp } from "@/utils/formarter";
 import { AxiosPromise } from "axios";
 import { api } from "../api";
 
@@ -8,6 +9,6 @@ export const HomeServices = {
   },
 
   updateHomeData(title: string): AxiosPromise<IHomeData> {
-    return api.put("/question/1", { title });
+    return api.put("/question/1", { title: formatTextForWhatsApp(title) });
   }
 };

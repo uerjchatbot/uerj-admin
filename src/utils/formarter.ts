@@ -27,10 +27,6 @@ const INDEX_TO_LETTERS = {
   25: "Z"
 };
 
-export const convertToHtml = (text: string) => {
-  return text.replaceAll("\n", "<br />").replaceAll("\b", "");
-};
-
 export const formateStringToDate = (date: string) => {
   const formatedString = date.split("/").reverse().join().replaceAll(",", "/");
 
@@ -54,4 +50,56 @@ export const formatIndexToLetter = (index: number) =>
 
 export const formatStringDateToPtBr = (date = new Date().toISOString()) => {
   return new Intl.DateTimeFormat("pt-br").format(formateStringToDate(date));
+};
+
+type HTMLTagsTypes = "strong" | "em" | "del" | "br";
+
+enum WhatsappTags {
+  strong = "*",
+  em = "_",
+  del = "~",
+  br = "\n"
+}
+
+type WhatsappTagsTypes = "*" | "_" | "~" | "\n";
+
+enum HTMLTags {
+  "*" = "strong",
+  "_" = "em",
+  "~" = "del",
+  "\n" = "br"
+}
+
+export function formatTextForWhatsApp(html: string) {
+  const paragraphs = html.match(/<\s*p[^>]*>(.*?)<\s*\/\s*p\s*>/gis) || [];
+
+  console.log({ paragraphs });
+
+  const whatsappText = paragraphs.map(
+    (paragraph) =>
+      paragraph
+        .replace(/<br\s*\/?>/gi, "\n")
+        .replace(/<\s*\/?\s*strong\s*?>/gi, "*")
+        .replace(/<\s*\/?\s*em\s*?>/gi, "_")
+        .replace(/<\s*\/?\s*del\s*?>/gi, "~")
+        .replace(/<\s*\/?\s*p\s*?>/gi, "") + "\n"
+  );
+
+  console.log({ whatsappText });
+
+  return whatsappText.join("");
+}
+
+export const convertWhatsappTextToHtml = (whatsappText: string) => {
+  const boldRegex = /\*([^*]+)\*/g;
+  const italicRegex = /_([^_]+)_/g;
+  const strikeRegex = /~([^~]+)~/g;
+
+  const html = whatsappText
+    .replace(/\n/g, "<br>")
+    .replace(boldRegex, "<strong>$1</strong>")
+    .replace(italicRegex, "<em>$1</em>")
+    .replace(strikeRegex, "<del>$1</del>");
+
+  return html;
 };

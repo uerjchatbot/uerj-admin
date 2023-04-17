@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { toast } from "react-toastify";
+import React, { useCallback, useEffect, useState } from "react";
 import { BsPencil } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import {
   Container,
@@ -13,14 +13,14 @@ import {
   Title
 } from "./styles";
 
+import { Button } from "@/components/button";
+import { useModal } from "@/hooks/useModal";
+import { IStudentHomeData } from "@/models/student";
 import * as Private from "@/routes/paths/paths.private";
 import { StudentServices } from "@/services/student/home.service";
-import { IStudentHomeData } from "@/models/student";
-import { useModal } from "@/hooks/useModal";
-import EditHomeTitle from "./edit-home-title/edit-home-title";
-import { convertToHtml } from "@/utils/formarter";
+import { convertWhatsappTextToHtml } from "@/utils/formarter";
 import { orderChildrens } from "@/utils/order";
-import { Button } from "@/components/button";
+import EditHomeTitle from "./edit-home-title/edit-home-title";
 
 const navigateToPath = [
   Private.STUDENT_CALENDAR_PATH(),
@@ -76,7 +76,9 @@ const Home: React.FC = () => {
       </ContainerButton>
 
       <DescriptionContainer>
-        {data?.title && <Title dangerouslySetInnerHTML={{ __html: convertToHtml(data.title) }} />}
+        {data?.title && (
+          <Title dangerouslySetInnerHTML={{ __html: convertWhatsappTextToHtml(data.title) }} />
+        )}
 
         <ContainerButton>
           <Button outline={true} type={"button"} onClick={handleEditTitle}>
