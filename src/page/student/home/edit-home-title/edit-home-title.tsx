@@ -1,18 +1,18 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 import { EditTextButton } from "@/components/edit-text-button";
 import { TextEditor } from "@/components/text-editor";
 import { useModal } from "@/hooks/useModal";
-import { IStudentHomeData } from "@/models/student";
+import { Question } from "@/models/Question";
 import { StudentServices } from "@/services/student/home.service";
 
 type Props = {
-  data: string | undefined;
-  setData: React.Dispatch<React.SetStateAction<IStudentHomeData | undefined>>;
+  question: Question;
+  setData: Dispatch<SetStateAction<Question>>;
 };
 
-const EditHomeTitle = ({ data, setData }: Props) => {
+const EditHomeTitle = ({ question, setData }: Props) => {
   const { setIsVisible } = useModal();
 
   const [text, setText] = useState("");
@@ -25,7 +25,7 @@ const EditHomeTitle = ({ data, setData }: Props) => {
 
   const handleEditText = async () => {
     try {
-      const response = await StudentServices.updateHomeTitle(text);
+      const response = await StudentServices.updateHomeTitle({ ...question, title: text });
 
       setData((oldValue) => {
         return { ...oldValue, ...response.data };
@@ -40,10 +40,10 @@ const EditHomeTitle = ({ data, setData }: Props) => {
   };
 
   useEffect(() => {
-    if (data && data?.length > 0) {
-      setText(data);
+    if (question.title && question.title?.length > 0) {
+      setText(question.title);
     }
-  }, [data]);
+  }, [question.title]);
 
   return (
     <div>

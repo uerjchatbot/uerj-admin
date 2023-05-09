@@ -7,11 +7,9 @@ import { BsPencil } from "react-icons/bs";
 import Theme from "@/styles/theme";
 
 import { useModal } from "@/hooks/useModal";
-import { IHomeData } from "@/models/home";
+import { Question } from "@/models/Question";
 import { DOCTOR_PATH, EGRESS_PATH, MASTER_PATH, STUDENT_PATH } from "@/routes/paths/paths.private";
-import { HomeServices } from "@/services/home/home.service";
-import { convertWhatsappTextToHtml } from "@/utils/formarter";
-import { orderChildrens } from "@/utils/order";
+import { QuestionServices } from "@/services/question/question.service";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { EditHomeTitle } from "./edit-title";
@@ -32,27 +30,18 @@ const convertIcon = {
   4: <RepeatIcon size={48} color={Theme.colors.blue.blueDark} />
 };
 
-// const convertPath = {
-//   0: STUDENT_PATH(),
-//   1: " ",
-//   2: " ",
-//   3: " "
-// };
 const convertPath = [STUDENT_PATH(), DOCTOR_PATH(), MASTER_PATH(), EGRESS_PATH()];
 
 const Home: React.FC = () => {
   const { setTitle, setComponent, setIsVisible } = useModal();
 
   const navigate = useNavigate();
-  // const navigateToView = () => navigate(VIEW_HOME_PATH());
 
-  const [homeData, setHomeData] = useState<IHomeData>({} as IHomeData);
+  const [homeData, setHomeData] = useState<Question>({} as Question);
 
   const getData = useCallback(async () => {
     try {
-      const { data } = await HomeServices.getHomeData();
-
-      data.childrens = orderChildrens(data.childrens);
+      const { data } = await QuestionServices.getQuestionByNodeId(0);
 
       setHomeData(data);
     } catch (error) {
@@ -62,7 +51,7 @@ const Home: React.FC = () => {
 
   const handleOpenEditModal = () => {
     setTitle("Editar Início");
-    setComponent(<EditHomeTitle title={homeData.title} setData={setHomeData} />);
+    setComponent(<EditHomeTitle question={homeData} setData={setHomeData} />);
     setIsVisible(true);
   };
 
@@ -73,9 +62,7 @@ const Home: React.FC = () => {
   return (
     <Container>
       <DescriptionContainer>
-        {homeData.title && (
-          <div dangerouslySetInnerHTML={{ __html: convertWhatsappTextToHtml(homeData.title) }} />
-        )}
+        {homeData.title && <div dangerouslySetInnerHTML={{ __html: homeData.title }} />}
         <ContainerButton>
           <Button outline={true} onClick={handleOpenEditModal} type={"button"}>
             <span>
@@ -89,7 +76,7 @@ const Home: React.FC = () => {
         {homeData.childrens &&
           homeData.childrens.map((children, index) => {
             return (
-              <ContentCard onClick={() => navigate(convertPath[index])} key={children.question}>
+              <ContentCard onClick={() => navigate(convertPath[index])} key={children.id}>
                 <DotRounded>{index + 1}</DotRounded>
                 <Card>
                   <span>

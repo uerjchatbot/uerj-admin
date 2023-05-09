@@ -28,8 +28,9 @@ const INDEX_TO_LETTERS = {
 };
 
 export const formateStringToDate = (date: string) => {
-  const formatedString = date.split("/").reverse().join().replaceAll(",", "/");
+  const formatedString = date.replace(/^(\d{2})\/(\d{2})\/(\d{4})$/, "$3-$2-$1");
 
+  console.log(formatedString);
   return new Date(formatedString);
 };
 
@@ -71,9 +72,9 @@ enum HTMLTags {
 }
 
 export function formatTextForWhatsApp(html: string) {
-  const paragraphs = html.match(/<\s*p[^>]*>(.*?)<\s*\/\s*p\s*>/gis) || [];
+  console.log({ html });
 
-  console.log({ paragraphs });
+  const paragraphs = html.match(/<\s*p[^>]*>(.*?)<\s*\/\s*p\s*>/gis) || [];
 
   const whatsappText = paragraphs.map(
     (paragraph) =>
@@ -84,8 +85,6 @@ export function formatTextForWhatsApp(html: string) {
         .replace(/<\s*\/?\s*del\s*?>/gi, "~")
         .replace(/<\s*\/?\s*p\s*?>/gi, "") + "\n"
   );
-
-  console.log({ whatsappText });
 
   return whatsappText.join("");
 }

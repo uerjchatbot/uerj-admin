@@ -1,40 +1,40 @@
-import React, { useCallback, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { toast } from "react-toastify";
 
 import * as S from "./styles";
 
-import { TextEditor } from "@/components/text-editor";
 import { EditTextButton } from "@/components/edit-text-button";
+import { TextEditor } from "@/components/text-editor";
 import { useModal } from "@/hooks/useModal";
-import { DoctorProcessServices } from "@/services/doctor/process.service";
+import { Question } from "@/models/Question";
+import { QuestionServices } from "@/services/question/question.service";
 import { DotRounded } from "../../styles";
-import { IDoctorDefaultData, IDoctorProgram } from "@/models/doctor";
 
 type Props = {
-  childrens?: IDoctorProgram;
-  setData: React.Dispatch<React.SetStateAction<IDoctorProgram>>;
+  question: Question;
+  setQuestion: Dispatch<SetStateAction<Question>>;
 };
 
-const EditProjectQuestion = ({ childrens, setData }: Props) => {
+const EditProjectQuestion = ({ question, setQuestion }: Props) => {
   const { setIsVisible } = useModal();
 
-  const [question, setQuestion] = useState<string>(childrens?.project?.question || "");
-  const [title, setTitle] = useState<string>(childrens?.project.title || "");
+  const [textQuestion, setTextQuestion] = useState<string>(question?.question || "");
+  const [textTitle, setTextTitle] = useState<string>(question.title || "");
 
   const renderTextEditor = useCallback(() => {
-    if (question.length === 0) return <></>;
+    if (textQuestion.length === 0) return <></>;
 
     return (
       <>
         <S.QuestionContainer>
           <DotRounded>3</DotRounded>
 
-          <TextEditor value={question} setValue={setQuestion} />
+          <TextEditor value={textQuestion} setValue={setTextQuestion} />
         </S.QuestionContainer>
 
         <S.QuestionContainer>
           <span></span>
-          <TextEditor value={title} setValue={setTitle} />
+          <TextEditor value={textTitle} setValue={setTextTitle} />
         </S.QuestionContainer>
       </>
     );
@@ -42,27 +42,16 @@ const EditProjectQuestion = ({ childrens, setData }: Props) => {
 
   const handleEditText = async (): Promise<void> => {
     try {
-      if (question && title) {
-        const node = await DoctorProcessServices.updateData({
-          id: childrens?.project.id,
-          title,
-          question
-        });
+      const { data } = await QuestionServices.updateQuestion({
+        ...question,
+        title: textTitle,
+        question: textQuestion
+      });
 
-        const data: IDoctorDefaultData = {
-          ...node.data
-        };
+      setQuestion(data);
 
-        setData({
-          ...childrens,
-          project: data
-        } as IDoctorProgram);
-
-        setIsVisible(false);
-        toast.success("Textos alterados com sucesso!");
-      } else {
-        toast.error("Os dados não foram carregado corretamente, tente novamente!");
-      }
+      setIsVisible(false);
+      toast.success("Textos alterados com sucesso!");
     } catch (error) {
       toast.error("Houve um erro ao salvar o texto");
     }

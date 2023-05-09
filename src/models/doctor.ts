@@ -1,3 +1,5 @@
+import { Question } from "./Question";
+
 export interface IDoctorDefaultData {
   id: number;
   question: string;
@@ -19,22 +21,22 @@ export interface IDoctorUpdateData {
 }
 
 export interface IFirstStepData {
-  notice: IDoctorDefaultData;
-  vacancies: IDoctorDefaultData;
-  quotas: IDoctorDefaultData;
-  registration: IDoctorDefaultData;
+  notice: Question;
+  vacancies: Question;
+  quotas: Question;
+  registration: Question;
 }
 
 export interface ISecondStepData {
-  documentation: IDoctorDefaultData;
-  steps: IDoctorDefaultData;
-  discretion: IDoctorDefaultData;
-  enrollment: IDoctorDefaultData;
+  documentation: Question;
+  steps: Question;
+  discretion: Question;
+  enrollment: Question;
 }
 
 export interface IThirdStepData {
-  results: IDoctorDefaultData;
-  resources: IDoctorDefaultData;
+  results: Question;
+  resources: Question;
 }
 
 export interface IDoctorProcessResults {
@@ -47,10 +49,10 @@ export interface IDoctorProcessResults {
 }
 
 export interface IDoctorProgram {
-  program: IDoctorDefaultData;
-  lines: IDoctorDefaultData;
-  project: IDoctorDefaultData;
-  handbag: IDoctorDefaultData;
+  program: Question;
+  lines: Question;
+  project: Question;
+  handbag: Question;
 }
 
 export interface IDoctorTeacher {

@@ -1,21 +1,21 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { toast } from "react-toastify";
 
 import { EditTextButton } from "@/components/edit-text-button";
 import { TextEditor } from "@/components/text-editor";
 import { useModal } from "@/hooks/useModal";
-import { IEgressDefaultData } from "@/models/egress";
-import { EgressHomeServices } from "@/services/egress/home.service";
+import { Question } from "@/models/Question";
+import { QuestionServices } from "@/services/question/question.service";
 
 type Props = {
-  data: string | undefined;
-  setData: React.Dispatch<React.SetStateAction<IEgressDefaultData | undefined>>;
+  question: Question;
+  setQuestion: Dispatch<SetStateAction<Question>>;
 };
 
-const EditHomeTitle = ({ data, setData }: Props) => {
+const EditHomeTitle = ({ question, setQuestion }: Props) => {
   const { setIsVisible } = useModal();
 
-  const [text, setText] = useState("");
+  const [text, setText] = useState(question.title);
 
   const renderTextEditor = useCallback(() => {
     if (text.length === 0) return <></>;
@@ -25,12 +25,12 @@ const EditHomeTitle = ({ data, setData }: Props) => {
 
   const handleEditText = async () => {
     try {
-      const response = await EgressHomeServices.updateHomeData(text);
-
-      setData((oldValue) => {
-        return { ...oldValue, ...response.data };
+      const { data } = await QuestionServices.updateQuestion({
+        ...question,
+        title: text
       });
 
+      setQuestion(data);
       setIsVisible(false);
 
       toast.success("Texto alterado com sucesso!");
@@ -38,12 +38,6 @@ const EditHomeTitle = ({ data, setData }: Props) => {
       toast.error("Houve um erro ao salvar o texto");
     }
   };
-
-  useEffect(() => {
-    if (data && data?.length > 0) {
-      setText(data);
-    }
-  }, [data]);
 
   return (
     <div>

@@ -1,32 +1,37 @@
 /* eslint-disable no-unused-vars */
-import { useState, useEffect, useCallback } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
 import { BsPencil } from "react-icons/bs";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+import { Button } from "@/components/button";
+import { useLoading } from "@/hooks/useLoading";
+import { useModal } from "@/hooks/useModal";
+import { Question } from "@/models/Question";
+import { DOCTOR_PATH } from "@/routes/paths/paths.private";
+import { QuestionServices } from "@/services/question/question.service";
+import { EditContactData } from "./edit-contact-data";
 import {
   CardContent,
   Container,
   ContainerButton,
   ContentCard,
   ContentCardHeader,
-  DotRounded
+  DotRounded,
+  Title
 } from "./styles";
-import { ICalendarTitleData } from "@/models/doctor";
-import { ContactServices } from "@/services/doctor/contact.service";
-import { DOCTOR_PATH } from "@/routes/paths/paths.private";
-import { useLoading } from "@/hooks/useLoading";
-import { Button } from "@/components/button";
-import { useModal } from "@/hooks/useModal";
-import { EditContactData } from "./edit-contact-data";
+
+interface UseLocationState {
+  state: Question;
+}
 
 const Contact = () => {
   const navigate = useNavigate();
   const { setLoading } = useLoading();
-  const { state }: { state: any } = useLocation();
+  const { state } = useLocation() as UseLocationState;
   const { setTitle, setComponent, setIsVisible } = useModal();
 
-  const [contactData, setContactData] = useState<ICalendarTitleData>({} as ICalendarTitleData);
+  const [contactData, setContactData] = useState<Question>({} as Question);
 
   const handleNavigateBack = () => navigate(DOCTOR_PATH());
 
@@ -34,9 +39,9 @@ const Contact = () => {
     try {
       setLoading(true);
 
-      const { data } = await ContactServices.getData(state.childrenId);
+      const { data } = await QuestionServices.getQuestion(state);
 
-      setContactData(data.childrens[0]);
+      setContactData(data);
 
       setLoading(false);
     } catch (error) {
@@ -48,14 +53,7 @@ const Contact = () => {
   const handleOpenEdit = (): void => {
     setTitle(`Editar ${contactData.question}`);
 
-    setComponent(
-      <EditContactData
-        question={contactData.question}
-        setQuestion={setContactData}
-        title={contactData.title}
-        questionId={contactData.id}
-      />
-    );
+    setComponent(<EditContactData question={contactData} setQuestion={setContactData} />);
 
     setIsVisible(true);
   };
@@ -79,7 +77,7 @@ const Contact = () => {
         </ContentCardHeader>
 
         <CardContent>
-          <p>{contactData.title}</p>
+          <Title dangerouslySetInnerHTML={{ __html: contactData.title }} />
         </CardContent>
 
         <Button outline={true} type={"button"}>

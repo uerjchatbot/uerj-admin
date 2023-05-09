@@ -1,52 +1,42 @@
-import React, { useCallback, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { toast } from "react-toastify";
 
 import * as S from "./styles";
 
-import { TextEditor } from "@/components/text-editor";
 import { EditTextButton } from "@/components/edit-text-button";
+import { TextEditor } from "@/components/text-editor";
 import { useModal } from "@/hooks/useModal";
-import { DoctorProcessServices } from "@/services/doctor/process.service";
+import { Question } from "@/models/Question";
+import { QuestionServices } from "@/services/question/question.service";
 import { DotRounded } from "../../styles";
-import { IDoctorDefaultData } from "@/models/doctor";
 
 type Props = {
-  results?: IDoctorDefaultData;
-  setResults: React.Dispatch<React.SetStateAction<IDoctorDefaultData>>;
+  results: Question;
+  setResults: Dispatch<SetStateAction<Question>>;
 };
 
 const EditResultsQuestion = ({ results, setResults }: Props) => {
   const { setIsVisible } = useModal();
 
-  const [question, setQuestion] = useState<string>(results?.question || "");
-  const [title, setTitle] = useState<string>(results?.title || "");
+  const [question, setQuestion] = useState(results.question);
+  // const [title, setTitle] = useState(results.title);
 
-  const [homologation, setHomologation] = useState<IDoctorDefaultData>(
-    results?.childrens[0] as IDoctorDefaultData
-  );
-  const [test, setTest] = useState<IDoctorDefaultData>(results?.childrens[1] as IDoctorDefaultData);
-  const [analysis, setAnalysis] = useState<IDoctorDefaultData>(
-    results?.childrens[2] as IDoctorDefaultData
-  );
-  const [interview, setInterview] = useState<IDoctorDefaultData>(
-    results?.childrens[3] as IDoctorDefaultData
-  );
-  const [language, setLanguage] = useState<IDoctorDefaultData>(
-    results?.childrens[4] as IDoctorDefaultData
-  );
-  const [outcome, setOutcome] = useState<IDoctorDefaultData>(
-    results?.childrens[5] as IDoctorDefaultData
-  );
+  const [homologation, setHomologation] = useState<Question>(results?.childrens[0] as Question);
+  const [test, setTest] = useState<Question>(results?.childrens[1] as Question);
+  const [analysis, setAnalysis] = useState<Question>(results?.childrens[2] as Question);
+  const [interview, setInterview] = useState<Question>(results?.childrens[3] as Question);
+  const [language, setLanguage] = useState<Question>(results?.childrens[4] as Question);
+  const [outcome, setOutcome] = useState<Question>(results?.childrens[5] as Question);
 
   const renderTextEditor = useCallback(() => {
-    if (question.length === 0) return <></>;
+    if (question?.length === 0) return <></>;
 
     return (
       <>
         <S.QuestionContainer>
           <DotRounded>9</DotRounded>
 
-          <TextEditor value={question} setValue={setQuestion} />
+          {question && <TextEditor value={question} setValue={setQuestion} />}
         </S.QuestionContainer>
 
         <S.QuestionContainer>
@@ -217,26 +207,18 @@ const EditResultsQuestion = ({ results, setResults }: Props) => {
   const handleEditText = async (): Promise<void> => {
     try {
       if (question) {
-        const node = await DoctorProcessServices.updateData({
-          id: results?.id,
-          title,
+        const node = await QuestionServices.updateQuestion({
+          ...results,
           question
         });
 
         const childrens = [homologation, test, analysis, interview, language, outcome];
 
         await Promise.all(
-          childrens.map(
-            async (child) =>
-              await DoctorProcessServices.updateData({
-                id: child.id,
-                question: child.question,
-                title: child.title
-              })
-          )
+          childrens.map(async (child) => await QuestionServices.updateQuestion(child))
         );
 
-        const data: IDoctorDefaultData = {
+        const data: Question = {
           ...node.data,
           childrens
         };

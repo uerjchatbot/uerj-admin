@@ -1,10 +1,16 @@
-import styled from "styled-components";
 import { DotRounded as CommonDot } from "@/components/dot-rounded";
+import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+export const Title = styled.div`
+  width: 100%;
+  font-weight: 400;
+  font-size: 1.375rem;
 `;
 
 export const ContainerButton = styled.div`
@@ -38,7 +44,7 @@ export const DescriptionContainer = styled.div`
     margin-bottom: 1rem;
   }
 
-  div {
+  button {
     width: 15%;
   }
 `;
@@ -59,37 +65,12 @@ export const ContainerCards = styled.div`
 export const ContentCard = styled.div`
   width: 100%;
 
-  div {
-    margin-top: 4px;
-
-    display: flex;
-    align-items: center;
-
-    span {
-      text-align: center;
-      font-size: 1.5rem;
-    }
-    p {
-      color: ${({ theme }) => theme.colors.grey.grey};
-      font-size: 1.4rem;
-    }
-  }
-
   /* .container-button { */
   button {
     width: 15%;
 
     margin-top: 1rem;
     margin-bottom: 1rem;
-  }
-
-  ul {
-    margin-top: 1rem;
-
-    li {
-      font-size: 1.3rem;
-      color: ${({ theme }) => theme.colors.grey.grey};
-    }
   }
 
   @media (max-width: 1000px) {
@@ -111,16 +92,9 @@ export const DotRounded = styled(CommonDot)`
   height: 80px;
 `;
 
-export const DatePickerContainer = styled.div`
-  padding: 8px;
-  margin-left: 1rem;
-  margin-right: 0.5rem;
-
-  display: flex;
-  flex-direction: column;
-
-  span {
-    width: 100%;
-    color: ${({ theme }) => theme.colors.blue.normalBlue};
-  }
+export const QuestionTitle = styled.span`
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1.5rem;
+  color: ${({ theme }) => theme.colors.blue.blueDark};
 `;

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import { DotRounded as CommonDot } from "@/components/dot-rounded";
 import Theme from "@/styles/theme";
@@ -62,6 +62,7 @@ export const ContentCardHeader = styled.div`
   align-items: center;
   justify-content: flex-start;
   gap: 1rem;
+  padding-bottom: 0.5rem;
 `;
 
 export const DotRounded = styled(CommonDot)`
@@ -111,5 +112,26 @@ export const ContainerButton = styled.div`
         margin-left: 12px;
       }
     }
+  }
+`;
+
+export const Title = styled.div`
+  width: 100%;
+  font-weight: 400;
+  font-size: 1.375rem;
+`;
+
+const BaseTitle = css`
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1.5rem;
+  color: ${({ theme }) => theme.colors.blue.blueDark};
+`;
+
+export const QuestionTitle = styled.span`
+  ${BaseTitle}
+
+  p {
+    ${BaseTitle}
   }
 `;

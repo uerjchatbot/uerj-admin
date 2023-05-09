@@ -1,105 +1,35 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { useLoading } from "@/hooks/useLoading";
 
-import * as S from "./styles";
+import { Button } from "@/components/button";
+import { Question } from "@/models/Question";
+import { STUDENT_PATH } from "@/routes/paths/paths.private";
+import { QuestionServices } from "@/services/question/question.service";
 import { FirstStepForm } from "./steps/first_step_form";
 import { SecondStepForm } from "./steps/second_step_form";
-import { ThirdStepForm } from "./steps/third_step_form";
-import { TeachingStaffServices } from "@/services/student/teaching-staff.service";
-import { orderChildrens } from "@/utils/order";
-import { ITeachingStaffData } from "@/models/teaching-staff";
-import { STUDENT_PATH } from "@/routes/paths/paths.private";
-import { Button } from "@/components/button";
+import * as S from "./styles";
+
+interface StateLocation {
+  question: Question;
+}
 
 const FacultAndStudents = () => {
   const navigate = useNavigate();
   const { setLoading } = useLoading();
-  const { state }: { state: any } = useLocation();
+  const { question }: StateLocation = useLocation().state as StateLocation;
 
   const [selectedStage, setSelectedStage] = useState(1);
-  const [homeData, setHomeData] = useState<ITeachingStaffData>({} as ITeachingStaffData);
-  const [ffp, setFfp] = useState<ITeachingStaffData>({} as ITeachingStaffData);
-  const [coordination, setCoordination] = useState<ITeachingStaffData>({} as ITeachingStaffData);
-  const [representation, setRepresentation] = useState<ITeachingStaffData>(
-    {} as ITeachingStaffData
-  );
-  const [teachers, setTeachers] = useState<ITeachingStaffData>({} as ITeachingStaffData);
+  const [homeData, setHomeData] = useState<Question>({} as Question);
 
   const handleNavigateBack = () => navigate(STUDENT_PATH());
-
-  const getFfpData = async (): Promise<void> => {
-    try {
-      setLoading(true);
-      const { data } = await TeachingStaffServices.getHomeData(homeData.childrens[0].id);
-
-      data.childrens = orderChildrens(data.childrens);
-
-      setFfp(data);
-
-      setLoading(false);
-    } catch (error) {
-      toast.error("Houve um erro ao pegar as informações da FFP.");
-      setLoading(false);
-    }
-  };
-
-  const getCoordinationData = async (): Promise<void> => {
-    try {
-      setLoading(true);
-      const { data } = await TeachingStaffServices.getHomeData(homeData.childrens[1].id);
-
-      data.childrens = orderChildrens(data.childrens);
-
-      setCoordination(data);
-
-      setLoading(false);
-    } catch (error) {
-      toast.error("Houve um erro ao pegar as informações da Coordenação.");
-      setLoading(false);
-    }
-  };
-
-  const getRepresentationData = async (): Promise<void> => {
-    try {
-      setLoading(true);
-      const { data } = await TeachingStaffServices.getHomeData(homeData.childrens[2].id);
-
-      data.childrens = orderChildrens(data.childrens);
-
-      setRepresentation(data);
-
-      setLoading(false);
-    } catch (error) {
-      toast.error("Houve um erro ao pegar as informações da Representação Estudantil.");
-      setLoading(false);
-    }
-  };
-
-  const getTeachersData = async (): Promise<void> => {
-    try {
-      setLoading(true);
-      const { data } = await TeachingStaffServices.getHomeData(homeData.childrens[3].id);
-
-      data.childrens = orderChildrens(data.childrens);
-
-      setTeachers(data);
-
-      setLoading(false);
-    } catch (error) {
-      toast.error("Houve um erro ao pegar as informações dos Professores.");
-      setLoading(false);
-    }
-  };
 
   const getData = async () => {
     try {
       setLoading(true);
-      const { data } = await TeachingStaffServices.getHomeData(state.childrenId);
-
-      data.childrens = orderChildrens(data.childrens);
+      const { data } = await QuestionServices.getQuestion(question);
 
       setHomeData(data);
 
@@ -114,15 +44,6 @@ const FacultAndStudents = () => {
   useEffect(() => {
     getData();
   }, []);
-
-  useEffect(() => {
-    if (homeData.childrens) {
-      getFfpData();
-      getCoordinationData();
-      getRepresentationData();
-      getTeachersData();
-    }
-  }, [homeData]);
 
   const handleSelectStage = (stageNumber: number) => setSelectedStage(stageNumber);
 
@@ -157,24 +78,14 @@ const FacultAndStudents = () => {
       </S.HeaderContainer>
 
       {homeData.childrens && selectedStage === 1 && (
-        <FirstStepForm
-          homeDataId={homeData.id}
-          title={homeData?.title}
-          ffp={ffp}
-          setFfp={setFfp}
-          coordination={coordination}
-          setCoordination={setCoordination}
-          setData={setHomeData}
-        />
+        <FirstStepForm question={homeData} setQuestion={setHomeData} />
       )}
 
-      {homeData.childrens && selectedStage === 2 && (
-        <SecondStepForm representation={representation} setRepresentation={setRepresentation} />
-      )}
+      {homeData.childrens && selectedStage === 2 && <SecondStepForm question={homeData} />}
 
-      {homeData.childrens && selectedStage === 3 && (
+      {/* {homeData.childrens && selectedStage === 3 && (
         <ThirdStepForm teachers={teachers} setTeachers={setTeachers} />
-      )}
+      )} */}
     </S.Container>
   );
 };

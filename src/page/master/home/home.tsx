@@ -18,7 +18,6 @@ import { useModal } from "@/hooks/useModal";
 import { IMasterHomeData } from "@/models/master";
 import * as Private from "@/routes/paths/paths.private";
 import { MasterServices } from "@/services/master/home.service";
-import { convertWhatsappTextToHtml } from "@/utils/formarter";
 import { orderChildrens } from "@/utils/order";
 import EditHomeTitle from "./edit-home-title/edit-home-title";
 
@@ -73,9 +72,7 @@ const Home: React.FC = () => {
       </ContainerButton>
 
       <DescriptionContainer>
-        {data?.title && (
-          <Title dangerouslySetInnerHTML={{ __html: convertWhatsappTextToHtml(data.title) }} />
-        )}
+        {data?.title && <Title dangerouslySetInnerHTML={{ __html: data.title }} />}
 
         <ContainerButton>
           <Button outline={true} type={"button"} onClick={handleEditTitle}>

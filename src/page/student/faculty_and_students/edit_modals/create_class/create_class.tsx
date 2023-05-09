@@ -1,83 +1,30 @@
-import React, { useCallback, useState } from "react";
-import { BsFillTrashFill } from "react-icons/bs";
-import { toast } from "react-toastify";
+import { Dispatch, SetStateAction, useState } from "react";
 
-import { TeachingStaffServices } from "@/services/student/teaching-staff.service";
 import { useModal } from "@/hooks/useModal";
-import { IClassroomData } from "@/models/teaching-staff";
 
+import { TextEditor } from "@/components/text-editor";
+import { Question } from "@/models/Question";
+import { QuestionServices } from "@/services/question/question.service";
+import { toast } from "react-toastify";
 import * as S from "./styles";
-import { EditTextButton } from "@/components/edit-text-button";
 
 type Props = {
-  questionId?: number;
-  classType?: string;
-  setData: React.Dispatch<React.SetStateAction<[IClassroomData[], IClassroomData[]]>>;
+  question: Question;
+  setQuestion: Dispatch<SetStateAction<Question>>;
 };
 
-const CreateClass = ({ questionId, classType, setData }: Props) => {
+const CreateClass = ({ question, setQuestion }: Props) => {
   const { setIsVisible } = useModal();
 
-  const [className, setClassName] = useState("");
-  const [studentName, setStudentName] = useState("");
-  const [studentsList, setStudentsList] = useState<string[]>([]);
-
-  const handleAddStudentToArray = (name: string) => {
-    if (name.length < 3) {
-      toast.error("Digite um nome válido");
-      return;
-    }
-
-    setStudentsList((oldValue) => [...oldValue, name]);
-    setStudentName("");
-  };
-
-  const handleDeleteStudentFromArray = (index: number) => {
-    const arrayCopy = Array.from(studentsList);
-
-    arrayCopy.splice(index, 1);
-
-    setStudentsList(arrayCopy);
-  };
-
-  const renderAddStudent = useCallback(() => {
-    return (
-      <S.SetStudentNameContainer>
-        <S.Input
-          type="text"
-          placeholder="Nome do(a) representante"
-          value={studentName}
-          onChange={(e) => setStudentName(e.target.value)}
-        />
-
-        <S.Button onClick={() => handleAddStudentToArray(studentName)}>Adicionar</S.Button>
-      </S.SetStudentNameContainer>
-    );
-  }, [studentName]);
-
-  const renderStudentsList = useCallback(() => {
-    return (
-      <S.StudentsListContainer>
-        {studentsList.map((student, index) => (
-          <div key={`student-${index}`}>
-            <li>{student}</li>
-            <BsFillTrashFill size={20} onClick={() => handleDeleteStudentFromArray(index)} />
-          </div>
-        ))}
-      </S.StudentsListContainer>
-    );
-  }, [studentsList]);
+  const [textTitle, setTextTitle] = useState("");
 
   const updateData = async (): Promise<void> => {
     try {
-      await TeachingStaffServices.createClass(questionId || 0, className, studentsList);
-
-      const { data } = await TeachingStaffServices.getClassroomChildrenData(questionId);
-
-      setData((oldValue) => {
-        oldValue[classType === "Mestrado" ? 0 : 1] = [...data];
-
-        return oldValue;
+      const { data } = await QuestionServices.create({
+        node_chatbot_id: question.chatbot_id,
+        question: "",
+        title: textTitle,
+        response: true
       });
 
       toast.success("Turma criada com sucesso!");
@@ -90,22 +37,8 @@ const CreateClass = ({ questionId, classType, setData }: Props) => {
 
   return (
     <S.Container>
-      <S.ClassNameContainer>
-        <p>Os representantes da turma</p>
-        <S.Input
-          type="text"
-          placeholder="Nome da turma"
-          value={className}
-          onChange={(e) => setClassName(e.target.value)}
-        />
-        <p>são:</p>
-      </S.ClassNameContainer>
-
-      {renderAddStudent()}
-
-      {renderStudentsList()}
-
-      <EditTextButton event={updateData} />
+      <TextEditor value={textTitle} setValue={setTextTitle} />
+      <S.Button onClick={updateData}>Salvar</S.Button>
     </S.Container>
   );
 };

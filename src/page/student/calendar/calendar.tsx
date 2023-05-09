@@ -1,59 +1,52 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect, useCallback } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
 import { BsPencil } from "react-icons/bs";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+import { Button } from "@/components/button";
+import { useLoading } from "@/hooks/useLoading";
+import { useModal } from "@/hooks/useModal";
+import { STUDENT_PATH } from "@/routes/paths/paths.private";
+import { EditCalendarTitle } from "./edit-calendar-title";
 import {
   Container,
   ContainerButton,
   ContainerCards,
   ContentCard,
   ContentCardHeader,
-  DatePickerContainer,
   DescriptionContainer,
-  DotRounded
+  DotRounded,
+  QuestionTitle,
+  Title
 } from "./styles";
-import { ICalendarChildrenData, ICalendarTitleData, IChildrenData } from "@/models/student";
-import { CalendarServices } from "@/services/student/calendar.service";
-import { STUDENT_PATH } from "@/routes/paths/paths.private";
-import { EditCalendarTitle } from "./edit-calendar-title";
-import { useLoading } from "@/hooks/useLoading";
-import { Button } from "@/components/button";
-import { useModal } from "@/hooks/useModal";
-import { orderChildrens } from "@/utils/order";
 
 //? Edit Modals
+import { Question } from "@/models/Question";
+import { QuestionServices } from "@/services/question/question.service";
 import { EditFirstQuestion } from "./questions/edit-first-question";
+import { EditFourthQuestion } from "./questions/edit-fourth-question";
 import { EditSecondQuestion } from "./questions/edit-second-question";
 import { EditThirdQuestion } from "./questions/edit-third-question";
-import { EditFourthQuestion } from "./questions/edit-fourth-question";
-import { formateDatePickerObject } from "@/utils/formarter";
 
-const NOW_DATE = formateDatePickerObject(new Date());
-
-const verifyDateLength = (date: string): string => (date.length !== 10 ? NOW_DATE : date);
+interface StateLocation {
+  question: Question;
+}
 
 const Calendar = () => {
   const navigate = useNavigate();
   const { setLoading } = useLoading();
-  const { state }: { state: any } = useLocation();
+
+  const { question }: StateLocation = useLocation().state as StateLocation;
+
   const { setTitle, setComponent, setIsVisible } = useModal();
 
-  const [titleData, setTitleData] = useState<ICalendarTitleData>({} as ICalendarTitleData);
+  const [titleData, setTitleData] = useState<Question>({} as Question);
 
-  const [firstQuestionData, setFirstQuestionData] = useState<ICalendarChildrenData>(
-    {} as ICalendarChildrenData
-  );
-  const [secondQuestionData, setSecondQuestionData] = useState<ICalendarChildrenData>(
-    {} as ICalendarChildrenData
-  );
-  const [thirdQuestionData, setThirdQuestionData] = useState<ICalendarChildrenData>(
-    {} as ICalendarChildrenData
-  );
-  const [fourthQuestionData, setFourthQuestionData] = useState<ICalendarChildrenData>(
-    {} as ICalendarChildrenData
-  );
+  const [firstQuestionData, setFirstQuestionData] = useState<Question>({} as Question);
+  const [secondQuestionData, setSecondQuestionData] = useState<Question>({} as Question);
+  const [thirdQuestionData, setThirdQuestionData] = useState<Question>({} as Question);
+  const [fourthQuestionData, setFourthQuestionData] = useState<Question>({} as Question);
 
   const handleNavigateBack = () => navigate(STUDENT_PATH());
 
@@ -66,7 +59,7 @@ const Calendar = () => {
         titleData.childrens.forEach(async (children, index) => {
           setLoading(true);
 
-          const { data } = await CalendarServices.getCalendarChildrenData(children.id);
+          const { data } = await QuestionServices.getQuestion(children);
 
           switch (index) {
             case 0:
@@ -95,9 +88,7 @@ const Calendar = () => {
     try {
       setLoading(true);
 
-      const { data } = await CalendarServices.getTitle(state.childrenId);
-
-      data.childrens = orderChildrens(data.childrens);
+      const { data } = await QuestionServices.getQuestion(question);
 
       setTitleData(data);
 
@@ -109,12 +100,10 @@ const Calendar = () => {
   }, []);
 
   //? Edit Text's modals
-  const handleOpenEditTitleModal = (questionId: number): void => {
+  const handleOpenEditTitleModal = (): void => {
     setTitle(`Editar ${titleData.question}`);
 
-    setComponent(
-      <EditCalendarTitle data={titleData.title} setData={setTitleData} questionId={questionId} />
-    );
+    setComponent(<EditCalendarTitle question={titleData} setData={setTitleData} />);
 
     setIsVisible(true);
   };
@@ -123,14 +112,7 @@ const Calendar = () => {
     setTitle(`Editar ${firstQuestionData.question}`);
 
     setComponent(
-      <EditFirstQuestion
-        question={firstQuestionData.question}
-        setQuestion={setFirstQuestionData}
-        title={firstQuestionData.title.split("|")[0]}
-        initial_date={verifyDateLength(firstQuestionData.title.split("|")[1])}
-        final_date={verifyDateLength(firstQuestionData.title.split("|")[3])}
-        questionId={firstQuestionData.id}
-      />
+      <EditFirstQuestion question={firstQuestionData} setQuestion={setFirstQuestionData} />
     );
 
     setIsVisible(true);
@@ -140,14 +122,7 @@ const Calendar = () => {
     setTitle(`Editar ${secondQuestionData.question}`);
 
     setComponent(
-      <EditSecondQuestion
-        question={secondQuestionData.question}
-        setQuestion={setSecondQuestionData}
-        title={secondQuestionData.title.split("|")[0]}
-        initial_date={verifyDateLength(secondQuestionData.title.split("|")[1])}
-        final_date={verifyDateLength(secondQuestionData.title.split("|")[3])}
-        questionId={secondQuestionData.id}
-      />
+      <EditSecondQuestion question={secondQuestionData} setQuestion={setSecondQuestionData} />
     );
 
     setIsVisible(true);
@@ -157,16 +132,7 @@ const Calendar = () => {
     setTitle(`Editar ${secondQuestionData.question}`);
 
     setComponent(
-      <EditThirdQuestion
-        question={thirdQuestionData.question}
-        setQuestion={setThirdQuestionData}
-        title={thirdQuestionData.title.split("|")[0]}
-        initial_date={verifyDateLength(thirdQuestionData.title.split("|")[1])}
-        final_date={verifyDateLength(thirdQuestionData.title.split("|")[3])}
-        childrenId={thirdQuestionData.childrens[0].id}
-        childrenTitle={thirdQuestionData.childrens[0].title}
-        questionId={thirdQuestionData.id}
-      />
+      <EditThirdQuestion question={thirdQuestionData} setQuestion={setThirdQuestionData} />
     );
 
     setIsVisible(true);
@@ -176,12 +142,7 @@ const Calendar = () => {
     setTitle(`Editar ${fourthQuestionData.question}`);
 
     setComponent(
-      <EditFourthQuestion
-        question={fourthQuestionData.question}
-        setQuestion={setFourthQuestionData}
-        title={fourthQuestionData.title}
-        questionId={fourthQuestionData.id}
-      />
+      <EditFourthQuestion question={fourthQuestionData} setQuestion={setFourthQuestionData} />
     );
 
     setIsVisible(true);
@@ -195,21 +156,10 @@ const Calendar = () => {
       <ContentCard>
         <ContentCardHeader>
           <DotRounded>1</DotRounded>
-          <span>{firstQuestionData.question}</span>
+          <QuestionTitle>{firstQuestionData.question}</QuestionTitle>
         </ContentCardHeader>
 
-        <div>
-          <p>{firstQuestionData.title.split("|")[0]}</p>
-          <DatePickerContainer>
-            <span>{firstQuestionData.title.split("|")[1]}</span>
-          </DatePickerContainer>
-
-          <p>{firstQuestionData.title.split("|")[2]}</p>
-
-          <DatePickerContainer>
-            <span>{firstQuestionData.title.split("|")[3]}</span>
-          </DatePickerContainer>
-        </div>
+        <Title dangerouslySetInnerHTML={{ __html: firstQuestionData.title }} />
 
         <Button outline={true} type={"button"}>
           <span onClick={handleOpenEditFirstQuestionModal}>
@@ -227,21 +177,10 @@ const Calendar = () => {
       <ContentCard>
         <ContentCardHeader>
           <DotRounded>2</DotRounded>
-          <span>{secondQuestionData.question}</span>
+          <QuestionTitle>{secondQuestionData.question}</QuestionTitle>
         </ContentCardHeader>
 
-        <div>
-          <p>{secondQuestionData.title.split("|")[0]}</p>
-          <DatePickerContainer>
-            <span>{secondQuestionData.title.split("|")[1]}</span>
-          </DatePickerContainer>
-
-          <p>{secondQuestionData.title.split("|")[2]}</p>
-
-          <DatePickerContainer>
-            <span>{secondQuestionData.title.split("|")[3]}</span>
-          </DatePickerContainer>
-        </div>
+        <Title dangerouslySetInnerHTML={{ __html: secondQuestionData.title }} />
 
         <Button outline={true} type={"button"}>
           <span onClick={handleOpenEditSecondQuestionModal}>
@@ -259,26 +198,10 @@ const Calendar = () => {
       <ContentCard>
         <ContentCardHeader>
           <DotRounded>3</DotRounded>
-          <span>{thirdQuestionData.question}</span>
+          <QuestionTitle>{thirdQuestionData.question}</QuestionTitle>
         </ContentCardHeader>
 
-        <div>
-          <p>{thirdQuestionData.title.split("|")[0]}</p>
-          <DatePickerContainer>
-            <span>{thirdQuestionData.title.split("|")[1]}</span>
-          </DatePickerContainer>
-
-          <p>{thirdQuestionData.title.split("|")[2]}</p>
-
-          <DatePickerContainer>
-            <span>{thirdQuestionData.title.split("|")[3]}</span>
-          </DatePickerContainer>
-        </div>
-        <ul>
-          {thirdQuestionData.childrens.map((children: IChildrenData, index) => (
-            <li key={index}>{children.title}</li>
-          ))}
-        </ul>
+        <Title dangerouslySetInnerHTML={{ __html: thirdQuestionData.title }} />
 
         <Button outline={true} type={"button"}>
           <span onClick={handleOpenEditThirdQuestionModal}>
@@ -296,12 +219,10 @@ const Calendar = () => {
       <ContentCard>
         <ContentCardHeader>
           <DotRounded>4</DotRounded>
-          <span>{fourthQuestionData.question}</span>
+          <QuestionTitle>{fourthQuestionData.question}</QuestionTitle>
         </ContentCardHeader>
 
-        <div>
-          <p>{fourthQuestionData.title}</p>
-        </div>
+        <Title dangerouslySetInnerHTML={{ __html: fourthQuestionData.title }} />
 
         <Button outline={true} type={"button"}>
           <span onClick={handleOpenEditFourthQuestionModal}>
@@ -330,11 +251,17 @@ const Calendar = () => {
 
       <>
         <DescriptionContainer>
-          <p>{titleData.title}</p>
+          {titleData?.title && (
+            <Title
+              dangerouslySetInnerHTML={{
+                __html: titleData.title
+              }}
+            />
+          )}
 
           <div>
             <Button outline={true} type={"button"}>
-              <span onClick={() => handleOpenEditTitleModal(state.childrenId)}>
+              <span onClick={handleOpenEditTitleModal}>
                 Editar <BsPencil size={16} />
               </span>
             </Button>

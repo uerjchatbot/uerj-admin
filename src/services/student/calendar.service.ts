@@ -1,26 +1,26 @@
-import { ICalendarTitleData, ICalendarChildrenData } from "@/models/student";
+import { Question } from "@/models/Question";
 import { AxiosPromise } from "axios";
 import { api } from "../api";
 
 export const CalendarServices = {
   //? Home
-  getTitle(titleId: number): AxiosPromise<ICalendarTitleData> {
-    return api.get(`question/${titleId}`);
+  getQuestion(question: Question): AxiosPromise<Question> {
+    return api.get(`questions/${question.chatbot_id}`);
   },
 
-  updateTitle(titleId: number, title: string): AxiosPromise<ICalendarTitleData> {
-    return api.put(`question/${titleId}`, { title });
+  updateQuestion(question: Question): AxiosPromise<Question> {
+    return api.patch(`questions/${question.id}`, { title: question.title });
   },
 
-  getCalendarChildrenData(childrenId: number): AxiosPromise<ICalendarChildrenData> {
-    return api.get(`question/${childrenId}`);
+  getCalendarChildrenData(node_id: number): AxiosPromise<Question> {
+    return api.get(`questions/${node_id}`);
   },
 
   //? FirstQuestion
   updateFirstQuestion(questionId: number, question: string): AxiosPromise<any> {
     const title = "O período letivo para alunos do PPGEdu tem início em |x| e finaliza em |x|";
 
-    return api.put(`question/${questionId}`, {
+    return api.patch(`questions/${questionId}`, {
       title,
       question
     });
@@ -30,7 +30,7 @@ export const CalendarServices = {
   updateSecondQuestion(questionId: number, question: string): AxiosPromise<any> {
     const title = "O período de recesso para alunos do PPGEdu tem início em |x| e finaliza em |x|";
 
-    return api.put(`question/${questionId}`, {
+    return api.patch(`questions/${questionId}`, {
       title,
       question
     });
@@ -40,19 +40,19 @@ export const CalendarServices = {
   updateThirdQuestion(questionId: number, question: string): AxiosPromise<any> {
     const title = "O período de recesso para alunos do PPGEdu tem início em |x| e finaliza em |x|";
 
-    return api.put(`question/${questionId}`, {
+    return api.patch(`question/${questionId}`, {
       title,
       question
     });
   },
 
   updateThirdQuestionChildren(childrenId: number, title: string): AxiosPromise<any> {
-    return api.put(`question/${childrenId}`, { title });
+    return api.patch(`question/${childrenId}`, { title });
   },
 
   //? FourthQuestion
   updateFourthQuestion(questionId: number, question: string, title: string): AxiosPromise<any> {
-    return api.put(`question/${questionId}`, {
+    return api.patch(`question/${questionId}`, {
       title,
       question
     });
@@ -64,7 +64,7 @@ export const CalendarServices = {
     initialDate: string,
     finalDate: string
   ): AxiosPromise<any> {
-    return api.put(`calendar/question/${questionId}`, {
+    return api.patch(`calendar/question/${questionId}`, {
       title,
       initial_date: initialDate,
       final_date: finalDate

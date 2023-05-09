@@ -1,41 +1,38 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useState } from "react";
 
 import { TextEditor } from "@/components/text-editor";
 
 import { EditTextButton } from "@/components/edit-text-button";
-import { toast } from "react-toastify";
 import { useModal } from "@/hooks/useModal";
-import { ITeachingStaffData } from "@/models/teaching-staff";
-import { TeachingStaffServices } from "@/services/student/teaching-staff.service";
+import { Question } from "@/models/Question";
+import { QuestionServices } from "@/services/question/question.service";
+import { toast } from "react-toastify";
 
 type Props = {
-  questionId: number;
-  text: string;
-  setData: React.Dispatch<React.SetStateAction<ITeachingStaffData>>;
+  question: Question;
+  setQuestion: Dispatch<SetStateAction<Question>>;
 };
 
-const PageDescription = ({ questionId, text, setData }: Props) => {
+const PageDescription = ({ question, setQuestion }: Props) => {
   const { setIsVisible } = useModal();
 
-  const [textInfo, setTextInfo] = useState("");
+  const [textTitle, setTextTitle] = useState(question.title);
 
   const renderTextEditor = useCallback(() => {
-    if (textInfo.length === 0) return <></>;
+    if (question.title.length === 0) return <></>;
 
     return (
       <>
-        <TextEditor value={textInfo} setValue={setTextInfo} />
+        <TextEditor value={textTitle} setValue={setTextTitle} />
       </>
     );
-  }, [textInfo]);
+  }, [question.title]);
 
   const handleEditText = async (): Promise<void> => {
     try {
-      const { data } = await TeachingStaffServices.updateHomeTitle(questionId, textInfo);
+      const { data } = await QuestionServices.updateQuestion({ ...question, title: textTitle });
 
-      setData((oldValue) => {
-        return { ...oldValue, ...data };
-      });
+      setQuestion(data);
 
       setIsVisible(false);
 
@@ -44,12 +41,6 @@ const PageDescription = ({ questionId, text, setData }: Props) => {
       toast.error("Houve um erro ai salvar o texto");
     }
   };
-
-  useEffect(() => {
-    if (text && text?.length > 0) {
-      setTextInfo(text);
-    }
-  }, [text]);
 
   return (
     <>

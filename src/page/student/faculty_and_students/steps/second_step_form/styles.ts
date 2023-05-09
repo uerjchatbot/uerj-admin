@@ -1,6 +1,6 @@
-import Theme from "@/styles/theme";
-import styled from "styled-components";
 import { DotRounded as CommonDot } from "@/components/dot-rounded";
+import Theme from "@/styles/theme";
+import styled, { css } from "styled-components";
 
 export const Container = styled.div``;
 
@@ -75,8 +75,9 @@ export const ContentCard = styled.div`
     font-size: 1.5rem;
     margin-left: 1rem;
   }
+
   p {
-    color: ${({ theme }) => theme.colors.grey.grey};
+    /* color: ${({ theme }) => theme.colors.grey.grey}; */
     font-size: 1.4rem;
     margin: 1rem 0 0.25rem 0;
   }
@@ -207,4 +208,25 @@ export const ClassDataNamesContainer = styled.div`
       color: ${Theme.colors.grey.grey};
     }
   }
+`;
+
+const BaseTitle = css`
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1.5rem;
+  color: ${({ theme }) => theme.colors.blue.blueDark};
+`;
+
+export const QuestionTitle = styled.span`
+  ${BaseTitle}
+
+  p {
+    ${BaseTitle}
+  }
+`;
+
+export const Title = styled.div`
+  width: 100%;
+  font-weight: 400;
+  font-size: 1.375rem;
 `;

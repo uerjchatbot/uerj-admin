@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { toast } from "react-toastify";
 
 import * as S from "./styles";
@@ -6,23 +6,20 @@ import * as S from "./styles";
 import { EditTextButton } from "@/components/edit-text-button";
 import { TextEditor } from "@/components/text-editor";
 import { useModal } from "@/hooks/useModal";
-import { IDoctorDefaultData } from "@/models/doctor";
-import { DoctorProcessServices } from "@/services/doctor/process.service";
+import { Question } from "@/models/Question";
+import { QuestionServices } from "@/services/question/question.service";
 import { DotRounded } from "../../styles";
 
 type Props = {
-  vacancies?: IDoctorDefaultData;
-  setVacancies: React.Dispatch<React.SetStateAction<IDoctorDefaultData>>;
+  vacancies: Question;
+  setVacancies: Dispatch<SetStateAction<Question>>;
 };
 
 const EditVacanciesQuestion = ({ vacancies, setVacancies }: Props) => {
   const { setIsVisible } = useModal();
 
-  const [question, setQuestion] = useState<string>(vacancies?.question || "");
-  const [title, setTitle] = useState<string>(vacancies?.title || "");
-  const [partTitle1, setPartTitle1] = useState<string>(vacancies?.title.split("|")[0] || "");
-  const [partTitle2, setPartTitle2] = useState<string>(vacancies?.title.split("|")[1] || "");
-  const [partTitle3, setPartTitle3] = useState<string>(vacancies?.title.split("|")[2] || "");
+  const [question, setQuestion] = useState(vacancies.question);
+  const [title, setTitle] = useState(vacancies.title);
 
   const renderTextEditor = useCallback(() => {
     if (question.length === 0) return <></>;
@@ -37,21 +34,7 @@ const EditVacanciesQuestion = ({ vacancies, setVacancies }: Props) => {
 
         <S.QuestionContainer>
           <span></span>
-          <TextEditor value={partTitle1} setValue={setPartTitle1} />
-        </S.QuestionContainer>
-
-        <S.QuestionContainer>
-          <span></span>
-          <S.Input
-            type="text"
-            defaultValue={partTitle2}
-            onChange={(e) => setPartTitle2(e.target.value)}
-          />
-        </S.QuestionContainer>
-
-        <S.QuestionContainer>
-          <span></span>
-          <TextEditor value={partTitle3} setValue={setPartTitle3} />
+          <TextEditor value={title} setValue={setTitle} />
         </S.QuestionContainer>
       </>
     );
@@ -59,27 +42,15 @@ const EditVacanciesQuestion = ({ vacancies, setVacancies }: Props) => {
 
   const handleEditText = async (): Promise<void> => {
     try {
-      if (question && title) {
-        const newTitle = [partTitle1, `|${partTitle2}|`, partTitle3].join("");
+      const { data } = await QuestionServices.updateQuestion({
+        ...vacancies,
+        title,
+        question
+      });
 
-        setTitle(newTitle);
-
-        const node = await DoctorProcessServices.updateData({
-          id: vacancies?.id,
-          title: newTitle,
-          question
-        });
-
-        const data: IDoctorDefaultData = {
-          ...node.data
-        };
-
-        setVacancies(data);
-        setIsVisible(false);
-        toast.success("Textos alterados com sucesso!");
-      } else {
-        toast.error("Os dados não foram carregado corretamente, tente novamente!");
-      }
+      setVacancies(data);
+      setIsVisible(false);
+      toast.success("Textos alterados com sucesso!");
     } catch (error) {
       console.log("error:", error);
       toast.error("Houve um erro ao salvar o texto");

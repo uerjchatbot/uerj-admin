@@ -1,34 +1,41 @@
-import React, { useCallback, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { toast } from "react-toastify";
 
 import { useModal } from "@/hooks/useModal";
 
-import * as S from "./styles";
 import { EditTextButton } from "@/components/edit-text-button";
-import { IDoctorDefaultData } from "@/models/doctor";
-import { DoctorProgramServices } from "@/services/doctor/program.service";
+import { TextEditor } from "@/components/text-editor";
+import { Question } from "@/models/Question";
+import { QuestionServices } from "@/services/question/question.service";
+import * as S from "./styles";
 
 type Props = {
-  question: IDoctorDefaultData;
-  setData: React.Dispatch<React.SetStateAction<IDoctorDefaultData>>;
+  question: Question;
+  setData: Dispatch<SetStateAction<Question>>;
 };
 
 const CreateTeacher = ({ question, setData }: Props) => {
   const { setIsVisible } = useModal();
 
-  const [teacher, setTeacher] = useState<string>("");
+  const [teacher, setTeacher] = useState<string>("Professor(a) ");
 
   const handleCreateTeacher = async () => {
     try {
-      const { data } = await DoctorProgramServices.createTeacher({
-        question: question.childrens[0],
-        teacher
+      const { data } = await QuestionServices.create({
+        node_chatbot_id: question.chatbot_id,
+        question: "",
+        title: teacher,
+        response: true
       });
 
-      setData({
-        ...question,
-        childrens: [data]
-      });
+      setData((state) => ({
+        ...state,
+        childrens: state.childrens.map((child) => {
+          return child.id === question.id
+            ? { ...child, childrens: [...child.childrens, data] }
+            : child;
+        })
+      }));
 
       toast.success("Professor adicionado com sucesso!");
       setIsVisible(false);
@@ -41,13 +48,7 @@ const CreateTeacher = ({ question, setData }: Props) => {
   return (
     <S.Container>
       <S.ClassNameContainer>
-        <p>Professor(a): </p>
-        <S.Input
-          type="text"
-          placeholder="Nome da turma"
-          value={teacher}
-          onChange={(e) => setTeacher(e.target.value)}
-        />
+        <TextEditor value={teacher} setValue={setTeacher} />
       </S.ClassNameContainer>
 
       <EditTextButton event={handleCreateTeacher} />

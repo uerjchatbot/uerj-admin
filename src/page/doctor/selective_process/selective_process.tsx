@@ -1,31 +1,30 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { useLoading } from "@/hooks/useLoading";
 
-import * as S from "./styles";
+import { Button } from "@/components/button";
+import { Question } from "@/models/Question";
+import { IFirstStepData, ISecondStepData, IThirdStepData } from "@/models/doctor";
+import { DOCTOR_PATH } from "@/routes/paths/paths.private";
+import { QuestionServices } from "@/services/question/question.service";
 import { FirstStepForm } from "./steps/first_step_form";
 import { SecondStepForm } from "./steps/second_step_form";
 import { ThirdStepForm } from "./steps/third_step_form";
-import { DoctorProcessServices } from "@/services/doctor/process.service";
-import { orderChildrens } from "@/utils/order";
-import {
-  IFirstStepData,
-  ISecondStepData,
-  IDoctorDefaultData,
-  IThirdStepData
-} from "@/models/doctor";
-import { DOCTOR_PATH } from "@/routes/paths/paths.private";
-import { Button } from "@/components/button";
+import * as S from "./styles";
+
+interface UseLocationState {
+  state: Question;
+}
 
 const SelectiveProcesss = () => {
   const navigate = useNavigate();
   const { setLoading } = useLoading();
-  const { state }: { state: any } = useLocation();
+  const { state } = useLocation() as UseLocationState;
 
   const [selectedStage, setSelectedStage] = useState(1);
-  const [homeData, setHomeData] = useState<IDoctorDefaultData>({} as IDoctorDefaultData);
+  const [homeData, setHomeData] = useState<Question>({} as Question);
   const [firstStepData, setFirstStepData] = useState<IFirstStepData>({} as IFirstStepData);
   const [secondStepData, setSecondStepData] = useState<ISecondStepData>({} as ISecondStepData);
   const [thirdStepData, setThirdStepData] = useState<IThirdStepData>({} as IThirdStepData);
@@ -34,9 +33,7 @@ const SelectiveProcesss = () => {
   const getData = async () => {
     try {
       setLoading(true);
-      const { data } = await DoctorProcessServices.getData(state.childrenId);
-
-      data.childrens = orderChildrens(data.childrens);
+      const { data } = await QuestionServices.getQuestion(state);
 
       setHomeData(data);
 

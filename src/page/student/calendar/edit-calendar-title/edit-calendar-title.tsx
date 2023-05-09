@@ -1,19 +1,18 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { SetStateAction, useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-import { useModal } from "@/hooks/useModal";
-import { ICalendarTitleData } from "@/models/student";
-import { TextEditor } from "@/components/text-editor";
-import { CalendarServices } from "@/services/student/calendar.service";
 import { EditTextButton } from "@/components/edit-text-button";
+import { TextEditor } from "@/components/text-editor";
+import { useModal } from "@/hooks/useModal";
+import { Question } from "@/models/Question";
+import { CalendarServices } from "@/services/student/calendar.service";
 
 type Props = {
-  data: string | undefined;
-  setData: React.Dispatch<React.SetStateAction<ICalendarTitleData>>;
-  questionId: number;
+  question: Question;
+  setData: React.Dispatch<SetStateAction<Question>>;
 };
 
-const EditCalendarTitle = ({ data, setData, questionId }: Props) => {
+const EditCalendarTitle = ({ question, setData }: Props) => {
   const { setIsVisible } = useModal();
 
   const [text, setText] = useState("");
@@ -26,9 +25,9 @@ const EditCalendarTitle = ({ data, setData, questionId }: Props) => {
 
   const handleEditText = async () => {
     try {
-      const response = await CalendarServices.updateTitle(questionId, text);
+      const { data } = await CalendarServices.updateQuestion({ ...question, title: text });
 
-      setData(response.data);
+      setData(data);
 
       setIsVisible(false);
 
@@ -39,10 +38,10 @@ const EditCalendarTitle = ({ data, setData, questionId }: Props) => {
   };
 
   useEffect(() => {
-    if (data && data?.length > 0) {
-      setText(data);
+    if (question.title && question.title?.length > 0) {
+      setText(question.title);
     }
-  }, [data]);
+  }, [question.title]);
 
   return (
     <div>

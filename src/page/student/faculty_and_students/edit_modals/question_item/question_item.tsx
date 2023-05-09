@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { toast } from "react-toastify";
 
 import * as S from "./styles";
@@ -8,49 +8,47 @@ import { TextEditor } from "@/components/text-editor";
 import { useModal } from "@/hooks/useModal";
 import { Question } from "@/models/Question";
 import { QuestionServices } from "@/services/question/question.service";
-import { Dispatch, SetStateAction } from "react";
 import { DotRounded } from "../../styles";
 
 type Props = {
-  discretion: Question;
-  setDiscretion: Dispatch<SetStateAction<Question>>;
+  index: number;
+  question: Question;
+  setQuestion: Dispatch<SetStateAction<Question>>;
 };
 
-const EditDiscretionQuestion = ({ discretion, setDiscretion }: Props) => {
+const EditQuestionItem = ({ index, question, setQuestion }: Props) => {
   const { setIsVisible } = useModal();
 
-  const [question, setQuestion] = useState(discretion.question);
-  const [title, setTitle] = useState(discretion.title);
+  const [textTitle, setTextTitle] = useState(question.title);
+  const [textQuestion, setTextQuestion] = useState(question.question);
+
+  console.log({ textTitle, textQuestion });
 
   const renderTextEditor = useCallback(() => {
-    if (question.length === 0) return <></>;
-
     return (
       <>
         <S.QuestionContainer>
-          <DotRounded>7</DotRounded>
-
-          <TextEditor value={question} setValue={setQuestion} />
+          <DotRounded>{index + 1}</DotRounded>
+          <TextEditor value={textQuestion} setValue={setTextQuestion} />
         </S.QuestionContainer>
 
-        <S.QuestionContainer>
-          <span></span>
-          <TextEditor value={title} setValue={setTitle} />
-        </S.QuestionContainer>
+        <TextEditor value={textTitle} setValue={setTextTitle} />
       </>
     );
-  }, [question]);
+  }, [textTitle, textQuestion]);
 
   const handleEditText = async (): Promise<void> => {
     try {
       const { data } = await QuestionServices.updateQuestion({
-        ...discretion,
-        title,
-        question
+        ...question,
+        title: textTitle,
+        question: textQuestion
       });
 
-      setDiscretion(data);
+      setQuestion(data);
+
       setIsVisible(false);
+
       toast.success("Textos alterados com sucesso!");
     } catch (error) {
       console.log("error:", error);
@@ -66,4 +64,4 @@ const EditDiscretionQuestion = ({ discretion, setDiscretion }: Props) => {
   );
 };
 
-export default EditDiscretionQuestion;
+export default EditQuestionItem;

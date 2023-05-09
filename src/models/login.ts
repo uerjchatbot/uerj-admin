@@ -1,11 +1,9 @@
-import { IUserData } from "./user";
-
 export interface ILoginFormData {
   email: string;
   password: string;
 }
 
 export interface ILoginResponseData {
-  user: IUserData;
+  // user: IUserData;
   token: string;
 }

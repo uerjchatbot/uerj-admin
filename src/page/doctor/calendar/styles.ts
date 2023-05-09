@@ -1,6 +1,6 @@
-import styled from "styled-components";
 import { DotRounded as CommonDot } from "@/components/dot-rounded";
 import Theme from "@/styles/theme";
+import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
@@ -39,9 +39,14 @@ export const DescriptionContainer = styled.div`
     margin-bottom: 1rem;
   }
 
-  div {
+  button {
     width: 15%;
   }
+`;
+
+export const Title = styled.div`
+  font-weight: 400;
+  font-size: 1.5rem;
 `;
 
 export const ContainerCards = styled.div`

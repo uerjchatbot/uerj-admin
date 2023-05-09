@@ -1,219 +1,175 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { BsPencil, BsTrash } from "react-icons/bs";
-import { IoIosPeople } from "react-icons/io";
-import { FiEdit } from "react-icons/fi";
+import { useCallback, useEffect, useState } from "react";
 
 // eslint-disable-next-line no-unused-vars
-import {
-  IClassroomData,
-  ITeachingStaffChildrenData,
-  ITeachingStaffData
-} from "@/models/teaching-staff";
-import { TeachingStaffServices } from "@/services/student/teaching-staff.service";
 import { Button } from "@/components/button";
-import * as S from "./styles";
-import { formatIndexToLetter } from "@/utils/formarter";
 import { useModal } from "@/hooks/useModal";
-import { EditThirdQuestion } from "../../edit_modals/third_question";
-import { EditClass } from "../../edit_modals/third_question/edit_class";
+import { Question } from "@/models/Question";
+import { QuestionServices } from "@/services/question/question.service";
+import { formatIndexToLetter } from "@/utils/formarter";
+import { BsPencil, BsTrash } from "react-icons/bs";
+import { FiEdit } from "react-icons/fi";
+import { IoIosPeople } from "react-icons/io";
 import { CreateClass } from "../../edit_modals/create_class";
-import { toast } from "react-toastify";
+import { EditThirdQuestion } from "../../edit_modals/third_question";
+import * as S from "./styles";
 
 type Props = {
-  representation?: ITeachingStaffChildrenData;
-  setRepresentation: React.Dispatch<React.SetStateAction<ITeachingStaffData>>;
+  question: Question;
 };
 
-const Form = ({ representation, setRepresentation }: Props) => {
+const Form = ({ question }: Props) => {
   const { setTitle, setComponent, setIsVisible } = useModal();
-  const [classroomData, setClassroomData] = useState<[IClassroomData[], IClassroomData[]]>([
-    [] as IClassroomData[],
-    [] as IClassroomData[]
-  ]);
-  const [childrenIds, setChildrenIds] = useState<number[]>([]);
 
-  const getChildrenId = async (): Promise<number[]> => {
-    if (representation?.childrens) {
-      const response1 = await TeachingStaffServices.getClassroomChildrenId(
-        representation.childrens[0].id
-      );
-      const response2 = await TeachingStaffServices.getClassroomChildrenId(
-        representation.childrens[1].id
-      );
+  const [thirdQuestion, setThirdQuestion] = useState(question.childrens[2]);
 
-      setChildrenIds([response1.data.childrens[0].id, response2.data.childrens[0].id]);
+  const [master, setMaster] = useState<Question>({} as Question);
+  const [doctor, setDoctor] = useState<Question>({} as Question);
 
-      return [response1.data.childrens[0].id, response2.data.childrens[0].id];
-    } else {
-      return [0, 0];
-    }
-  };
-  const getClassroomData = useCallback(async (): Promise<void> => {
-    try {
-      const ids = await getChildrenId();
+  async function getClasses(): Promise<void> {
+    const { data } = await QuestionServices.getQuestionByNodeId(thirdQuestion.chatbot_id);
 
-      const response1 = await TeachingStaffServices.getClassroomChildrenData(ids[0]);
-      const response2 = await TeachingStaffServices.getClassroomChildrenData(ids[1]);
+    setMaster(data.childrens[0]);
+    setDoctor(data.childrens[1]);
 
-      setClassroomData([response1.data, response2.data]);
-    } catch (error) {
-      console.log("error:", error);
-    }
-  }, [representation]);
+    const { data: masterChildrens } = await QuestionServices.getQuestionByNodeId(master.chatbot_id);
+    const { data: doctorChildrens } = await QuestionServices.getQuestionByNodeId(doctor.chatbot_id);
+
+    setMaster((state) => ({ ...state, childrens: masterChildrens.childrens }));
+    setDoctor((state) => ({ ...state, childrens: doctorChildrens.childrens }));
+  }
 
   const handleOpenEditQuestionModal = () => {
-    if (representation) {
-      setTitle(`Editar ${representation.question}`);
+    setTitle(`Editar ${thirdQuestion.question}`);
 
-      setComponent(
-        <EditThirdQuestion
-          questionId={representation.id}
-          text={representation.question}
-          description={representation.title}
-          setRepresentation={setRepresentation}
-        />
-      );
-
-      setIsVisible(true);
-    }
-  };
-  const handleOpenEditClassModal = (
-    representationId: number,
-    classId: number,
-    className: string,
-    studentsList: string[],
-    classType: string
-  ) => {
-    if (representation) {
-      setTitle(`Editar ${representation.question}`);
-
-      setComponent(
-        <EditClass
-          questionId={childrenIds[representationId]}
-          classId={classId}
-          className={className}
-          studentsList={studentsList}
-          setData={setClassroomData}
-          classType={classType}
-        />
-      );
-
-      setIsVisible(true);
-    }
-  };
-
-  const handleOpenAddClassModal = (representationId: number, classType: string) => {
-    setTitle(`Adicionar Turma de ${classType}`);
-
-    setComponent(
-      <CreateClass
-        questionId={childrenIds[representationId]}
-        classType={classType}
-        setData={setClassroomData}
-      />
-    );
+    setComponent(<EditThirdQuestion question={thirdQuestion} setQuestion={setThirdQuestion} />);
 
     setIsVisible(true);
   };
 
-  const handleDeleteClass = async (classId: number, questionId: number, classType: string) => {
-    try {
-      await TeachingStaffServices.deleteClass(classId, questionId);
+  // const handleOpenEditClassModal = (
+  //   representationId: number,
+  //   classId: number,
+  //   className: string,
+  //   studentsList: string[],
+  //   classType: string
+  // ) => {
+  //   setTitle(`Editar ${question.childrens[3].title}`);
 
-      const { data } = await TeachingStaffServices.getClassroomChildrenData(questionId);
+  //   // setComponent(
+  //   //   <EditClass
+  //   //     questionId={childrenIds[representationId]}
+  //   //     classId={classId}
+  //   //     className={className}
+  //   //     studentsList={studentsList}
+  //   //     setData={setClassroomData}
+  //   //     classType={classType}
+  //   //   />
+  //   // );
 
-      const dataCopy = Array.from(classroomData);
+  //   setIsVisible(true);
+  // };
 
-      dataCopy[classType === "Mestrado" ? 0 : 1] = data;
+  const handleOpenAddClassModal = (question: Question) => {
+    setTitle(`Adicionar Turma de ${question.question}`);
 
-      setClassroomData(dataCopy as unknown as [IClassroomData[], IClassroomData[]]);
+    setComponent(<CreateClass question={question} setQuestion={setThirdQuestion} />);
 
-      toast.success("Turma deletada com sucesso!");
-    } catch (error) {
-      toast.error("Houve um erro ao deletar a turma, tente novamente!");
-    }
+    setIsVisible(true);
   };
+
+  // const handleDeleteClass = async (classId: number, questionId: number, classType: string) => {
+  //   try {
+  //     await TeachingStaffServices.deleteClass(classId, questionId);
+
+  //     const { data } = await TeachingStaffServices.getClassroomChildrenData(questionId);
+
+  //     const dataCopy = Array.from(classroomData);
+
+  //     dataCopy[classType === "Mestrado" ? 0 : 1] = data;
+
+  //     setClassroomData(dataCopy as unknown as [IClassroomData[], IClassroomData[]]);
+
+  //     toast.success("Turma deletada com sucesso!");
+  //   } catch (error) {
+  //     toast.error("Houve um erro ao deletar a turma, tente novamente!");
+  //   }
+  // };
 
   const renderClassList = useCallback(() => {
     return (
       <div>
-        {representation?.childrens.map((representationClass, index) => (
-          <>
+        {[master, doctor]?.map((node, index) => (
+          <div key={node?.id}>
             <S.ClassHeaderContainer>
-              <p>{`${index + 1}- ${representationClass.question}`}</p>
+              <p>{`${index + 1}- ${node.question}`}</p>
 
-              <button onClick={() => handleOpenAddClassModal(index, representationClass.question)}>
+              <button onClick={() => handleOpenAddClassModal(doctor)}>
                 Adicionar turma <IoIosPeople />
               </button>
             </S.ClassHeaderContainer>
 
-            {classroomData[index]?.map((classroom, index2: number) => {
+            {node?.childrens?.map((child, childIndex: number) => {
               return (
-                <S.ClassDataContainer key={classroom.index}>
+                <S.ClassDataContainer key={child?.id}>
                   <S.ClassDataHeaderContainer>
                     <p>
-                      <strong>{formatIndexToLetter(index2)} - </strong>
-                      Os representantes da turma {classroom.matter} são:
+                      <strong>{formatIndexToLetter(childIndex)} - </strong>
+                      {child.title}
                     </p>
 
                     <div>
                       <button>
                         <FiEdit
-                          onClick={() => {
-                            handleOpenEditClassModal(
-                              index,
-                              classroom.index,
-                              classroom.matter,
-                              classroom.students,
-                              representationClass.question
-                            );
-                          }}
+                        // onClick={() => {
+                        //   handleOpenEditClassModal(
+                        //     index,
+                        //     classroom.index,
+                        //     classroom.matter,
+                        //     classroom.students,
+                        //     representationClass.question
+                        //   );
+                        // }}
                         />
                       </button>
                       <button>
                         <BsTrash
-                          onClick={() =>
-                            handleDeleteClass(
-                              index2,
-                              childrenIds[index],
-                              representationClass.question
-                            )
-                          }
+                        // onClick={() =>
+                        //   handleDeleteClass(
+                        //     index2,
+                        //     childrenIds[index],
+                        //     representationClass.question
+                        //   )
+                        // }
                         />
                       </button>
                     </div>
                   </S.ClassDataHeaderContainer>
-
-                  <S.ClassDataNamesContainer>
-                    <ul>
-                      {classroom.students.map((name: string, idx: number) => (
-                        <li key={`name-${idx}`}>{name}</li>
-                      ))}
-                    </ul>
-                  </S.ClassDataNamesContainer>
                 </S.ClassDataContainer>
               );
             })}
-          </>
+          </div>
         ))}
       </div>
     );
-  }, [classroomData]);
+  }, []);
 
   useEffect(() => {
-    getClassroomData();
-  }, [getClassroomData]);
+    if (!thirdQuestion.id) return;
+
+    getClasses();
+  }, [thirdQuestion.id]);
 
   return (
     <S.ContainerCards>
       <S.ContentCard>
         <S.ContentCardHeader>
           <S.DotRounded>3</S.DotRounded>
-          <span>{representation?.question}</span>
+          <S.QuestionTitle dangerouslySetInnerHTML={{ __html: thirdQuestion.question }} />
         </S.ContentCardHeader>
 
         <S.DescriptionContainer>
-          <p>{representation?.title}</p>
+          <S.Title dangerouslySetInnerHTML={{ __html: thirdQuestion.title }} />
+
           <S.EditButtonContainer>
             <Button outline={true} type={"button"}>
               <span onClick={handleOpenEditQuestionModal}>

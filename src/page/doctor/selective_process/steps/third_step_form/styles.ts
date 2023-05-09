@@ -39,7 +39,6 @@ export const ContentCard = styled.div`
   flex-direction: column;
 
   span {
-    text-align: center;
     font-size: 1.5rem;
     margin-left: 1rem;
   }
@@ -116,12 +115,9 @@ export const ContainerButton = styled.div`
 export const CardItem = styled.div`
   margin: 1rem 0;
   display: flex;
-  align-items: center;
-  display: flex;
-  align-items: center;
-  display: flex;
   align-items: flex-start;
   flex-direction: column;
+
   strong {
     color: ${({ theme }) => theme.colors.blue.blueDark};
   }
@@ -129,4 +125,9 @@ export const CardItem = styled.div`
   p {
     padding-left: 1rem;
   }
+`;
+
+export const Title = styled.div`
+  font-weight: 400;
+  font-size: 1.5rem;
 `;

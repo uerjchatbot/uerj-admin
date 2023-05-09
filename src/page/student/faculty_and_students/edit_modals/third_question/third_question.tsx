@@ -1,71 +1,54 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { Dispatch, SetStateAction, useCallback, useState } from "react";
 
-import * as S from "./styles";
-import { DotRounded } from "../../styles";
-import { TextEditor } from "@/components/text-editor";
 import { EditTextButton } from "@/components/edit-text-button";
-import { toast } from "react-toastify";
-import { TeachingStaffServices } from "@/services/student/teaching-staff.service";
+import { TextEditor } from "@/components/text-editor";
 import { useModal } from "@/hooks/useModal";
-import { ITeachingStaffData } from "@/models/teaching-staff";
+import { Question } from "@/models/Question";
+import { QuestionServices } from "@/services/question/question.service";
+import { toast } from "react-toastify";
+import { DotRounded } from "../../styles";
+import * as S from "./styles";
 
 type Props = {
-  questionId?: number;
-  text?: string;
-  description?: string;
-  setRepresentation: React.Dispatch<React.SetStateAction<ITeachingStaffData>>;
+  question: Question;
+  setQuestion: Dispatch<SetStateAction<Question>>;
 };
 
-const EditThirdQuestion = ({ questionId, text, description, setRepresentation }: Props) => {
+const EditThirdQuestion = ({ question, setQuestion }: Props) => {
   const { setIsVisible } = useModal();
 
-  const [textInfo, setTextInfo] = useState("");
-  const [textDescription, setTextDescription] = useState("");
+  const [textTitle, setTextTitle] = useState(question.title);
+  const [textQuestion, setTextQuestion] = useState(question.question);
 
   const renderTextEditor = useCallback(() => {
-    if (textInfo.length === 0) return <></>;
+    if (textTitle.length === 0) return <></>;
 
     return (
       <>
         <S.QuestionContainer>
-          <DotRounded>1</DotRounded>
-          <TextEditor value={textInfo} setValue={setTextInfo} />
+          <DotRounded>3</DotRounded>
+          <TextEditor value={textQuestion} setValue={setTextQuestion} />
         </S.QuestionContainer>
-
-        <S.Input
-          rows={8}
-          defaultValue={textDescription}
-          onChange={(e) => setTextDescription(e.target.value)}
-        />
+        <TextEditor value={textTitle} setValue={setTextTitle} />
       </>
     );
-  }, [textInfo, textDescription]);
+  }, [textTitle, textQuestion]);
 
   const handleEditText = async () => {
     try {
-      const { data } = await TeachingStaffServices.updateFfpQuestionAndTitle(
-        questionId || 0,
-        textDescription,
-        textInfo
-      );
-
-      setRepresentation((oldValue) => {
-        return { ...oldValue, ...data };
+      const { data } = await QuestionServices.updateQuestion({
+        ...question,
+        title: textTitle,
+        question: textQuestion
       });
+
+      setQuestion(data);
 
       setIsVisible(false);
     } catch (error) {
       toast.error("Houve um erro ao editar os textos, tente novamente mais tarde");
     }
   };
-
-  useEffect(() => {
-    if (text && text.length > 0) setTextInfo(text);
-  }, [text]);
-
-  useEffect(() => {
-    if (description && description.length > 0) setTextDescription(description);
-  }, [description]);
 
   return (
     <div>

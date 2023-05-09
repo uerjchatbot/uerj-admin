@@ -1,8 +1,7 @@
-import React from "react";
 import { useModal } from "@/hooks/useModal";
+import Theme from "@/styles/theme";
 import { toast } from "react-toastify";
 import Modal from "rsuite/Modal";
-import Theme from "@/styles/theme";
 
 const EditTextModal = () => {
   const { isVisible, title, component, setIsVisible } = useModal();
@@ -18,9 +17,10 @@ const EditTextModal = () => {
   return (
     <Modal size="lg" open={isVisible} onClose={handleClose}>
       <Modal.Header>
-        <Modal.Title style={{ color: Theme.colors.blue.blueDark, fontSize: "1.5rem" }}>
-          {title}
-        </Modal.Title>
+        <Modal.Title
+          style={{ color: Theme.colors.blue.blueDark, fontSize: "1.5rem" }}
+          dangerouslySetInnerHTML={{ __html: title }}
+        />
       </Modal.Header>
 
       <Modal.Body>{component}</Modal.Body>

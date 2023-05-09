@@ -15,11 +15,9 @@ import {
 
 import { Button } from "@/components/button";
 import { useModal } from "@/hooks/useModal";
-import { IDoctorHomeData } from "@/models/doctor";
+import { Question } from "@/models/Question";
 import * as Private from "@/routes/paths/paths.private";
-import { DoctorServices } from "@/services/doctor/home.service";
-import { convertWhatsappTextToHtml } from "@/utils/formarter";
-import { orderChildrens } from "@/utils/order";
+import { QuestionServices } from "@/services/question/question.service";
 import EditHomeTitle from "./edit-home-title/edit-home-title";
 
 const navigateToPath = [
@@ -34,13 +32,11 @@ const Home: React.FC = () => {
 
   const { setTitle, setComponent, setIsVisible } = useModal();
 
-  const [data, setData] = useState<IDoctorHomeData>();
+  const [data, setData] = useState<Question>({} as Question);
 
   const getData = useCallback(async () => {
     try {
-      const { data } = await DoctorServices.getHomeData();
-
-      data.childrens = orderChildrens(data.childrens);
+      const { data } = await QuestionServices.getQuestionByNodeId(2);
 
       setData(data);
     } catch (error) {
@@ -57,7 +53,7 @@ const Home: React.FC = () => {
   const handleEditTitle = async (): Promise<void> => {
     try {
       setTitle("Editar texto de boas vindas");
-      setComponent(<EditHomeTitle data={data?.title} setData={setData} />);
+      setComponent(<EditHomeTitle question={data} setQuestion={setData} />);
       setIsVisible(true);
     } catch (error) {
       toast.error("Houve um erro ao editar o texto");
@@ -73,9 +69,7 @@ const Home: React.FC = () => {
       </ContainerButton>
 
       <DescriptionContainer>
-        {data?.title && (
-          <Title dangerouslySetInnerHTML={{ __html: convertWhatsappTextToHtml(data.title) }} />
-        )}
+        {data?.title && <Title dangerouslySetInnerHTML={{ __html: data.title }} />}
 
         <ContainerButton>
           <Button outline={true} type={"button"} onClick={handleEditTitle}>
@@ -87,22 +81,21 @@ const Home: React.FC = () => {
       </DescriptionContainer>
 
       <ContainerCards>
-        {data?.childrens.map((children, index) => {
-          return (
-            <ContentCard
-              key={`card-${index}`}
-              onClick={() => {
-                navigate(navigateToPath[index], {
-                  state: {
-                    childrenId: children.id
-                  }
-                });
-              }}>
-              <DotRounded>{index + 1}</DotRounded>
-              <span>{children.question}</span>
-            </ContentCard>
-          );
-        })}
+        {data?.childrens &&
+          data.childrens.map((children, index) => {
+            return (
+              <ContentCard
+                key={`card-${index}`}
+                onClick={() => {
+                  navigate(navigateToPath[index], {
+                    state: children
+                  });
+                }}>
+                <DotRounded>{index + 1}</DotRounded>
+                <span>{children.question}</span>
+              </ContentCard>
+            );
+          })}
       </ContainerCards>
     </Container>
   );

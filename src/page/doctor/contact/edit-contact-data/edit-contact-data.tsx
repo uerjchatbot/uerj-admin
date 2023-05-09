@@ -1,24 +1,22 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { toast } from "react-toastify";
 
-import { DotRounded } from "../styles";
 import { EditTextButton } from "@/components/edit-text-button";
 import { TextEditor } from "@/components/text-editor";
 import { useModal } from "@/hooks/useModal";
-import { IDoctorDefaultData } from "@/models/doctor";
-import { ContactServices } from "@/services/doctor/contact.service";
+import { Question } from "@/models/Question";
+import { QuestionServices } from "@/services/question/question.service";
+import { DotRounded } from "../styles";
 import { Container, QuestionContainer } from "./styles";
 
 type Props = {
-  question: string;
-  setQuestion: React.Dispatch<React.SetStateAction<IDoctorDefaultData>>;
-  title?: string;
-  questionId: number;
+  question: Question;
+  setQuestion: Dispatch<SetStateAction<Question>>;
 };
 
-const EditFirstQuestion = ({ question, setQuestion, title, questionId }: Props) => {
-  const [text, setText] = useState("");
-  const [textInfo, setTextInfo] = useState("");
+const EditFirstQuestion = ({ question, setQuestion }: Props) => {
+  const [text, setText] = useState(question.question);
+  const [textInfo, setTextInfo] = useState(question.title);
 
   const { setIsVisible } = useModal();
 
@@ -39,14 +37,13 @@ const EditFirstQuestion = ({ question, setQuestion, title, questionId }: Props) 
 
   const handleUpdate = async () => {
     try {
-      const { data } = await ContactServices.update(questionId, {
-        question: text,
+      const { data } = await QuestionServices.updateQuestion({
+        ...question,
         title: textInfo,
+        question: text
       });
 
-      setQuestion((oldValue) => {
-        return { ...oldValue, ...data };
-      });
+      setQuestion(data);
 
       setIsVisible(false);
 
@@ -55,18 +52,6 @@ const EditFirstQuestion = ({ question, setQuestion, title, questionId }: Props) 
       toast.error("Houve um erro ai salvar o texto");
     }
   };
-
-  useEffect(() => {
-    if (question && question?.length > 0) {
-      setText(question);
-    }
-  }, [question]);
-
-  useEffect(() => {
-    if (title && title?.length > 0) {
-      setTextInfo(title);
-    }
-  }, [title]);
 
   return (
     <Container>

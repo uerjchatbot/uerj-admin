@@ -35,11 +35,10 @@ const AuthProvider = ({ children }: IAuthProps) => {
     try {
       const { data } = await LoginService.login(formData);
 
-      setLocalUserData({ ...data.user, token: data.data.token });
+      setLocalUserData({ token: data.token });
 
       setUserData(() => ({
-        ...data.user,
-        token: data.data.token
+        token: data.token
       }));
     } catch (error) {
       throw new Error("Auth Failed");

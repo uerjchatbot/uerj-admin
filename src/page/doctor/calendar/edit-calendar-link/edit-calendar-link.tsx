@@ -1,44 +1,32 @@
+import { EditTextButton } from "@/components/edit-text-button";
+import { TextEditor } from "@/components/text-editor";
+import { useModal } from "@/hooks/useModal";
+import { Question } from "@/models/Question";
+import { QuestionServices } from "@/services/question/question.service";
 import React, { useCallback, useState } from "react";
 import { toast } from "react-toastify";
-import * as S from "./styles";
-import { useModal } from "@/hooks/useModal";
-import { ICalendarTitleData } from "@/models/doctor";
-import { CalendarServices } from "@/services/doctor/calentar.service";
-import { EditTextButton } from "@/components/edit-text-button";
-import { IMasterUpdateData } from "@/models/master";
 
 type Props = {
-  data: string | undefined;
-  setData: React.Dispatch<React.SetStateAction<ICalendarTitleData>>;
-  questionId: number;
+  question: Question;
+  setQuestion: React.Dispatch<React.SetStateAction<Question>>;
 };
 
-const EditCalendarLink = ({ data, setData, questionId }: Props) => {
+const EditCalendarLink = ({ question, setQuestion }: Props) => {
   const { setIsVisible } = useModal();
 
-  const [updatedData, setUpdatedData] = useState<IMasterUpdateData>({
-    title: data?.split("|")[0] || "",
-    link: data?.split("|")[1] || ""
-  });
+  const [text, setText] = useState(question.title);
 
-  const renderLinkEditor = useCallback(() => {
-    if (String(updatedData.link).length === 0) return <></>;
+  const renderTextEditor = useCallback(() => {
+    if (text.length === 0) return <></>;
 
-    return (
-      <S.Input
-        placeholder="Link do calendário"
-        defaultValue={updatedData.link || ""}
-        onChange={(e) => setUpdatedData({ ...updatedData, link: e.target.value })}
-      />
-    );
-  }, [updatedData]);
+    return <TextEditor value={text} setValue={setText} />;
+  }, [text]);
 
   const handleEditText = async () => {
     try {
-      const data: IMasterUpdateData[] = [updatedData];
-      const response = await CalendarServices.updateLink(questionId, data);
+      const { data } = await QuestionServices.updateQuestion({ ...question, title: text });
 
-      setData(response.data);
+      setQuestion(data);
 
       setIsVisible(false);
 
@@ -50,7 +38,7 @@ const EditCalendarLink = ({ data, setData, questionId }: Props) => {
 
   return (
     <div>
-      {renderLinkEditor()}
+      {renderTextEditor()}
       <EditTextButton event={handleEditText} />
     </div>
   );
