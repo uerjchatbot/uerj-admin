@@ -10,16 +10,17 @@ import { STUDENT_PATH } from "@/routes/paths/paths.private";
 import { QuestionServices } from "@/services/question/question.service";
 import { FirstStepForm } from "./steps/first_step_form";
 import { SecondStepForm } from "./steps/second_step_form";
+import { ThirdStepForm } from "./steps/third_step_form";
 import * as S from "./styles";
 
-interface StateLocation {
-  question: Question;
+interface UseLocationState {
+  state: Question;
 }
 
 const FacultAndStudents = () => {
   const navigate = useNavigate();
   const { setLoading } = useLoading();
-  const { question }: StateLocation = useLocation().state as StateLocation;
+  const { state } = useLocation() as UseLocationState;
 
   const [selectedStage, setSelectedStage] = useState(1);
   const [homeData, setHomeData] = useState<Question>({} as Question);
@@ -29,7 +30,7 @@ const FacultAndStudents = () => {
   const getData = async () => {
     try {
       setLoading(true);
-      const { data } = await QuestionServices.getQuestion(question);
+      const { data } = await QuestionServices.getQuestion(state);
 
       setHomeData(data);
 
@@ -83,9 +84,7 @@ const FacultAndStudents = () => {
 
       {homeData.childrens && selectedStage === 2 && <SecondStepForm question={homeData} />}
 
-      {/* {homeData.childrens && selectedStage === 3 && (
-        <ThirdStepForm teachers={teachers} setTeachers={setTeachers} />
-      )} */}
+      {homeData.childrens && selectedStage === 3 && <ThirdStepForm question={homeData} />}
     </S.Container>
   );
 };

@@ -42,9 +42,10 @@ const EditThirdQuestion = ({ question, setQuestion }: Props) => {
         question: textQuestion
       });
 
-      setQuestion(data);
+      setQuestion({ ...question, ...data });
 
       setIsVisible(false);
+      toast.success("Alterado com sucesso!");
     } catch (error) {
       toast.error("Houve um erro ao editar os textos, tente novamente mais tarde");
     }

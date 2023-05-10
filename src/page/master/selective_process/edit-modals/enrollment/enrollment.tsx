@@ -1,25 +1,25 @@
-import React, { useCallback, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { toast } from "react-toastify";
 
 import * as S from "./styles";
 
-import { TextEditor } from "@/components/text-editor";
 import { EditTextButton } from "@/components/edit-text-button";
+import { TextEditor } from "@/components/text-editor";
 import { useModal } from "@/hooks/useModal";
-import { MasterProcessServices } from "@/services/master/process.service";
+import { Question } from "@/models/Question";
+import { QuestionServices } from "@/services/question/question.service";
 import { DotRounded } from "../../styles";
-import { IMasterDefaultData } from "@/models/master";
 
 type Props = {
-  enrollment?: IMasterDefaultData;
-  setEnrollment: React.Dispatch<React.SetStateAction<IMasterDefaultData>>;
+  enrollment: Question;
+  setEnrollment: Dispatch<SetStateAction<Question>>;
 };
 
 const EditEnrollmentQuestion = ({ enrollment, setEnrollment }: Props) => {
   const { setIsVisible } = useModal();
 
-  const [question, setQuestion] = useState<string>(enrollment?.question || "");
-  const [title, setTitle] = useState<string>(enrollment?.title || "");
+  const [question, setQuestion] = useState(enrollment.question);
+  const [title, setTitle] = useState(enrollment.title);
 
   const renderTextEditor = useCallback(() => {
     if (question.length === 0) return <></>;
@@ -42,23 +42,15 @@ const EditEnrollmentQuestion = ({ enrollment, setEnrollment }: Props) => {
 
   const handleEditText = async (): Promise<void> => {
     try {
-      if (question && title) {
-        const node = await MasterProcessServices.updateData({
-          id: enrollment?.id,
-          title,
-          question
-        });
+      const { data } = await QuestionServices.updateQuestion({
+        ...enrollment,
+        title,
+        question
+      });
 
-        const data: IMasterDefaultData = {
-          ...node.data
-        };
-
-        setEnrollment(data);
-        setIsVisible(false);
-        toast.success("Textos alterados com sucesso!");
-      } else {
-        toast.error("Os dados não foram carregado corretamente, tente novamente!");
-      }
+      setEnrollment(data);
+      setIsVisible(false);
+      toast.success("Textos alterados com sucesso!");
     } catch (error) {
       console.log("error:", error);
       toast.error("Houve um erro ao salvar o texto");

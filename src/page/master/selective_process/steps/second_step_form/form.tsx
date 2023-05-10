@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { BsPencil } from "react-icons/bs";
 
 import * as S from "./styles";
 
-import { IMasterDefaultData, ISecondStepData } from "@/models/master";
 import { Button } from "@/components/button";
 import { useModal } from "@/hooks/useModal";
-import { EditDocumentationQuestion } from "../../edit-modals/documentation";
-import { EditStepQuestion } from "../../edit-modals/step";
+import { Question } from "@/models/Question";
+import { ISecondStepData } from "@/models/doctor";
 import { EditDiscretionQuestion } from "../../edit-modals/discretion";
+import { EditDocumentationQuestion } from "../../edit-modals/documentation";
 import { EditEnrollmentQuestion } from "../../edit-modals/enrollment";
+import { EditStepQuestion } from "../../edit-modals/step";
 
 type Props = {
   data?: ISecondStepData;
@@ -18,17 +19,11 @@ type Props = {
 const Form = ({ data }: Props) => {
   const { setTitle, setComponent, setIsVisible } = useModal();
 
-  const [documentation, setDocumentation] = useState<IMasterDefaultData>(
-    data?.documentation as IMasterDefaultData
-  );
-  const [step, setStep] = useState<IMasterDefaultData>(data?.steps as IMasterDefaultData);
-  const [discretion, setDiscretion] = useState<IMasterDefaultData>(
-    data?.discretion as IMasterDefaultData
-  );
+  const [documentation, setDocumentation] = useState<Question>(data?.documentation as Question);
+  const [step, setStep] = useState<Question>(data?.steps as Question);
+  const [discretion, setDiscretion] = useState<Question>(data?.discretion as Question);
 
-  const [enrollment, setEnrollment] = useState<IMasterDefaultData>(
-    data?.enrollment as IMasterDefaultData
-  );
+  const [enrollment, setEnrollment] = useState<Question>(data?.enrollment as Question);
 
   const handleOpenEditDocumentationQuestionModal = (): void => {
     setTitle(`Editar ${documentation.question}`);

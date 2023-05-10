@@ -1,42 +1,40 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { BsPencil, BsTrash } from "react-icons/bs";
-import { IoIosPeople } from "react-icons/io";
 import { FiEdit } from "react-icons/fi";
-import { toast } from "react-toastify";
+import { IoIosPeople } from "react-icons/io";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import { Button } from "@/components/button";
-import * as S from "./styles";
-import { formatIndexToLetter } from "@/utils/formarter";
-import { useModal } from "@/hooks/useModal";
 import { useLoading } from "@/hooks/useLoading";
-import { SchedulesServices } from "@/services/student/schedules.service";
-import { ISchedulesHomeData, ISchedulesHoursData } from "@/models/students/schedules";
+import { useModal } from "@/hooks/useModal";
+import { Question } from "@/models/Question";
 import { STUDENT_PATH } from "@/routes/paths/paths.private";
-import { EditHomeTitle } from "./edit-modals/home-title";
+import { QuestionServices } from "@/services/question/question.service";
 import { CreateHourModal } from "./edit-modals/create-hour";
 import { EditHourModal } from "./edit-modals/edit-hour";
+import { EditHomeTitle } from "./edit-modals/home-title";
+import * as S from "./styles";
+
+interface UseLocationState {
+  state: Question;
+}
 
 const Schedules = () => {
-  const { state }: { state: any } = useLocation();
+  const { state } = useLocation() as UseLocationState;
+
   const navigate = useNavigate();
   const { setLoading } = useLoading();
   const { setTitle, setComponent, setIsVisible } = useModal();
 
-  const [schedulesData, setSchedulesData] = useState<ISchedulesHomeData>({} as ISchedulesHomeData);
-  const [schedulesHoursData, setSchedulesHoursData] = useState<ISchedulesHoursData[]>([]);
+  const [homeData, setHomeData] = useState<Question>({} as Question);
 
   const handleNavigateBack = () => navigate(STUDENT_PATH());
 
   const handleOpenAddHourModal = () => {
     setTitle("Adicionar horário");
 
-    setComponent(
-      <CreateHourModal
-        questionId={schedulesData?.childrens[0].id}
-        setData={setSchedulesHoursData}
-      />
-    );
+    setComponent(<CreateHourModal question={homeData} setQuestion={setHomeData} />);
 
     setIsVisible(true);
   };
@@ -44,36 +42,29 @@ const Schedules = () => {
   const handleOpenEditTitleModal = () => {
     setTitle("Editar Horários");
 
-    setComponent(
-      <EditHomeTitle id={state.childrenId} data={schedulesData.title} setData={setSchedulesData} />
-    );
+    setComponent(<EditHomeTitle question={homeData} setQuestion={setHomeData} />);
 
     setIsVisible(true);
   };
 
-  const handleOpenEditHourModal = (data: ISchedulesHoursData) => {
+  const handleOpenEditHourModal = (question: Question) => {
     setTitle("Editar Horário");
 
-    setComponent(
-      <EditHourModal
-        hourData={data}
-        questionId={schedulesData?.childrens[0].id}
-        setData={setSchedulesHoursData}
-      />
-    );
+    setComponent(<EditHourModal question={question} setQuestion={setHomeData} />);
 
     setIsVisible(true);
   };
 
-  const handleDeleteHour = async (hourId: number) => {
+  const handleDeleteHour = async (question: Question) => {
     try {
       setLoading(true);
 
-      await SchedulesServices.deleteHour(hourId, schedulesData.childrens[0].id);
+      await QuestionServices.deleteQuestion(question);
 
-      const { data } = await SchedulesServices.getSchedulesHours(schedulesData.childrens[0].id);
-
-      setSchedulesHoursData(data);
+      setHomeData((state) => ({
+        ...state,
+        childrens: state.childrens.filter((child) => child.id !== question.id)
+      }));
 
       toast.success("Horário excluido com sucesso!");
 
@@ -83,13 +74,13 @@ const Schedules = () => {
     }
   };
 
-  const getSchedulesData = async (): Promise<void> => {
+  const gethomeData = async (): Promise<void> => {
     try {
       setLoading(true);
 
-      const { data } = await SchedulesServices.getHomeData(state.childrenId);
+      const { data } = await QuestionServices.getQuestion(state);
 
-      setSchedulesData(data);
+      setHomeData(data);
 
       setLoading(false);
     } catch (error) {
@@ -98,76 +89,41 @@ const Schedules = () => {
     }
   };
 
-  const getSchedulesHoursData = async (): Promise<void> => {
-    try {
-      setLoading(true);
-
-      const { data } = await SchedulesServices.getSchedulesHours(schedulesData.childrens[0].id);
-
-      setSchedulesHoursData(data);
-
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      toast.error("Houve um erro ao pegar os dados dos horários");
-    }
-  };
   const renderHoursList = useCallback(() => {
     return (
       <div>
-        {schedulesHoursData?.map((hour, index: number) => {
+        {homeData?.childrens?.map((child, index) => {
           return (
-            <S.ClassDataContainer key={hour.index}>
+            <S.ClassDataContainer key={child.id}>
               <S.ClassDataHeaderContainer>
-                <p>
-                  <strong>{formatIndexToLetter(index)} - </strong>
-                  {hour.group}
-                </p>
+                <S.Title
+                  dangerouslySetInnerHTML={{
+                    __html: `<strong>${index + 1}. </strong>${child.title}`
+                  }}></S.Title>
 
-                <div>
+                <S.ButtonGroup>
                   <button>
                     <FiEdit
                       onClick={() => {
-                        handleOpenEditHourModal(hour);
+                        handleOpenEditHourModal(child);
                       }}
                     />
                   </button>
                   <button>
-                    <BsTrash onClick={() => handleDeleteHour(hour.index)} />
+                    <BsTrash onClick={() => handleDeleteHour(child)} />
                   </button>
-                </div>
+                </S.ButtonGroup>
               </S.ClassDataHeaderContainer>
-
-              <S.ClassDataNamesContainer>
-                <ul>
-                  <div>
-                    <li>Orientador: {hour.mastermind}</li>
-                    <li>Dia da semana: {hour.day_week}</li>
-                  </div>
-
-                  <div>
-                    <li>Horário: {hour.hour}</li>
-                  </div>
-                </ul>
-              </S.ClassDataNamesContainer>
             </S.ClassDataContainer>
           );
         })}
       </div>
     );
-  }, [schedulesHoursData]);
+  }, [homeData.childrens]);
 
   useEffect(() => {
-    getSchedulesData();
+    gethomeData();
   }, [state]);
-
-  useEffect(() => {
-    getSchedulesHoursData();
-  }, [schedulesData]);
-
-  // console.log("schedulesData:", schedulesData);
-  // console.log("schedulesHoursData:", schedulesHoursData);
-  // console.log("state:", state);
 
   return (
     <S.Container>
@@ -180,7 +136,7 @@ const Schedules = () => {
 
         <S.ContentCard>
           <S.ContentCardHeader>
-            <span>{schedulesData?.title}</span>
+            <span>{homeData?.title}</span>
           </S.ContentCardHeader>
 
           <S.EditButtonContainer>

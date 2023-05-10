@@ -1,9 +1,13 @@
-import Theme from "@/styles/theme";
 import styled from "styled-components";
+
 import { DotRounded as CommonDot } from "@/components/dot-rounded";
+import Theme from "@/styles/theme";
+
+export const Container = styled.div``;
 
 export const DescriptionContainer = styled.div`
-  width: 100%;
+  width: 90%;
+
   font-size: 1.5rem;
   color: ${Theme.colors.grey.grey};
 
@@ -15,29 +19,16 @@ export const DescriptionContainer = styled.div`
   }
 `;
 
-export const EditButtonContainer = styled.div`
-  width: 90%;
-
-  button {
-    width: 30%;
-
-    span {
-      font-size: 1rem;
-    }
-  }
-`;
-
 export const ContainerCards = styled.div`
   width: 90%;
+  margin: 0 auto;
   display: grid;
-  grid-template-rows: repeat(1, 1fr);
+  grid-template-rows: repeat(2, 1fr);
   gap: 36px;
-
   @media (max-width: 1000px) {
     grid-template-columns: 1fr;
     gap: 90px;
   }
-
   padding-bottom: 48px;
 `;
 
@@ -66,7 +57,6 @@ export const ContentCard = styled.div`
 
 export const ContentCardHeader = styled.div`
   width: 100%;
-  margin-bottom: 2rem;
 
   display: flex;
   align-items: center;
@@ -79,34 +69,118 @@ export const DotRounded = styled(CommonDot)`
   height: 80px;
 `;
 
-export const EventDataContainer = styled.div`
-  display: grid;
-  grid-template-columns: 50% 1fr 1fr;
-  grid-gap: 1rem;
+export const ContainerButton = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 24px;
 
-  section {
-    margin-bottom: 2rem;
+  button {
+    span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      svg {
+        margin-left: 12px;
+      }
+    }
 
-    p {
-      margin: 0;
-      padding: 0.25rem 1rem;
-      color: ${({ theme }) => theme.colors.grey.mediumGrey};
-      background-color: ${({ theme }) => theme.colors.blue.extraLightBlue};
-      border-radius: 4px;
+    &:first-child {
+      width: 15%;
+    }
+
+    &:last-child {
+      width: 20%;
     }
   }
 `;
 
-export const EventLinkContainer = styled.div`
-  section {
-    margin-bottom: 2rem;
+export const HourAndDateContainer = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: 30% 30% 40%;
+  align-items: end;
 
-    p {
-      margin: 0;
-      padding: 0.25rem 1rem;
-      color: ${({ theme }) => theme.colors.grey.mediumGrey};
-      background-color: ${({ theme }) => theme.colors.blue.extraLightBlue};
-      border-radius: 4px;
-    }
+  div {
+    width: fit-content;
   }
+`;
+
+export const EventTitle = styled.p`
+  color: ${({ theme }) => theme.colors.grey.mediumGrey};
+
+  strong {
+    color: ${({ theme }) => theme.colors.blue.blueDark};
+  }
+`;
+
+export const EventData = styled.p`
+  width: fit-content;
+
+  padding: 0.25rem 1rem;
+  color: ${({ theme }) => theme.colors.grey.mediumGrey};
+  background-color: ${({ theme }) => theme.colors.blue.extraLightBlue};
+
+  .banking-data {
+    background-color: red;
+  }
+`;
+
+export const AddBankingButton = styled.button`
+  height: 48px;
+  font-size: 1rem;
+  color: ${({ theme }) => theme.colors.blue.blueDark};
+  background-color: ${({ theme }) => theme.colors.blue.lightBlue};
+
+  border: 2px solid ${({ theme }) => theme.colors.blue.blueDark};
+  border-radius: 8px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+`;
+
+export const BankingTeachersContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+`;
+
+export const BankingTeachers = styled.section`
+  padding: 0.25rem 1rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  box-shadow: 0px 1px 6px rgba(184, 190, 194, 0.6);
+
+  button {
+    background-color: ${({ theme }) => theme.colors.blue.extraLightBlue};
+    padding: 0.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .banking-data {
+    background-color: transparent;
+  }
+`;
+
+export const Title = styled.div`
+  font-weight: 400;
+  font-size: 1.5rem;
 `;

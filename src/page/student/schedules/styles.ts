@@ -1,6 +1,6 @@
+import { DotRounded as CommonDot } from "@/components/dot-rounded";
 import Theme from "@/styles/theme";
 import styled from "styled-components";
-import { DotRounded as CommonDot } from "@/components/dot-rounded";
 
 export const Container = styled.div`
   padding: 1rem 0;
@@ -187,7 +187,6 @@ export const ClassHeaderContainer = styled.div`
 export const ClassDataContainer = styled.div`
   padding: 1rem;
 
-  margin-top: 0;
   margin-bottom: 1rem;
 
   display: flex;
@@ -201,37 +200,27 @@ export const ClassDataHeaderContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+`;
 
-  /* margin-top: 1rem; */
+export const ButtonGroup = styled.div`
+  display: flex;
+  gap: 1rem;
 
-  p {
-    margin: 0;
-
-    strong {
-      color: ${Theme.colors.blue.blueDark};
-    }
-  }
-
-  div {
+  button {
     display: flex;
-    gap: 1rem;
+    align-items: center;
+    justify-content: center;
 
-    button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    padding: 0.5rem;
 
-      padding: 0.5rem;
+    background-color: ${Theme.colors.blue.lightBlue};
 
-      background-color: ${Theme.colors.blue.lightBlue};
+    border: none;
+    border-radius: 50%;
 
-      border: none;
-      border-radius: 50%;
+    font-size: 1rem;
 
-      font-size: 1rem;
-
-      cursor: pointer;
-    }
+    cursor: pointer;
   }
 `;
 
@@ -257,4 +246,10 @@ export const ClassDataNamesContainer = styled.div`
       color: ${Theme.colors.grey.grey};
     }
   }
+`;
+
+export const Title = styled.div`
+  font-weight: 400;
+  font-size: 1.5rem;
+  flex: 1;
 `;

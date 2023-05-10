@@ -1,30 +1,43 @@
-import React, { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { toast } from "react-toastify";
 
-import MattersService from "@/services/student/matters.service";
 import { EditTextButton } from "@/components/edit-text-button";
-import { IMatterData } from "@/models/matters";
 import { useModal } from "@/hooks/useModal";
 
-import * as S from "./styles";
+import { TextEditor } from "@/components/text-editor";
+import { Question } from "@/models/Question";
+import { QuestionServices } from "@/services/question/question.service";
 
 type Props = {
-  questionId: number;
-  setData: React.Dispatch<React.SetStateAction<IMatterData[]>>;
+  question: Question;
+  setQuestion: Dispatch<SetStateAction<Question>>;
 };
 
-const CreateDiscipline = ({ questionId, setData }: Props) => {
+const CreateDiscipline = ({ question, setQuestion }: Props) => {
   const { setIsVisible } = useModal();
 
   const [text, setText] = useState("");
 
   const handleCreateDiscipline = async () => {
     try {
-      await MattersService.storeDiscipline(questionId, text);
+      const { data } = await QuestionServices.create({
+        node_chatbot_id: question.chatbot_id,
+        question: "",
+        title: text,
+        response: true
+      });
 
-      const { data } = await MattersService.getMatterData(questionId);
-
-      setData(data);
+      setQuestion((state) => ({
+        ...state,
+        childrens: state.childrens.map((child) =>
+          child.id === question.id
+            ? {
+                ...child,
+                childrens: [...child.childrens, data]
+              }
+            : child
+        )
+      }));
 
       toast.success("Disciplina criada com sucesso!");
 
@@ -36,11 +49,7 @@ const CreateDiscipline = ({ questionId, setData }: Props) => {
 
   return (
     <div>
-      <S.Input
-        placeholder="Nome da disciplina"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-      />
+      <TextEditor value={text} setValue={setText} />
 
       <EditTextButton event={handleCreateDiscipline} />
     </div>

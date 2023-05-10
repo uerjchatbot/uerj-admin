@@ -1,24 +1,23 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { toast } from "react-toastify";
 
-import { ISchedulesHomeData } from "@/models/students/schedules";
 import { EditTextButton } from "@/components/edit-text-button";
-import { useModal } from "@/hooks/useModal";
 import { TextEditor } from "@/components/text-editor";
-import { SchedulesServices } from "@/services/student/schedules.service";
 import { useLoading } from "@/hooks/useLoading";
+import { useModal } from "@/hooks/useModal";
+import { Question } from "@/models/Question";
+import { QuestionServices } from "@/services/question/question.service";
 
 type Props = {
-  id: number;
-  data: string;
-  setData: React.Dispatch<React.SetStateAction<ISchedulesHomeData>>;
+  question: Question;
+  setQuestion: Dispatch<SetStateAction<Question>>;
 };
 
-const HomeTitle = ({ id, data, setData }: Props) => {
+const HomeTitle = ({ question, setQuestion }: Props) => {
   const { setLoading } = useLoading();
   const { setIsVisible } = useModal();
 
-  const [text, setText] = useState("");
+  const [text, setText] = useState(question.title);
 
   const renderTextEditor = useCallback(() => {
     if (text.length === 0) return <></>;
@@ -30,11 +29,9 @@ const HomeTitle = ({ id, data, setData }: Props) => {
     try {
       setLoading(true);
 
-      await SchedulesServices.updateTitle(id, text);
+      const { data } = await QuestionServices.updateQuestion({ ...question, title: text });
 
-      const response = await SchedulesServices.getHomeData(id);
-
-      setData(response.data);
+      setQuestion((state) => ({ ...state, ...data }));
 
       setIsVisible(false);
 
@@ -46,12 +43,6 @@ const HomeTitle = ({ id, data, setData }: Props) => {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (data && data?.length > 0) {
-      setText(data);
-    }
-  }, [data]);
 
   return (
     <div>

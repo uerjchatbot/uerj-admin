@@ -5,14 +5,14 @@ import { toast } from "react-toastify";
 import * as S from "./styles";
 
 import { Button } from "@/components/button";
+import { useLoading } from "@/hooks/useLoading";
 import { useModal } from "@/hooks/useModal";
 import { ITutorialHomeChildrenData, ITutorialHomeData } from "@/models/students/tutorials";
-import { formatIndexToLetter } from "@/utils/formarter";
-import { useLoading } from "@/hooks/useLoading";
 import { TutorialServices } from "@/services/student/tutorial.service";
+import { formatIndexToLetter } from "@/utils/formarter";
+import { EditCalendar } from "../../edit-modals/edit-calendar";
 import { EditQuestion } from "../../edit-modals/edit-question";
 import { EditQuestionChildren } from "../../edit-modals/edit-question-children";
-import { EditCalendar } from "../../edit-modals/edit-calendar";
 
 type Props = {
   id?: number;
@@ -98,10 +98,6 @@ const Form = ({ id, thirdQuestion, fourthQuestion, setHomeData }: Props) => {
   useEffect(() => {
     getTutorialCalendarData();
   }, [thirdQuestion]);
-
-  // console.log("thirdQuestion:", thirdQuestion);
-  // console.log("fourthQuestion:", fourthQuestion);
-  // console.log("calendarData:", calendarData);
 
   return (
     <S.Container>

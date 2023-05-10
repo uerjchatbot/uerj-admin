@@ -29,15 +29,14 @@ import { EditFourthQuestion } from "./questions/edit-fourth-question";
 import { EditSecondQuestion } from "./questions/edit-second-question";
 import { EditThirdQuestion } from "./questions/edit-third-question";
 
-interface StateLocation {
-  question: Question;
+interface UseLocationState {
+  state: Question;
 }
-
 const Calendar = () => {
   const navigate = useNavigate();
   const { setLoading } = useLoading();
 
-  const { question }: StateLocation = useLocation().state as StateLocation;
+  const { state } = useLocation() as UseLocationState;
 
   const { setTitle, setComponent, setIsVisible } = useModal();
 
@@ -88,7 +87,7 @@ const Calendar = () => {
     try {
       setLoading(true);
 
-      const { data } = await QuestionServices.getQuestion(question);
+      const { data } = await QuestionServices.getQuestion(state);
 
       setTitleData(data);
 

@@ -30,7 +30,7 @@ const EditHomeTitle = ({ question, setQuestion }: Props) => {
         title: text
       });
 
-      setQuestion(data);
+      setQuestion({ ...question, ...data });
       setIsVisible(false);
 
       toast.success("Texto alterado com sucesso!");

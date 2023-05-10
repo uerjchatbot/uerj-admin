@@ -1,42 +1,37 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { BsPencil, BsTrash } from "react-icons/bs";
+import { useCallback, useEffect, useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
+import { BsPencil, BsTrash } from "react-icons/bs";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import { IMatterData, IMattersChildrenData, IMattersHomeData } from "@/models/matters";
-import MattersService from "@/services/student/matters.service";
-import { CreateDisciplineModal } from "./create-discipline";
-import { EditMatterText } from "./edit-modals/matter-text";
-import { formatIndexToLetter } from "@/utils/formarter";
-import { HomeTitle } from "./edit-modals/home-title";
-import { orderChildrens } from "@/utils/order";
 import { Button } from "@/components/button";
 import { useModal } from "@/hooks/useModal";
-import * as S from "./styles";
+import { Question } from "@/models/Question";
 import { STUDENT_PATH } from "@/routes/paths/paths.private";
+import { QuestionServices } from "@/services/question/question.service";
+import { CreateDisciplineModal } from "./create-discipline";
+import { HomeTitle } from "./edit-modals/home-title";
+import { EditMatterText } from "./edit-modals/matter-text";
+import * as S from "./styles";
+
+interface UseLocationState {
+  state: Question;
+}
 
 const Matters = () => {
-  const { state }: { state: any } = useLocation();
+  const { state } = useLocation() as UseLocationState;
+
   const navigate = useNavigate();
   const { setTitle, setComponent, setIsVisible } = useModal();
-  const [homeData, setHomeData] = useState<IMattersHomeData>({} as IMattersHomeData);
-  const [mastersData, setMastersData] = useState<IMatterData[]>([]);
-  const [doctorateData, setDoctorateData] = useState<IMatterData[]>([]);
+  const [homeData, setHomeData] = useState<Question>({} as Question);
 
   const getMattersData = useCallback(async () => {
-    const response1 = await MattersService.getHomeData(state.childrenId);
+    const { data } = await QuestionServices.getQuestion(state);
 
-    const childrens = orderChildrens(response1.data.childrens);
-    const mastersId = childrens[0].childrens[0].id;
-    const doctorateId = childrens[1].childrens[0].id;
+    const { data: master } = await QuestionServices.getQuestion(data.childrens[0]);
+    const { data: doctor } = await QuestionServices.getQuestion(data.childrens[1]);
 
-    const response2 = await MattersService.getMatterData(mastersId);
-    const response3 = await MattersService.getMatterData(doctorateId);
-
-    setHomeData(response1.data);
-    setMastersData(response2.data);
-    setDoctorateData(response3.data);
+    setHomeData({ ...data, childrens: [master, doctor] });
   }, [state]);
 
   const handleNavigateBack = () => navigate(STUDENT_PATH());
@@ -44,59 +39,37 @@ const Matters = () => {
   const handleOpenEditHomeTitle = () => {
     setTitle("Editar Disciplinas");
 
-    setComponent(
-      <HomeTitle questionId={homeData.id} title={homeData.title} setData={setHomeData} />
-    );
+    setComponent(<HomeTitle question={homeData} setQuestion={setHomeData} />);
 
     setIsVisible(true);
   };
 
-  const handleOpenAddDisciplineModal = (matterType?: string) => {
-    const questionId =
-      matterType === "Mestrado"
-        ? homeData.childrens[0].childrens[0].id
-        : homeData.childrens[1].childrens[0].id;
+  const handleOpenAddDisciplineModal = (question: Question) => {
+    setTitle(`Criar disciplina de ${question.question}`);
 
-    setTitle(`Criar disciplina de ${matterType}`);
-
-    setComponent(
-      <CreateDisciplineModal
-        questionId={questionId}
-        setData={matterType === "Mestrado" ? setMastersData : setDoctorateData}
-      />
-    );
+    setComponent(<CreateDisciplineModal question={question} setQuestion={setHomeData} />);
 
     setIsVisible(true);
   };
 
-  const handleEditMatterText = (data: IMattersChildrenData) => {
-    setTitle(`Editar texto das turmas de ${data.question}`);
+  const handleEditMatterText = (question: Question) => {
+    setTitle(`Editar texto das turmas de ${question.question}`);
 
-    setComponent(
-      <EditMatterText
-        title={data.title}
-        fatherQuestionId={homeData.id}
-        questionId={data.id}
-        setData={setHomeData}
-      />
-    );
+    setComponent(<EditMatterText question={question} setQuestion={setHomeData} />);
 
     setIsVisible(true);
   };
 
-  const handleDeleteDiscipline = async (
-    matterType: string,
-    disciplineId: number,
-    questionId: number
-  ) => {
+  const handleDeleteDiscipline = async (question: Question) => {
     try {
-      await MattersService.deleteDiscipline(disciplineId, questionId);
-
-      const { data } = await MattersService.getMatterData(questionId);
-
-      if (matterType === "Mestrado") setMastersData(data);
-
-      if (matterType === "Doutorado") setDoctorateData(data);
+      await QuestionServices.deleteQuestion(question);
+      setHomeData((state) => ({
+        ...state,
+        childrens: state.childrens.map((child) => ({
+          ...child,
+          childrens: child.childrens.filter((c) => c.id !== question.id)
+        }))
+      }));
 
       toast.success("Disciplina excluida com sucesso");
     } catch (error) {
@@ -128,79 +101,44 @@ const Matters = () => {
         </S.TitleContainer>
       </S.Header>
 
-      {homeData?.childrens?.map((matter, index) => {
+      {homeData?.childrens?.map((child, index) => {
         return (
           <S.Content key={`Matter-${index}`}>
             <S.ContentHeader>
               <S.DotRounded>{index + 1}</S.DotRounded>
-              <span>{matter.question}</span>
+              <span>{child.question}</span>
             </S.ContentHeader>
 
             <S.ContentBody>
-              <S.Title>{matter.title}</S.Title>
+              <S.Title>{child.title}</S.Title>
 
               <S.MatterHeaderContainer>
                 <Button outline={true} type={"button"}>
-                  <span onClick={() => handleEditMatterText(matter)}>
+                  <span onClick={() => handleEditMatterText(child)}>
                     Editar <BsPencil size={16} />
                   </span>
                 </Button>
 
                 <S.AddMatter type={"button"}>
-                  <span onClick={() => handleOpenAddDisciplineModal(matter.question)}>
+                  <span onClick={() => handleOpenAddDisciplineModal(child)}>
                     Adicionar disciplina <AiOutlinePlus size={16} />
                   </span>
                 </S.AddMatter>
               </S.MatterHeaderContainer>
 
               <S.MattersList>
-                {matter.question === "Mestrado" &&
-                  mastersData?.map((matterData, index) => {
-                    return (
-                      <li key={`teste-${index}`}>
-                        <div>
-                          <strong>{formatIndexToLetter(index)} - </strong>
-                          <S.Title>{matterData.matter}</S.Title>
-                        </div>
+                {child?.childrens?.map((c, cindex) => (
+                  <li key={c.id}>
+                    <div>
+                      <strong>{cindex + 1} - </strong>
+                      <S.Title>{c.title}</S.Title>
+                    </div>
 
-                        <button>
-                          <BsTrash
-                            onClick={() =>
-                              handleDeleteDiscipline(
-                                "Mestrado",
-                                matterData.index,
-                                homeData.childrens[0].childrens[0].id
-                              )
-                            }
-                          />
-                        </button>
-                      </li>
-                    );
-                  })}
-
-                {matter.question === "Doutorado" &&
-                  doctorateData?.map((matterData, index) => {
-                    return (
-                      <li key={`teste-${index}`}>
-                        <div>
-                          <strong>{formatIndexToLetter(index)} - </strong>
-                          <S.Title>{matterData.matter}</S.Title>
-                        </div>
-
-                        <button>
-                          <BsTrash
-                            onClick={() =>
-                              handleDeleteDiscipline(
-                                "Doutorado",
-                                matterData.index,
-                                homeData.childrens[1].childrens[0].id
-                              )
-                            }
-                          />
-                        </button>
-                      </li>
-                    );
-                  })}
+                    <button>
+                      <BsTrash onClick={() => handleDeleteDiscipline(c)} />
+                    </button>
+                  </li>
+                ))}
               </S.MattersList>
             </S.ContentBody>
           </S.Content>

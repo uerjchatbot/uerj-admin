@@ -1,42 +1,36 @@
-import React, { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { toast } from "react-toastify";
-import { DatePicker } from "rsuite";
 
 import { EditTextButton } from "@/components/edit-text-button";
+import { TextEditor } from "@/components/text-editor";
 import { useLoading } from "@/hooks/useLoading";
-import { SchedulesServices } from "@/services/student/schedules.service";
-import { ISchedulesHoursData } from "@/models/students/schedules";
 import { useModal } from "@/hooks/useModal";
-import * as S from "./styles";
+import { Question } from "@/models/Question";
+import { QuestionServices } from "@/services/question/question.service";
 
 type Props = {
-  questionId: number;
-  setData: React.Dispatch<React.SetStateAction<ISchedulesHoursData[]>>;
+  question: Question;
+  setQuestion: Dispatch<SetStateAction<Question>>;
 };
 
-const CreateHour = ({ questionId, setData }: Props) => {
+const CreateHour = ({ question, setQuestion }: Props) => {
   const { setLoading } = useLoading();
   const { setIsVisible } = useModal();
 
-  const [group, setGroup] = useState("");
-  const [mastermind, setMastermind] = useState("");
-  const [dayWeek, setDayWeek] = useState("");
-  const [hour, setHour] = useState(`${new Date().getHours()}:${new Date().getMinutes()}`);
+  const [textTitle, setTextTitle] = useState("");
 
   const handleCreateHour = async (): Promise<void> => {
     try {
-      if (!group || !mastermind || !dayWeek || !hour) {
-        toast.error("Preencha todos os campos corretamente!");
-        return;
-      }
-
       setLoading(true);
 
-      await SchedulesServices.createHour(questionId, group, mastermind, dayWeek, hour);
+      const { data } = await QuestionServices.create({
+        node_chatbot_id: question.chatbot_id,
+        question: "",
+        title: textTitle,
+        response: true
+      });
 
-      const { data } = await SchedulesServices.getSchedulesHours(questionId);
-
-      setData(data);
+      setQuestion((state) => ({ ...state, childrens: [...state.childrens, data] }));
 
       toast.success("Horário criado com sucesso!");
 
@@ -53,49 +47,7 @@ const CreateHour = ({ questionId, setData }: Props) => {
 
   return (
     <div>
-      <S.InputsContainer>
-        <S.InputColumnContainer>
-          <S.Input
-            type="text"
-            placeholder="Nome"
-            value={group}
-            onChange={(e) => setGroup(e.target.value)}
-          />
-
-          <S.Input
-            type="text"
-            placeholder="Orientador"
-            value={mastermind}
-            onChange={(e) => setMastermind(e.target.value)}
-          />
-        </S.InputColumnContainer>
-
-        <S.InputColumnContainer>
-          <S.Input
-            type="text"
-            placeholder="Dia da semana"
-            value={dayWeek}
-            onChange={(e) => setDayWeek(e.target.value)}
-          />
-
-          <div>
-            <p>Horário</p>
-
-            <DatePicker
-              format="HH:mm"
-              defaultValue={new Date()}
-              style={{ width: 120 }}
-              onChange={(e) => {
-                const hours = e?.getHours();
-                const minutes = e?.getMinutes();
-
-                setHour(`${hours}:${minutes}`);
-              }}
-            />
-          </div>
-        </S.InputColumnContainer>
-      </S.InputsContainer>
-
+      <TextEditor value={textTitle} setValue={setTextTitle} />;
       <EditTextButton event={handleCreateHour} />
     </div>
   );

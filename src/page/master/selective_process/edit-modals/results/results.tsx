@@ -1,52 +1,42 @@
-import React, { useCallback, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { toast } from "react-toastify";
 
 import * as S from "./styles";
 
-import { TextEditor } from "@/components/text-editor";
 import { EditTextButton } from "@/components/edit-text-button";
+import { TextEditor } from "@/components/text-editor";
 import { useModal } from "@/hooks/useModal";
-import { MasterProcessServices } from "@/services/master/process.service";
+import { Question } from "@/models/Question";
+import { QuestionServices } from "@/services/question/question.service";
 import { DotRounded } from "../../styles";
-import { IMasterDefaultData } from "@/models/master";
 
 type Props = {
-  results?: IMasterDefaultData;
-  setResults: React.Dispatch<React.SetStateAction<IMasterDefaultData>>;
+  results: Question;
+  setResults: Dispatch<SetStateAction<Question>>;
 };
 
 const EditResultsQuestion = ({ results, setResults }: Props) => {
   const { setIsVisible } = useModal();
 
-  const [question, setQuestion] = useState<string>(results?.question || "");
-  const [title, setTitle] = useState<string>(results?.title || "");
+  const [question, setQuestion] = useState(results.question);
+  // const [title, setTitle] = useState(results.title);
 
-  const [homologation, setHomologation] = useState<IMasterDefaultData>(
-    results?.childrens[0] as IMasterDefaultData
-  );
-  const [test, setTest] = useState<IMasterDefaultData>(results?.childrens[1] as IMasterDefaultData);
-  const [analysis, setAnalysis] = useState<IMasterDefaultData>(
-    results?.childrens[2] as IMasterDefaultData
-  );
-  const [interview, setInterview] = useState<IMasterDefaultData>(
-    results?.childrens[3] as IMasterDefaultData
-  );
-  const [language, setLanguage] = useState<IMasterDefaultData>(
-    results?.childrens[4] as IMasterDefaultData
-  );
-  const [outcome, setOutcome] = useState<IMasterDefaultData>(
-    results?.childrens[5] as IMasterDefaultData
-  );
+  const [homologation, setHomologation] = useState<Question>(results?.childrens[0] as Question);
+  const [test, setTest] = useState<Question>(results?.childrens[1] as Question);
+  const [analysis, setAnalysis] = useState<Question>(results?.childrens[2] as Question);
+  const [interview, setInterview] = useState<Question>(results?.childrens[3] as Question);
+  const [language, setLanguage] = useState<Question>(results?.childrens[4] as Question);
+  const [outcome, setOutcome] = useState<Question>(results?.childrens[5] as Question);
 
   const renderTextEditor = useCallback(() => {
-    if (question.length === 0) return <></>;
+    if (question?.length === 0) return <></>;
 
     return (
       <>
         <S.QuestionContainer>
           <DotRounded>9</DotRounded>
 
-          <TextEditor value={question} setValue={setQuestion} />
+          {question && <TextEditor value={question} setValue={setQuestion} />}
         </S.QuestionContainer>
 
         <S.QuestionContainer>
@@ -217,26 +207,18 @@ const EditResultsQuestion = ({ results, setResults }: Props) => {
   const handleEditText = async (): Promise<void> => {
     try {
       if (question) {
-        const node = await MasterProcessServices.updateData({
-          id: results?.id,
-          title,
+        const node = await QuestionServices.updateQuestion({
+          ...results,
           question
         });
 
         const childrens = [homologation, test, analysis, interview, language, outcome];
 
         await Promise.all(
-          childrens.map(
-            async (child) =>
-              await MasterProcessServices.updateData({
-                id: child.id,
-                question: child.question,
-                title: child.title
-              })
-          )
+          childrens.map(async (child) => await QuestionServices.updateQuestion(child))
         );
 
-        const data: IMasterDefaultData = {
+        const data: Question = {
           ...node.data,
           childrens
         };

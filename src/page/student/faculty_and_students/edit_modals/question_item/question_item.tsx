@@ -22,8 +22,6 @@ const EditQuestionItem = ({ index, question, setQuestion }: Props) => {
   const [textTitle, setTextTitle] = useState(question.title);
   const [textQuestion, setTextQuestion] = useState(question.question);
 
-  console.log({ textTitle, textQuestion });
-
   const renderTextEditor = useCallback(() => {
     return (
       <>

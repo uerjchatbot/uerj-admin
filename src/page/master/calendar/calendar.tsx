@@ -1,25 +1,29 @@
 /* eslint-disable no-unused-vars */
-import { useState, useEffect, useCallback } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
 import { BsPencil } from "react-icons/bs";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import { Container, ContainerButton, DescriptionContainer, Input } from "./styles";
-import { ICalendarTitleData } from "@/models/master";
-import { CalendarServices } from "@/services/master/calendar.service";
-import { MASTER_PATH } from "@/routes/paths/paths.private";
-import { EditCalendarLink } from "./edit-calendar-link";
-import { useLoading } from "@/hooks/useLoading";
 import { Button } from "@/components/button";
+import { useLoading } from "@/hooks/useLoading";
 import { useModal } from "@/hooks/useModal";
+import { Question } from "@/models/Question";
+import { MASTER_PATH } from "@/routes/paths/paths.private";
+import { QuestionServices } from "@/services/question/question.service";
+import { EditCalendarLink } from "./edit-calendar-link";
+import { Container, ContainerButton, DescriptionContainer, Title } from "./styles";
+
+interface UseLocationState {
+  state: Question;
+}
 
 const Calendar = () => {
   const navigate = useNavigate();
   const { setLoading } = useLoading();
-  const { state }: { state: any } = useLocation();
+  const { state } = useLocation() as UseLocationState;
   const { setTitle, setComponent, setIsVisible } = useModal();
 
-  const [calendarData, setCalendarData] = useState<ICalendarTitleData>({} as ICalendarTitleData);
+  const [calendarData, setCalendarData] = useState<Question>({} as Question);
 
   const handleNavigateBack = () => navigate(MASTER_PATH());
 
@@ -27,9 +31,9 @@ const Calendar = () => {
     try {
       setLoading(true);
 
-      const { data } = await CalendarServices.getTitle(state.childrenId);
+      const { data } = await QuestionServices.getQuestion(state);
 
-      setCalendarData(data.childrens[0]);
+      setCalendarData(data);
 
       setLoading(false);
     } catch (error) {
@@ -38,16 +42,10 @@ const Calendar = () => {
     }
   }, []);
 
-  const handleOpenEditTitleModal = (questionId: number): void => {
+  const handleOpenEditTitleModal = (question: Question): void => {
     setTitle(`Editar Link do calendário`);
 
-    setComponent(
-      <EditCalendarLink
-        data={calendarData.title}
-        setData={setCalendarData}
-        questionId={questionId}
-      />
-    );
+    setComponent(<EditCalendarLink question={calendarData} setQuestion={setCalendarData} />);
 
     setIsVisible(true);
   };
@@ -66,21 +64,13 @@ const Calendar = () => {
 
       <>
         <DescriptionContainer>
-          <p>{calendarData.title?.split("|")[0]}</p>
+          <Title dangerouslySetInnerHTML={{ __html: calendarData.title }} />
 
-          <Input
-            placeholder="Link do calendário"
-            disabled
-            defaultValue={calendarData.title?.split("|")[1]}
-          />
-
-          <div>
-            <Button outline={true} type={"button"}>
-              <span onClick={() => handleOpenEditTitleModal(calendarData.id)}>
-                Editar <BsPencil size={16} />
-              </span>
-            </Button>
-          </div>
+          <Button outline={true} type={"button"}>
+            <span onClick={() => handleOpenEditTitleModal(calendarData)}>
+              Editar <BsPencil size={16} />
+            </span>
+          </Button>
         </DescriptionContainer>
       </>
     </Container>

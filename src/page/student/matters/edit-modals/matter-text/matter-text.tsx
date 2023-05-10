@@ -1,22 +1,20 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { toast } from "react-toastify";
 
-import MattersService from "@/services/student/matters.service";
 import { EditTextButton } from "@/components/edit-text-button";
 import { TextEditor } from "@/components/text-editor";
-import { orderChildrens } from "@/utils/order";
 import { useModal } from "@/hooks/useModal";
+import { Question } from "@/models/Question";
+import { QuestionServices } from "@/services/question/question.service";
 
 type Props = {
-  title: string;
-  fatherQuestionId: number;
-  questionId: number;
-  setData: any;
+  question: Question;
+  setQuestion: Dispatch<SetStateAction<Question>>;
 };
 
-const MatterText = ({ title, fatherQuestionId, questionId, setData }: Props) => {
+const MatterText = ({ question, setQuestion }: Props) => {
   const { setIsVisible } = useModal();
-  const [text, setText] = useState("");
+  const [text, setText] = useState(question.title);
 
   const handleOpenTextEditor = useCallback(() => {
     if (text.length < 1) return <></>;
@@ -26,13 +24,19 @@ const MatterText = ({ title, fatherQuestionId, questionId, setData }: Props) => 
 
   const handleEditText = async () => {
     try {
-      await MattersService.updateTitle(questionId, text);
+      const { data } = await QuestionServices.updateQuestion({ ...question, title: text });
 
-      const response = await MattersService.getHomeData(fatherQuestionId);
-
-      response.data.childrens = orderChildrens(response.data.childrens);
-
-      setData(response.data);
+      setQuestion((state) => ({
+        ...state,
+        childrens: state.childrens.map((child) =>
+          child.id
+            ? {
+                ...child,
+                ...data
+              }
+            : child
+        )
+      }));
 
       setIsVisible(false);
 
@@ -41,10 +45,6 @@ const MatterText = ({ title, fatherQuestionId, questionId, setData }: Props) => 
       toast.error("Houve um erro ai salvar o texto");
     }
   };
-
-  useEffect(() => {
-    if (title && title.length > 0) setText(title);
-  }, [title]);
 
   return (
     <div>

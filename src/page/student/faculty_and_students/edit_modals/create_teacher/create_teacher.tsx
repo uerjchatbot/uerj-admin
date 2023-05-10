@@ -1,31 +1,33 @@
-import React, { useState } from "react";
-import { toast } from "react-toastify";
-
-import { TeachingStaffServices } from "@/services/student/teaching-staff.service";
-import { ITeacherData } from "@/models/teaching-staff";
-import { useModal } from "@/hooks/useModal";
+import { Dispatch, SetStateAction, useState } from "react";
 
 import { EditTextButton } from "@/components/edit-text-button";
+import { TextEditor } from "@/components/text-editor";
+import { useModal } from "@/hooks/useModal";
+import { Question } from "@/models/Question";
+import { QuestionServices } from "@/services/question/question.service";
+import { toast } from "react-toastify";
 import * as S from "./styles";
 
 type Props = {
-  questionId?: number;
-  setData: React.Dispatch<React.SetStateAction<ITeacherData[]>>;
+  question: Question;
+  setQuestion: Dispatch<SetStateAction<Question>>;
 };
 
-const CreateTeacher = ({ questionId, setData }: Props) => {
+const CreateTeacher = ({ question, setQuestion }: Props) => {
   const { setIsVisible } = useModal();
 
-  const [name, setName] = useState("");
-  const [link, setLink] = useState("");
+  const [textTitle, setTextTitle] = useState("");
 
   const handleCreateTeacher = async (): Promise<void> => {
     try {
-      await TeachingStaffServices.createTeacher(questionId || 0, name, link);
+      const { data } = await QuestionServices.create({
+        node_chatbot_id: question.chatbot_id,
+        question: "",
+        title: textTitle,
+        response: true
+      });
 
-      const { data } = await TeachingStaffServices.getTeachers(questionId || 0);
-
-      setData(data);
+      setQuestion((state) => ({ ...state, childrens: [...state.childrens, data] }));
 
       toast.success("Professor(a) criado(a) com sucesso!");
 
@@ -38,21 +40,7 @@ const CreateTeacher = ({ questionId, setData }: Props) => {
   return (
     <S.Container>
       <S.SetStudentNameContainer>
-        <S.Input
-          type="text"
-          placeholder="Nome do(a) professor(a)"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-      </S.SetStudentNameContainer>
-
-      <S.SetStudentNameContainer>
-        <S.Input
-          type="text"
-          placeholder="Link currículo lattes"
-          value={link}
-          onChange={(e) => setLink(e.target.value)}
-        />
+        <TextEditor value={textTitle} setValue={setTextTitle} />
       </S.SetStudentNameContainer>
 
       <EditTextButton event={handleCreateTeacher} />

@@ -91,9 +91,7 @@ const Home: React.FC = () => {
                 key={children.id}
                 onClick={() => {
                   navigate(navigateToPath[index], {
-                    state: {
-                      question: children
-                    }
+                    state: children
                   });
                 }}>
                 <DotRounded>{index + 1}</DotRounded>

@@ -7,14 +7,11 @@ export const QuestionContainer = styled.div`
   grid-template-columns: 10% 1fr;
 `;
 
-export const Input = styled.textarea`
+export const Input = styled.input`
   width: 100%;
-  height: 100%;
 
   display: flex;
   flex-wrap: wrap;
-
-  padding: 0.5rem;
 
   font-size: 1.5rem;
 

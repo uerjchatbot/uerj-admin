@@ -1,13 +1,13 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-import { Container } from "./styles";
-import { useModal } from "@/hooks/useModal";
-import { IEditModalData } from "@/models/students/selective_process";
+import { EditTextButton } from "@/components/edit-text-button";
 import { TextEditor } from "@/components/text-editor";
 import { useLoading } from "@/hooks/useLoading";
-import { EditTextButton } from "@/components/edit-text-button";
+import { useModal } from "@/hooks/useModal";
+import { IEditModalData } from "@/models/students/selective_process";
 import { TutorialServices } from "@/services/student/tutorial.service";
+import { Container } from "./styles";
 
 type Props = {
   data: IEditModalData;
@@ -52,8 +52,6 @@ const EditTitle = ({ data }: Props) => {
       setTextInfo(data.title);
     }
   }, [data]);
-
-  // console.log("id:", data.questionId);
 
   return (
     <Container>

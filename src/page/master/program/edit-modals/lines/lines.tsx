@@ -6,13 +6,13 @@ import * as S from "./styles";
 import { TextEditor } from "@/components/text-editor";
 import { EditTextButton } from "@/components/edit-text-button";
 import { useModal } from "@/hooks/useModal";
-import { MasterProcessServices } from "@/services/master/process.service";
+import { DoctorProcessServices } from "@/services/doctor/process.service";
 import { DotRounded } from "../../styles";
-import { IMasterDefaultData, IMasterProgram } from "@/models/master";
+import { IDoctorDefaultData, IDoctorProgram } from "@/models/doctor";
 
 type Props = {
-  childrens?: IMasterProgram;
-  setData: React.Dispatch<React.SetStateAction<IMasterProgram>>;
+  childrens?: IDoctorProgram;
+  setData: React.Dispatch<React.SetStateAction<IDoctorProgram>>;
 };
 
 const EditLinesQuestion = ({ childrens, setData }: Props) => {
@@ -55,7 +55,7 @@ const EditLinesQuestion = ({ childrens, setData }: Props) => {
   const handleEditText = async (): Promise<void> => {
     try {
       if (question && firstTitleChildren && secondTitleChildren) {
-        const node = await MasterProcessServices.updateData({
+        const node = await DoctorProcessServices.updateData({
           id: childrens?.lines.id,
           title,
           question
@@ -64,7 +64,7 @@ const EditLinesQuestion = ({ childrens, setData }: Props) => {
         await Promise.all(
           [firstTitleChildren, secondTitleChildren].map(
             async (item, index) =>
-              await MasterProcessServices.updateData({
+              await DoctorProcessServices.updateData({
                 id: childrens?.lines.childrens[index].id,
                 // title,
                 question: item
@@ -72,7 +72,7 @@ const EditLinesQuestion = ({ childrens, setData }: Props) => {
           )
         );
 
-        const data: IMasterDefaultData = {
+        const data: IDoctorDefaultData = {
           ...node.data,
           childrens: [
             {
@@ -82,12 +82,12 @@ const EditLinesQuestion = ({ childrens, setData }: Props) => {
               question: secondTitleChildren
             }
           ]
-        } as IMasterDefaultData;
+        } as IDoctorDefaultData;
 
         setData({
           ...childrens,
           lines: data
-        } as IMasterProgram);
+        } as IDoctorProgram);
 
         setIsVisible(false);
         toast.success("Textos alterados com sucesso!");

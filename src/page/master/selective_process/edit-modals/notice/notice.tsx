@@ -1,27 +1,25 @@
-import React, { useCallback, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { toast } from "react-toastify";
 
 import * as S from "./styles";
 
-import { TextEditor } from "@/components/text-editor";
 import { EditTextButton } from "@/components/edit-text-button";
+import { TextEditor } from "@/components/text-editor";
 import { useModal } from "@/hooks/useModal";
-import { MasterProcessServices } from "@/services/master/process.service";
+import { Question } from "@/models/Question";
+import { QuestionServices } from "@/services/question/question.service";
 import { DotRounded } from "../../styles";
-import { IMasterDefaultData } from "@/models/master";
 
 type Props = {
-  notice?: IMasterDefaultData;
-  setNotice: React.Dispatch<React.SetStateAction<IMasterDefaultData>>;
+  notice: Question;
+  setNotice: Dispatch<SetStateAction<Question>>;
 };
 
 const EditNoticeQuestion = ({ notice, setNotice }: Props) => {
-  console.log({ notice });
   const { setIsVisible } = useModal();
 
-  const [question, setQuestion] = useState<string>(notice?.question || "");
-  const [title, setTitle] = useState<string>(notice?.title || "");
-  const [childrenTitle, setChildrenTitle] = useState<string>(notice?.childrens[0].title || "");
+  const [question, setQuestion] = useState<string>(notice.question);
+  const [title, setTitle] = useState<string>(notice.title);
 
   const renderTextEditor = useCallback(() => {
     if (question.length === 0) return <></>;
@@ -38,38 +36,21 @@ const EditNoticeQuestion = ({ notice, setNotice }: Props) => {
           <span></span>
           <TextEditor value={title} setValue={setTitle} />
         </S.QuestionContainer>
-        <S.QuestionContainer>
-          <span></span>
-          <TextEditor value={childrenTitle} setValue={setChildrenTitle} />
-        </S.QuestionContainer>
       </>
     );
   }, [question]);
 
   const handleEditText = async (): Promise<void> => {
     try {
-      if (notice && notice.childrens) {
-        const node = await MasterProcessServices.updateData({
-          id: notice.id,
-          title,
-          question
-        });
+      const { data } = await QuestionServices.updateQuestion({
+        ...notice,
+        title,
+        question
+      });
 
-        const children = await MasterProcessServices.updateData({
-          id: notice.childrens[0].id,
-          title: childrenTitle
-        });
-
-        const data: IMasterDefaultData = {
-          ...node.data,
-          childrens: [children.data]
-        };
-        setNotice(data);
-        setIsVisible(false);
-        toast.success("Textos alterados com sucesso!");
-      } else {
-        toast.error("Os dados não foram carregado corretamente, tente novamente!");
-      }
+      setNotice(data);
+      setIsVisible(false);
+      toast.success("Textos alterados com sucesso!");
     } catch (error) {
       console.log("error:", error);
       toast.error("Houve um erro ao salvar o texto");

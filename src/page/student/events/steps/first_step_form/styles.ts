@@ -70,15 +70,14 @@ export const DotRounded = styled(CommonDot)`
 `;
 
 export const ContainerButton = styled.div`
-  width: 50%;
+  width: 100%;
   display: flex;
   align-items: flex-end;
-  justify-content: start;
+  justify-content: space-between;
   gap: 1rem;
   margin-top: 24px;
 
   button {
-    width: 30%;
     span {
       display: flex;
       align-items: center;
@@ -87,6 +86,14 @@ export const ContainerButton = styled.div`
       svg {
         margin-left: 12px;
       }
+    }
+
+    &:first-child {
+      width: 15%;
+    }
+
+    &:last-child {
+      width: 20%;
     }
   }
 `;
@@ -171,4 +178,9 @@ export const BankingTeachers = styled.section`
   .banking-data {
     background-color: transparent;
   }
+`;
+
+export const Title = styled.div`
+  font-weight: 400;
+  font-size: 1.5rem;
 `;

@@ -5,7 +5,8 @@ import * as S from "./styles";
 
 import { Button } from "@/components/button";
 import { useModal } from "@/hooks/useModal";
-import { IFirstStepData, IMasterDefaultData } from "@/models/master";
+import { Question } from "@/models/Question";
+import { IFirstStepData } from "@/models/doctor";
 import { EditNoticeQuestion } from "../../edit-modals/notice";
 import { EditQuotasQuestion } from "../../edit-modals/quotas";
 import { EditRegistrationQuestion } from "../../edit-modals/registration";
@@ -17,15 +18,10 @@ type Props = {
 
 const Form = ({ data }: Props) => {
   const { setTitle, setComponent, setIsVisible } = useModal();
-  const [notice, setNotice] = useState<IMasterDefaultData>(data?.notice as IMasterDefaultData);
-  const [quotas, setQuotas] = useState<IMasterDefaultData>(data?.quotas as IMasterDefaultData);
-  const [registration, setRegistration] = useState<IMasterDefaultData>(
-    data?.registration as IMasterDefaultData
-  );
-
-  const [vacancies, setVacancies] = useState<IMasterDefaultData>(
-    data?.vacancies as IMasterDefaultData
-  );
+  const [notice, setNotice] = useState<Question>(data?.notice as Question);
+  const [quotas, setQuotas] = useState<Question>(data?.quotas as Question);
+  const [registration, setRegistration] = useState<Question>(data?.registration as Question);
+  const [vacancies, setVacancies] = useState<Question>(data?.vacancies as Question);
 
   const handleOpenEditVacanciesQuestionModal = (): void => {
     setTitle(`Editar ${vacancies.question}`);
@@ -61,8 +57,6 @@ const Form = ({ data }: Props) => {
     setIsVisible(true);
   };
 
-  console.log(vacancies.title.split("|"));
-
   return (
     <>
       <S.ContainerCards>
@@ -73,7 +67,6 @@ const Form = ({ data }: Props) => {
           </S.ContentCardHeader>
 
           <p>{notice && notice.title}</p>
-          <p>{notice && notice.childrens[0].title}</p>
 
           <S.ContainerButton>
             <Button outline={true} type={"button"}>
@@ -91,14 +84,7 @@ const Form = ({ data }: Props) => {
           </S.ContentCardHeader>
 
           <S.FlexRowCard>
-            <p>{vacancies && vacancies.title.split("|")[0]}</p>
-            <S.Input
-              placeholder="Quantidade"
-              disabled
-              // defaultValue={vacancies.title.split("|")[1]}
-              value={vacancies.title.split("|")[1]}
-            />
-            <p>{vacancies && vacancies.title.split("|")[2]}</p>
+            <p>{vacancies && vacancies.title}</p>
           </S.FlexRowCard>
 
           <S.ContainerButton>
@@ -117,7 +103,6 @@ const Form = ({ data }: Props) => {
           </S.ContentCardHeader>
 
           <p>{quotas.title}</p>
-          <p>{quotas.childrens[0].title}</p>
 
           <S.ContainerButton>
             <Button outline={true} type={"button"}>
@@ -135,7 +120,6 @@ const Form = ({ data }: Props) => {
           </S.ContentCardHeader>
 
           <p>{registration.title}</p>
-          <p>{registration.childrens[0].title}</p>
 
           <S.ContainerButton>
             <Button outline={true} type={"button"}>

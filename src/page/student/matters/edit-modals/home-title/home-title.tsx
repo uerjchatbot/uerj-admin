@@ -1,21 +1,20 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { toast } from "react-toastify";
 
 import { EditTextButton } from "@/components/edit-text-button";
 import { TextEditor } from "@/components/text-editor";
 import { useModal } from "@/hooks/useModal";
-import { IMattersHomeData } from "@/models/matters";
-import MattersService from "@/services/student/matters.service";
+import { Question } from "@/models/Question";
+import { QuestionServices } from "@/services/question/question.service";
 
 type Props = {
-  questionId: number;
-  title: string;
-  setData: React.Dispatch<React.SetStateAction<IMattersHomeData>>;
+  question: Question;
+  setQuestion: Dispatch<SetStateAction<Question>>;
 };
 
-const HomeTitle = ({ questionId, title, setData }: Props) => {
+const HomeTitle = ({ question, setQuestion }: Props) => {
   const { setIsVisible } = useModal();
-  const [text, setText] = useState("");
+  const [text, setText] = useState(question.title);
 
   const renderTextEditor = useCallback(() => {
     if (text.length === 0) return <></>;
@@ -29,11 +28,9 @@ const HomeTitle = ({ questionId, title, setData }: Props) => {
 
   const handleEditText = async () => {
     try {
-      const response = await MattersService.updateTitle(questionId, text);
+      const { data } = await QuestionServices.updateQuestion({ ...question, title: text });
 
-      setData((oldValue) => {
-        return { ...oldValue, ...response.data };
-      });
+      setQuestion({ ...question, ...data });
 
       setIsVisible(false);
 
@@ -42,12 +39,6 @@ const HomeTitle = ({ questionId, title, setData }: Props) => {
       toast.error("Houve um erro ai salvar o texto");
     }
   };
-
-  useEffect(() => {
-    if (title.length > 0) {
-      setText(title);
-    }
-  }, [title]);
 
   return (
     <div>

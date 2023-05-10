@@ -27,6 +27,15 @@ const CreateClass = ({ question, setQuestion }: Props) => {
         response: true
       });
 
+      setQuestion((state) => ({
+        ...state,
+        childrens: state.childrens.map((child) => {
+          return child.id === question.id
+            ? { ...child, childrens: [...child.childrens, data] }
+            : child;
+        })
+      }));
+
       toast.success("Turma criada com sucesso!");
 
       setIsVisible(false);

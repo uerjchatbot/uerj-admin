@@ -5,12 +5,13 @@ import { Button } from "@/components/button";
 import { useModal } from "@/hooks/useModal";
 import { Question } from "@/models/Question";
 import { QuestionServices } from "@/services/question/question.service";
-import { formatIndexToLetter } from "@/utils/formarter";
 import { BsPencil, BsTrash } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
 import { IoIosPeople } from "react-icons/io";
+import { toast } from "react-toastify";
 import { CreateClass } from "../../edit_modals/create_class";
 import { EditThirdQuestion } from "../../edit_modals/third_question";
+import { EditClass } from "../../edit_modals/third_question/edit_class";
 import * as S from "./styles";
 
 type Props = {
@@ -22,20 +23,25 @@ const Form = ({ question }: Props) => {
 
   const [thirdQuestion, setThirdQuestion] = useState(question.childrens[2]);
 
-  const [master, setMaster] = useState<Question>({} as Question);
-  const [doctor, setDoctor] = useState<Question>({} as Question);
-
   async function getClasses(): Promise<void> {
     const { data } = await QuestionServices.getQuestionByNodeId(thirdQuestion.chatbot_id);
 
-    setMaster(data.childrens[0]);
-    setDoctor(data.childrens[1]);
+    const { data: master } = await QuestionServices.getQuestion(data.childrens[0]);
+    const { data: doctor } = await QuestionServices.getQuestion(data.childrens[1]);
 
-    const { data: masterChildrens } = await QuestionServices.getQuestionByNodeId(master.chatbot_id);
-    const { data: doctorChildrens } = await QuestionServices.getQuestionByNodeId(doctor.chatbot_id);
-
-    setMaster((state) => ({ ...state, childrens: masterChildrens.childrens }));
-    setDoctor((state) => ({ ...state, childrens: doctorChildrens.childrens }));
+    setThirdQuestion({
+      ...data,
+      childrens: [
+        {
+          ...data.childrens[0],
+          childrens: master.childrens
+        },
+        {
+          ...data.childrens[1],
+          childrens: doctor.childrens
+        }
+      ]
+    });
   }
 
   const handleOpenEditQuestionModal = () => {
@@ -46,28 +52,13 @@ const Form = ({ question }: Props) => {
     setIsVisible(true);
   };
 
-  // const handleOpenEditClassModal = (
-  //   representationId: number,
-  //   classId: number,
-  //   className: string,
-  //   studentsList: string[],
-  //   classType: string
-  // ) => {
-  //   setTitle(`Editar ${question.childrens[3].title}`);
+  const handleOpenEditClassModal = (question: Question) => {
+    setTitle(`Editar Turma`);
 
-  //   // setComponent(
-  //   //   <EditClass
-  //   //     questionId={childrenIds[representationId]}
-  //   //     classId={classId}
-  //   //     className={className}
-  //   //     studentsList={studentsList}
-  //   //     setData={setClassroomData}
-  //   //     classType={classType}
-  //   //   />
-  //   // );
+    setComponent(<EditClass question={question} setQuestion={setThirdQuestion} />);
 
-  //   setIsVisible(true);
-  // };
+    setIsVisible(true);
+  };
 
   const handleOpenAddClassModal = (question: Question) => {
     setTitle(`Adicionar Turma de ${question.question}`);
@@ -77,33 +68,32 @@ const Form = ({ question }: Props) => {
     setIsVisible(true);
   };
 
-  // const handleDeleteClass = async (classId: number, questionId: number, classType: string) => {
-  //   try {
-  //     await TeachingStaffServices.deleteClass(classId, questionId);
+  const handleDeleteClass = async (question: Question) => {
+    try {
+      await QuestionServices.deleteQuestion(question);
 
-  //     const { data } = await TeachingStaffServices.getClassroomChildrenData(questionId);
+      setThirdQuestion((state) => ({
+        ...state,
+        childrens: state.childrens.map((child) => {
+          return { ...child, childrens: child.childrens.filter((c) => c.id !== question.id) };
+        })
+      }));
 
-  //     const dataCopy = Array.from(classroomData);
-
-  //     dataCopy[classType === "Mestrado" ? 0 : 1] = data;
-
-  //     setClassroomData(dataCopy as unknown as [IClassroomData[], IClassroomData[]]);
-
-  //     toast.success("Turma deletada com sucesso!");
-  //   } catch (error) {
-  //     toast.error("Houve um erro ao deletar a turma, tente novamente!");
-  //   }
-  // };
+      toast.success("Turma deletada com sucesso!");
+    } catch (error) {
+      toast.error("Houve um erro ao deletar a turma, tente novamente!");
+    }
+  };
 
   const renderClassList = useCallback(() => {
     return (
       <div>
-        {[master, doctor]?.map((node, index) => (
+        {thirdQuestion?.childrens?.map((node, index) => (
           <div key={node?.id}>
             <S.ClassHeaderContainer>
               <p>{`${index + 1}- ${node.question}`}</p>
 
-              <button onClick={() => handleOpenAddClassModal(doctor)}>
+              <button onClick={() => handleOpenAddClassModal(node)}>
                 Adicionar turma <IoIosPeople />
               </button>
             </S.ClassHeaderContainer>
@@ -113,34 +103,20 @@ const Form = ({ question }: Props) => {
                 <S.ClassDataContainer key={child?.id}>
                   <S.ClassDataHeaderContainer>
                     <p>
-                      <strong>{formatIndexToLetter(childIndex)} - </strong>
+                      <strong>{childIndex + 1} - </strong>
                       {child.title}
                     </p>
 
                     <div>
                       <button>
                         <FiEdit
-                        // onClick={() => {
-                        //   handleOpenEditClassModal(
-                        //     index,
-                        //     classroom.index,
-                        //     classroom.matter,
-                        //     classroom.students,
-                        //     representationClass.question
-                        //   );
-                        // }}
+                          onClick={() => {
+                            handleOpenEditClassModal(child);
+                          }}
                         />
                       </button>
                       <button>
-                        <BsTrash
-                        // onClick={() =>
-                        //   handleDeleteClass(
-                        //     index2,
-                        //     childrenIds[index],
-                        //     representationClass.question
-                        //   )
-                        // }
-                        />
+                        <BsTrash onClick={() => handleDeleteClass(child)} />
                       </button>
                     </div>
                   </S.ClassDataHeaderContainer>
@@ -151,12 +127,10 @@ const Form = ({ question }: Props) => {
         ))}
       </div>
     );
-  }, []);
+  }, [thirdQuestion?.childrens]);
 
   useEffect(() => {
-    if (!thirdQuestion.id) return;
-
-    getClasses();
+    if (thirdQuestion.id) getClasses();
   }, [thirdQuestion.id]);
 
   return (

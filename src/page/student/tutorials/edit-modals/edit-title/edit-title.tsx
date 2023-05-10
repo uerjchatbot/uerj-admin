@@ -1,51 +1,43 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { toast } from "react-toastify";
 
-import { Container, QuestionContainer } from "./styles";
-import { DotRounded } from "../../styles";
-import { useModal } from "@/hooks/useModal";
-import { IEditModalData } from "@/models/students/selective_process";
+import { EditTextButton } from "@/components/edit-text-button";
 import { TextEditor } from "@/components/text-editor";
 import { useLoading } from "@/hooks/useLoading";
-import { EditTextButton } from "@/components/edit-text-button";
-import { TutorialServices } from "@/services/student/tutorial.service";
+import { useModal } from "@/hooks/useModal";
+import { Question } from "@/models/Question";
+import { QuestionServices } from "@/services/question/question.service";
+import { Container } from "./styles";
 
 type Props = {
-  data: IEditModalData;
+  question: Question;
+  setQuestion: Dispatch<SetStateAction<Question>>;
 };
 
-const EditTitle = ({ data }: Props) => {
+const EditTitle = ({ question, setQuestion }: Props) => {
   const { setLoading } = useLoading();
 
-  const [text, setText] = useState("");
-  const [textInfo, setTextInfo] = useState("");
+  const [text, setText] = useState(question.title);
 
   const { setIsVisible } = useModal();
 
   const renderTextEditor = useCallback(() => {
-    if (!text && !textInfo) return <></>;
+    if (!text) return <></>;
 
     return (
       <>
-        <QuestionContainer>
-          {data.index && <DotRounded>{data?.index}</DotRounded>}
-          {text && <TextEditor value={text} setValue={setText} />}
-        </QuestionContainer>
-
-        {textInfo && <TextEditor value={textInfo} setValue={setTextInfo} />}
+        <TextEditor value={text} setValue={setText} />
       </>
     );
-  }, [text, textInfo]);
+  }, [text]);
 
   const handleEditData = async () => {
     try {
       setLoading(true);
 
-      await TutorialServices.updateData(data.questionId, text, textInfo);
+      const { data } = await QuestionServices.updateQuestion({ ...question, title: text });
 
-      const response = await TutorialServices.getHomeData(data.id);
-
-      data.setData(response.data);
+      setQuestion({ ...question, ...data });
 
       setIsVisible(false);
 
@@ -57,37 +49,6 @@ const EditTitle = ({ data }: Props) => {
       setLoading(false);
     }
   };
-
-  const handleEditChildrenData = async () => {
-    try {
-      setLoading(true);
-
-      await TutorialServices.updateDataChildren(data.questionId, textInfo);
-
-      const response = await TutorialServices.getHomeData(data.id);
-
-      data.setData(response.data);
-
-      setIsVisible(false);
-
-      toast.success("Tutorial atualizado com sucesso");
-
-      setLoading(false);
-    } catch (error) {
-      toast.error("Houve um erro ao atualizar o tutorial");
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (data.question && data.question?.length > 0) {
-      setText(data.question);
-    }
-
-    if (data.title && data.title?.length > 0) {
-      setTextInfo(data.title);
-    }
-  }, [data]);
 
   return (
     <Container>

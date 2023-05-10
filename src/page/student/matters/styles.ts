@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-import { DotRounded as CommonDot } from "@/components/dot-rounded";
 import { Button } from "@/components/button";
+import { DotRounded as CommonDot } from "@/components/dot-rounded";
 
 export const DotRounded = styled(CommonDot)`
   width: 80px;
@@ -96,6 +96,7 @@ export const MatterHeaderContainer = styled.div`
 
   display: flex;
   justify-content: space-between;
+
   align-items: center;
 
   p {

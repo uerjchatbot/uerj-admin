@@ -1,26 +1,29 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { useLoading } from "@/hooks/useLoading";
 
-import * as S from "./styles";
+import { Button } from "@/components/button";
+import { Question } from "@/models/Question";
+import { STUDENT_PATH } from "@/routes/paths/paths.private";
+import { QuestionServices } from "@/services/question/question.service";
 import { FirstStepForm } from "./steps/first_step_form";
 import { SecondStepForm } from "./steps/second_step_form";
-import { orderChildrens } from "@/utils/order";
-import { STUDENT_PATH } from "@/routes/paths/paths.private";
-import { Button } from "@/components/button";
-import { EventServices } from "@/services/student/events.service";
-import { IEventsHomeData } from "@/models/events";
+import * as S from "./styles";
+
+interface UseLocationState {
+  state: Question;
+}
 
 const Events = () => {
   const navigate = useNavigate();
   const { setLoading } = useLoading();
-  const { state }: { state: any } = useLocation();
+  const { state } = useLocation() as UseLocationState;
 
   const [selectedStage, setSelectedStage] = useState(1);
 
-  const [homeData, setHomeData] = useState<IEventsHomeData>({} as IEventsHomeData);
+  const [homeData, setHomeData] = useState<Question>({} as Question);
 
   const handleNavigateBack = () => navigate(STUDENT_PATH());
 
@@ -29,9 +32,7 @@ const Events = () => {
   const getData = async () => {
     try {
       setLoading(true);
-      const { data } = await EventServices.getHomeData(state.childrenId);
-
-      data.childrens = orderChildrens(data.childrens);
+      const { data } = await QuestionServices.getQuestion(state);
 
       setHomeData(data);
 
@@ -70,23 +71,9 @@ const Events = () => {
         </S.ContainerButton>
       </S.HeaderContainer>
 
-      {selectedStage === 1 && (
-        <FirstStepForm
-          title={homeData.title}
-          questionId={homeData.id}
-          firstEvent={homeData.childrens && homeData.childrens[0]}
-          secondEvent={homeData.childrens && homeData.childrens[1]}
-          setHomeData={setHomeData}
-        />
-      )}
+      {selectedStage === 1 && <FirstStepForm question={homeData} setQuestion={setHomeData} />}
 
-      {selectedStage === 2 && (
-        <SecondStepForm
-          thirdEvent={homeData.childrens && homeData.childrens[2]}
-          fourthEvent={homeData.childrens && homeData.childrens[3]}
-          fifthEvent={homeData.childrens && homeData.childrens[4]}
-        />
-      )}
+      {selectedStage === 2 && <SecondStepForm question={homeData} setQuestion={setHomeData} />}
     </S.Container>
   );
 };

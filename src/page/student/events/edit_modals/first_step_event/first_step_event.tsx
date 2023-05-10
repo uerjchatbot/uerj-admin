@@ -1,37 +1,30 @@
-import React, { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { toast } from "react-toastify";
-import { DatePicker } from "rsuite";
-
-import * as S from "./styles";
 
 import { EditTextButton } from "@/components/edit-text-button";
+import { TextEditor } from "@/components/text-editor";
 import { useModal } from "@/hooks/useModal";
-import { IFirstStepEventData } from "@/models/events";
-import { formatDateToEn_UsFormat, formateStringToDate } from "@/utils/formarter";
-import { EventServices } from "@/services/student/events.service";
+import { Question } from "@/models/Question";
+import { QuestionServices } from "@/services/question/question.service";
 
 type Props = {
-  questionId: number;
-  hour: string;
-  date: string;
-  setData: React.Dispatch<React.SetStateAction<IFirstStepEventData>>;
+  question: Question;
+  setQuestion: Dispatch<SetStateAction<Question>>;
 };
 
-const EditFirstStepEvent = ({ questionId, hour, date, setData }: Props) => {
+const EditFirstStepEvent = ({ question, setQuestion }: Props) => {
   const { setIsVisible } = useModal();
 
-  const [eventHour, setEventHour] = useState("");
-  const [eventDate, setEventDate] = useState("");
+  const [textTitle, setTextTitle] = useState(question.title);
 
   const handleEditText = async (): Promise<void> => {
     try {
-      await EventServices.updateEventHourAndDate(questionId, eventHour, eventDate);
+      const { data } = await QuestionServices.updateQuestion({ ...question, title: textTitle });
 
-      const { data } = await EventServices.getEventDateAndHour(questionId);
-
-      setData((oldValue) => {
-        return { ...oldValue, ...data };
-      });
+      setQuestion((state) => ({
+        ...state,
+        childrens: state.childrens.map((child) => (child.id === question.id ? data : child))
+      }));
 
       setIsVisible(false);
 
@@ -41,57 +34,9 @@ const EditFirstStepEvent = ({ questionId, hour, date, setData }: Props) => {
     }
   };
 
-  useEffect(() => {
-    if (date.length > 0) {
-      setEventDate(date);
-    }
-  }, [date]);
-
   return (
     <>
-      <S.QuestionContainer>
-        <div>
-          <S.EventTitle>
-            <strong>1 - </strong>
-            Horário
-          </S.EventTitle>
-          <S.EventData>
-            <DatePicker
-              format="HH:mm"
-              defaultValue={
-                new Date().setHours(
-                  parseInt(hour.split(":")[0], 10),
-                  parseInt(hour.split(":")[1], 10)
-                ) as unknown as Date
-              }
-              style={{ width: 150 }}
-              onChange={(e) => {
-                const hours = e?.getHours();
-                const minutes = e?.getMinutes();
-
-                setEventHour(`${hours}:${minutes}`);
-              }}
-            />
-          </S.EventData>
-        </div>
-
-        <div>
-          <S.EventTitle>
-            <strong>2 - </strong>
-            Data
-          </S.EventTitle>
-
-          <S.EventData>
-            <DatePicker
-              oneTap
-              format="dd/MM/yyyy"
-              defaultValue={formateStringToDate(date)}
-              style={{ width: 150 }}
-              onChange={(e) => setEventDate(formatDateToEn_UsFormat(e || new Date()))}
-            />
-          </S.EventData>
-        </div>
-      </S.QuestionContainer>
+      <TextEditor value={textTitle} setValue={setTextTitle} />
 
       <EditTextButton event={handleEditText} />
     </>

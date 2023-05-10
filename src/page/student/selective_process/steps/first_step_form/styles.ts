@@ -212,3 +212,8 @@ export const BankingTeachers = styled.section`
     background-color: transparent;
   }
 `;
+
+export const Title = styled.div`
+  font-weight: 400;
+  font-size: 1.5rem;
+`;

@@ -1,24 +1,27 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import * as S from "./styles";
-import { useLoading } from "@/hooks/useLoading";
-import { TutorialServices } from "@/services/student/tutorial.service";
-import { STUDENT_PATH } from "@/routes/paths/paths.private";
 import { Button } from "@/components/button";
+import { useLoading } from "@/hooks/useLoading";
+import { Question } from "@/models/Question";
+import { STUDENT_PATH } from "@/routes/paths/paths.private";
+import { QuestionServices } from "@/services/question/question.service";
 import { FirstStepForm } from "./steps/first_step_form";
 import { SecondStepForm } from "./steps/second_step_form";
-import { ThirdStepForm } from "./steps/third_step_form";
-import { ITutorialHomeData } from "@/models/students/tutorials";
+import * as S from "./styles";
+
+interface UseLocationState {
+  state: Question;
+}
 
 const Tutorials = () => {
   const navigate = useNavigate();
-  const { state }: { state: any } = useLocation();
+  const { state } = useLocation() as UseLocationState;
   const { setLoading } = useLoading();
 
   const [selectedStage, setSelectedStage] = useState(1);
-  const [tutorialsData, setTutorialsData] = useState<ITutorialHomeData>({} as ITutorialHomeData);
+  const [tutorialsData, setTutorialsData] = useState<Question>({} as Question);
 
   const handleNavigateBack = () => navigate(STUDENT_PATH());
 
@@ -28,7 +31,7 @@ const Tutorials = () => {
     try {
       setLoading(true);
 
-      const { data } = await TutorialServices.getHomeData(state.childrenId);
+      const { data } = await QuestionServices.getQuestion(state);
 
       setTutorialsData(data);
 
@@ -59,11 +62,11 @@ const Tutorials = () => {
             Etapa 2
           </S.SwitchStageButton>
 
-          <S.SwitchStageButton
+          {/* <S.SwitchStageButton
             isSelected={selectedStage === 3}
             onClick={() => handleSelectStage(3)}>
             Etapa 3
-          </S.SwitchStageButton>
+          </S.SwitchStageButton> */}
         </div>
 
         <S.ContainerButton>
@@ -74,29 +77,11 @@ const Tutorials = () => {
       </S.HeaderContainer>
 
       {tutorialsData.childrens && selectedStage === 1 && (
-        <FirstStepForm
-          id={state.childrenId}
-          title={tutorialsData.title}
-          firstQuestion={tutorialsData.childrens[0]}
-          setHomeData={setTutorialsData}
-        />
+        <FirstStepForm question={tutorialsData} setQuestion={setTutorialsData} />
       )}
 
       {tutorialsData.childrens && selectedStage === 2 && (
-        <SecondStepForm
-          id={state.childrenId}
-          secondQuestion={tutorialsData.childrens[1]}
-          setHomeData={setTutorialsData}
-        />
-      )}
-
-      {tutorialsData.childrens && selectedStage === 3 && (
-        <ThirdStepForm
-          id={state.childrenId}
-          thirdQuestion={tutorialsData.childrens[2]}
-          fourthQuestion={tutorialsData.childrens[3]}
-          setHomeData={setTutorialsData}
-        />
+        <SecondStepForm question={tutorialsData} setQuestion={setTutorialsData} />
       )}
     </S.Container>
   );

@@ -18,8 +18,6 @@ type Props = {
 const EditNoticeQuestion = ({ notice, setNotice }: Props) => {
   const { setIsVisible } = useModal();
 
-  console.log({ notice });
-
   const [question, setQuestion] = useState<string>(notice.question);
   const [title, setTitle] = useState<string>(notice.title);
 

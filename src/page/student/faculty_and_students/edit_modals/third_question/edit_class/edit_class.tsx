@@ -1,92 +1,43 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { BsFillTrashFill } from "react-icons/bs";
+import { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { toast } from "react-toastify";
 
-import { TeachingStaffServices } from "@/services/student/teaching-staff.service";
 import { useModal } from "@/hooks/useModal";
-import { IClassroomData } from "@/models/teaching-staff";
 
-import * as S from "./styles";
 import { EditTextButton } from "@/components/edit-text-button";
+import { TextEditor } from "@/components/text-editor";
+import { Question } from "@/models/Question";
+import { QuestionServices } from "@/services/question/question.service";
+import * as S from "./styles";
 
 type Props = {
-  questionId?: number;
-  classId?: number;
-  className?: string;
-  studentsList?: string[];
-  setData: React.Dispatch<React.SetStateAction<[IClassroomData[], IClassroomData[]]>>;
-  classType: string;
+  question: Question;
+  setQuestion: Dispatch<SetStateAction<Question>>;
 };
 
-const EditClass = ({ classId, questionId, className, studentsList, setData, classType }: Props) => {
+const EditClass = ({ question, setQuestion }: Props) => {
   const { setIsVisible } = useModal();
 
-  const [classNameCopy, setClassNameCopy] = useState("");
-  const [studentName, setStudentName] = useState("");
-  const [studentsListCopy, setStudentsListCopy] = useState<string[]>([]);
-
-  const addStudentToArray = (name: string) => {
-    if (name.length < 3) {
-      toast.error("Digite um nome válido");
-      return;
-    }
-
-    setStudentsListCopy((oldValue) => [...oldValue, name]);
-    setStudentName("");
-  };
-
-  const deleteStudentFromArray = (index: number) => {
-    const arrayCopy = Array.from(studentsListCopy);
-
-    arrayCopy.splice(index, 1);
-
-    setStudentsListCopy(arrayCopy);
-  };
+  const [textTitle, setTextTitle] = useState(question.title);
 
   const renderAddStudent = useCallback(() => {
-    return (
-      <S.SetStudentNameContainer>
-        <S.Input
-          type="text"
-          placeholder="Nome do(a) representante"
-          value={studentName}
-          onChange={(e) => setStudentName(e.target.value)}
-        />
+    if (textTitle === "") return;
 
-        <S.Button onClick={() => addStudentToArray(studentName)}>Adicionar</S.Button>
-      </S.SetStudentNameContainer>
-    );
-  }, [studentName]);
-
-  const renderStudentsList = useCallback(() => {
-    return (
-      <S.StudentsListContainer>
-        {studentsListCopy.map((student, index) => (
-          <div key={`student-${index}`}>
-            <li>{student}</li>
-            <BsFillTrashFill size={20} onClick={() => deleteStudentFromArray(index)} />
-          </div>
-        ))}
-      </S.StudentsListContainer>
-    );
-  }, [studentsListCopy]);
+    return <TextEditor value={textTitle} setValue={setTextTitle} />;
+  }, [textTitle]);
 
   const updateData = async (): Promise<void> => {
     try {
-      await TeachingStaffServices.updateMasterData(
-        classId || 0,
-        questionId || 0,
-        classNameCopy,
-        studentsListCopy
-      );
+      const { data } = await QuestionServices.updateQuestion({ ...question, title: textTitle });
 
-      const { data } = await TeachingStaffServices.getClassroomChildrenData(questionId);
-
-      setData((oldValue) => {
-        oldValue[classType === "Mestrado" ? 0 : 1] = [...data];
-
-        return oldValue;
-      });
+      setQuestion((state) => ({
+        ...state,
+        childrens: state.childrens.map((child) => {
+          return {
+            ...child,
+            childrens: child.childrens.map((c) => (c.id === question.id ? data : c))
+          };
+        })
+      }));
 
       toast.success("Turma alterada com sucesso!");
 
@@ -96,30 +47,11 @@ const EditClass = ({ classId, questionId, className, studentsList, setData, clas
     }
   };
 
-  useEffect(() => {
-    if (studentsList && studentsList.length > 0) setStudentsListCopy(studentsList);
-  }, [studentsList]);
-
-  useEffect(() => {
-    if (className && className.length > 0) setClassNameCopy(className);
-  }, [className]);
-
   return (
     <S.Container>
-      <S.ClassNameContainer>
-        <p>Os representantes da turma</p>
-        <S.Input
-          type="text"
-          placeholder="Nome da turma"
-          defaultValue={className}
-          onChange={(e) => setClassNameCopy(e.target.value)}
-        />
-        <p>são:</p>
-      </S.ClassNameContainer>
+      <S.ClassNameContainer></S.ClassNameContainer>
 
       {renderAddStudent()}
-
-      {renderStudentsList()}
 
       <EditTextButton event={updateData} />
     </S.Container>

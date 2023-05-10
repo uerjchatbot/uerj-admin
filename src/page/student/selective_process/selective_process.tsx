@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import * as S from "./styles";
 import { Button } from "@/components/button";
 import { useLoading } from "@/hooks/useLoading";
-import { SelectiveProcessServices } from "@/services/student/selective-process.service";
+import { ISelectiveProcessHomeData } from "@/models/students/selective_process";
 import { STUDENT_PATH } from "@/routes/paths/paths.private";
+import { SelectiveProcessServices } from "@/services/student/selective-process.service";
 import { FirstStepForm } from "./steps/first_step_form";
 import { SecondStepForm } from "./steps/second_step_form";
-import { ISelectiveProcessHomeData } from "@/models/students/selective_process";
+import * as S from "./styles";
 
 const SelectiveProcess = () => {
   const navigate = useNavigate();
