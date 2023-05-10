@@ -17,8 +17,8 @@ import { Button } from "@/components/button";
 import { useModal } from "@/hooks/useModal";
 import { Question } from "@/models/Question";
 import * as Private from "@/routes/paths/paths.private";
-import { StudentServices } from "@/services/student/home.service";
-import EditHomeTitle from "./edit-home-title/edit-home-title";
+import { QuestionServices } from "@/services/question/question.service";
+import { EditHomeTitle } from "./edit-home-title";
 
 const navigateToPath = [
   Private.STUDENT_CALENDAR_PATH(),
@@ -39,7 +39,7 @@ const Home: React.FC = () => {
 
   const getData = useCallback(async () => {
     try {
-      const { data } = await StudentServices.getHomeData();
+      const { data } = await QuestionServices.getQuestionByNodeId(1);
 
       setData(data);
     } catch (error) {

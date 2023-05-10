@@ -5,7 +5,7 @@ import { EditTextButton } from "@/components/edit-text-button";
 import { TextEditor } from "@/components/text-editor";
 import { useModal } from "@/hooks/useModal";
 import { Question } from "@/models/Question";
-import { CalendarServices } from "@/services/student/calendar.service";
+import { QuestionServices } from "@/services/question/question.service";
 
 type Props = {
   question: Question;
@@ -25,7 +25,7 @@ const EditCalendarTitle = ({ question, setData }: Props) => {
 
   const handleEditText = async () => {
     try {
-      const { data } = await CalendarServices.updateQuestion({ ...question, title: text });
+      const { data } = await QuestionServices.updateQuestion({ ...question, title: text });
 
       setData(data);
 

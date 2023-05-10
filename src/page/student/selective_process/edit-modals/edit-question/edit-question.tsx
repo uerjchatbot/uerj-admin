@@ -1,51 +1,42 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { toast } from "react-toastify";
 
-import { DotRounded } from "../../styles";
 import { EditTextButton } from "@/components/edit-text-button";
 import { TextEditor } from "@/components/text-editor";
-import { useModal } from "@/hooks/useModal";
-import { Container, QuestionContainer } from "./styles";
-import { IEditModalData } from "@/models/students/selective_process";
-import { SelectiveProcessServices } from "@/services/student/selective-process.service";
 import { useLoading } from "@/hooks/useLoading";
+import { useModal } from "@/hooks/useModal";
+import { Question } from "@/models/Question";
+import { QuestionServices } from "@/services/question/question.service";
+import { Container } from "./styles";
 
 type Props = {
-  data: IEditModalData;
+  question: Question;
+  setQuestion: Dispatch<SetStateAction<Question>>;
 };
-
-const EditQuestion = ({ data }: Props) => {
+const EditQuestion = ({ question, setQuestion }: Props) => {
   const { setLoading } = useLoading();
 
-  const [text, setText] = useState("");
-  const [textInfo, setTextInfo] = useState("");
+  const [text, setText] = useState(question.title);
 
   const { setIsVisible } = useModal();
 
   const renderTextEditor = useCallback(() => {
-    if (!text && !textInfo) return <></>;
+    if (!text) return <></>;
 
     return (
       <>
-        <QuestionContainer>
-          {data.index && <DotRounded>{data?.index}</DotRounded>}
-          {text && <TextEditor value={text} setValue={setText} />}
-        </QuestionContainer>
-
-        {textInfo && <TextEditor value={textInfo} setValue={setTextInfo} />}
+        <TextEditor value={text} setValue={setText} />
       </>
     );
-  }, [text, textInfo]);
+  }, [text]);
 
   const handleEditDates = async () => {
     try {
       setLoading(true);
 
-      await SelectiveProcessServices.updateQuestion(data.questionId, text, textInfo);
+      const { data } = await QuestionServices.updateQuestion({ ...question, title: text });
 
-      const response = await SelectiveProcessServices.getHomeData(data.id);
-
-      data.setData(response.data);
+      setQuestion((state) => ({ ...state, ...data }));
 
       setIsVisible(false);
 
@@ -57,16 +48,6 @@ const EditQuestion = ({ data }: Props) => {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (data.question && data.question?.length > 0) {
-      setText(data.question);
-    }
-
-    if (data.title && data.title?.length > 0) {
-      setTextInfo(data.title);
-    }
-  }, [data]);
 
   return (
     <Container>

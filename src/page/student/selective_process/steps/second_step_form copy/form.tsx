@@ -8,12 +8,12 @@ type Props = {
 };
 
 const Form = ({ question }: Props) => {
-  const childrens = [question?.childrens[1]];
+  const childrens = [question?.childrens[2], question?.childrens[3]];
 
   return (
     <S.Container>
       {childrens?.map((child, index) => (
-        <CardItem key={child.id} question={child} index={index + 2} />
+        <CardItem key={child.id} question={child} index={index + 3} />
       ))}
     </S.Container>
   );

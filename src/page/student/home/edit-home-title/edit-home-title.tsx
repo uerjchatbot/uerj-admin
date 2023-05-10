@@ -5,7 +5,7 @@ import { EditTextButton } from "@/components/edit-text-button";
 import { TextEditor } from "@/components/text-editor";
 import { useModal } from "@/hooks/useModal";
 import { Question } from "@/models/Question";
-import { StudentServices } from "@/services/student/home.service";
+import { QuestionServices } from "@/services/question/question.service";
 
 type Props = {
   question: Question;
@@ -25,11 +25,9 @@ const EditHomeTitle = ({ question, setData }: Props) => {
 
   const handleEditText = async () => {
     try {
-      const response = await StudentServices.updateHomeTitle({ ...question, title: text });
+      const { data } = await QuestionServices.updateQuestion({ ...question, title: text });
 
-      setData((oldValue) => {
-        return { ...oldValue, ...response.data };
-      });
+      setData((state) => ({ ...state, ...data }));
 
       setIsVisible(false);
 

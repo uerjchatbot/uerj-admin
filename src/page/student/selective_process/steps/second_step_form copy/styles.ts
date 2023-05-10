@@ -15,11 +15,6 @@ export const Header = styled.div`
   justify-content: flex-start;
   gap: 1rem;
 
-  p {
-    font-size: 1.5rem;
-    color: ${({ theme }) => theme.colors.grey.grey};
-  }
-
   div {
     width: 15%;
 
@@ -210,34 +205,5 @@ export const BankingTeachers = styled.section`
 
   .banking-data {
     background-color: transparent;
-  }
-`;
-
-export const DataList = styled.ul`
-  padding: 0;
-  list-style: none;
-
-  strong,
-  h4,
-  li {
-    font-size: 1.25rem;
-    color: ${({ theme }) => theme.colors.grey.grey};
-    font-weight: normal;
-  }
-
-  strong {
-    font-weight: bold;
-    color: ${({ theme }) => theme.colors.blue.blueDark};
-  }
-
-  h4 {
-  }
-
-  li {
-    margin: 2rem 0;
-    button {
-      width: 15%;
-      font-size: 1rem;
-    }
   }
 `;

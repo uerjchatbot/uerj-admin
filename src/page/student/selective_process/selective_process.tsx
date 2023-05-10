@@ -4,22 +4,25 @@ import { toast } from "react-toastify";
 
 import { Button } from "@/components/button";
 import { useLoading } from "@/hooks/useLoading";
-import { ISelectiveProcessHomeData } from "@/models/students/selective_process";
+import { Question } from "@/models/Question";
 import { STUDENT_PATH } from "@/routes/paths/paths.private";
-import { SelectiveProcessServices } from "@/services/student/selective-process.service";
+import { QuestionServices } from "@/services/question/question.service";
 import { FirstStepForm } from "./steps/first_step_form";
 import { SecondStepForm } from "./steps/second_step_form";
+import { ThirdStepForm } from "./steps/second_step_form copy";
 import * as S from "./styles";
+
+interface UseLocationState {
+  state: Question;
+}
 
 const SelectiveProcess = () => {
   const navigate = useNavigate();
-  const { state }: { state: any } = useLocation();
+  const { state } = useLocation() as UseLocationState;
   const { setLoading } = useLoading();
 
   const [selectedStage, setSelectedStage] = useState(1);
-  const [selectiveProcessData, setSelectiveProcesssData] = useState<ISelectiveProcessHomeData>(
-    {} as ISelectiveProcessHomeData
-  );
+  const [selectiveProcessData, setSelectiveProcesssData] = useState<Question>({} as Question);
 
   const handleNavigateBack = () => navigate(STUDENT_PATH());
 
@@ -29,7 +32,7 @@ const SelectiveProcess = () => {
     try {
       setLoading(true);
 
-      const { data } = await SelectiveProcessServices.getHomeData(state.childrenId);
+      const { data } = await QuestionServices.getQuestion(state);
 
       setSelectiveProcesssData(data);
 
@@ -60,6 +63,12 @@ const SelectiveProcess = () => {
             onClick={() => handleSelectStage(2)}>
             Etapa 2
           </S.SwitchStageButton>
+
+          <S.SwitchStageButton
+            isSelected={selectedStage === 3}
+            onClick={() => handleSelectStage(3)}>
+            Etapa 2
+          </S.SwitchStageButton>
         </div>
 
         <S.ContainerButton>
@@ -70,53 +79,15 @@ const SelectiveProcess = () => {
       </S.HeaderContainer>
 
       {selectiveProcessData.childrens && selectedStage === 1 && (
-        <FirstStepForm
-          id={state.childrenId}
-          title={selectiveProcessData.title}
-          firstQuestion={{
-            id: selectiveProcessData?.childrens[0]?.id,
-            question: selectiveProcessData?.childrens[0].question,
-            text: selectiveProcessData?.childrens[0].title
-          }}
-          secondQuestion={{
-            id: selectiveProcessData?.childrens[1].id,
-            question: selectiveProcessData?.childrens[1].question,
-            text: selectiveProcessData?.childrens[1].title
-          }}
-          thirdQuestion={{
-            id: selectiveProcessData?.childrens[2].id,
-            question: selectiveProcessData?.childrens[2].question,
-            text: selectiveProcessData?.childrens[2].title
-          }}
-          setHomeData={setSelectiveProcesssData}
-        />
+        <FirstStepForm question={selectiveProcessData} setQuestion={setSelectiveProcesssData} />
       )}
 
       {selectiveProcessData.childrens && selectedStage === 2 && (
-        <SecondStepForm
-          id={state.childrenId}
-          fourthQuestion={{
-            id: selectiveProcessData?.childrens[3].id,
-            question: selectiveProcessData?.childrens[3].question,
-            text: selectiveProcessData?.childrens[3].title
-          }}
-          fifthQuestion={{
-            id: selectiveProcessData?.childrens[4].id,
-            question: selectiveProcessData?.childrens[4].question,
-            text: selectiveProcessData?.childrens[4].title
-          }}
-          sixthQuestion={{
-            id: selectiveProcessData?.childrens[5].id,
-            question: selectiveProcessData?.childrens[5].question,
-            text: selectiveProcessData?.childrens[5].title
-          }}
-          seventhQuestion={{
-            id: selectiveProcessData?.childrens[6].id,
-            question: selectiveProcessData?.childrens[6].question,
-            text: selectiveProcessData?.childrens[6].title
-          }}
-          setHomeData={setSelectiveProcesssData}
-        />
+        <SecondStepForm question={selectiveProcessData} />
+      )}
+
+      {selectiveProcessData.childrens && selectedStage === 3 && (
+        <ThirdStepForm question={selectiveProcessData} />
       )}
     </S.Container>
   );
