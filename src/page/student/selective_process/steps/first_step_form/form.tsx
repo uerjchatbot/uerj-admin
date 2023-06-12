@@ -30,7 +30,7 @@ const Form = ({ setQuestion, question }: Props) => {
   return (
     <S.Container>
       <S.Header>
-        <p>{question.title}</p>
+        <p dangerouslySetInnerHTML={{ __html: question.title }} />
 
         <div>
           <Button outline={true} type={"button"}>

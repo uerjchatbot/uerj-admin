@@ -251,5 +251,11 @@ export const ClassDataNamesContainer = styled.div`
 export const Title = styled.div`
   font-weight: 400;
   font-size: 1.5rem;
-  flex: 1;
+  gap: 1rem;
+  display: flex;
+  align-items: flex-start;
+
+  div p {
+    margin: 0;
+  }
 `;

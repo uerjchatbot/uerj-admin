@@ -230,3 +230,16 @@ export const Title = styled.div`
   font-weight: 400;
   font-size: 1.375rem;
 `;
+
+export const Card = styled.div`
+  display: flex;
+  gap: 1rem;
+
+  strong {
+    font-size: 1.3rem;
+  }
+
+  span {
+    text-align: left;
+  }
+`;

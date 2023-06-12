@@ -93,14 +93,13 @@ export const ContentCardHeader = styled.div`
   width: 100%;
 
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
+  align-items: flex-start;
   gap: 1rem;
 
-  div {
-    span {
-      font-size: 1rem !important;
-    }
+  p,
+  span {
+    font-size: 1.5rem;
+    margin: 0;
   }
 `;
 

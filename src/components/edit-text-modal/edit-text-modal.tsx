@@ -23,7 +23,13 @@ const EditTextModal = () => {
         />
       </Modal.Header>
 
-      <Modal.Body>{component}</Modal.Body>
+      <Modal.Body>
+        <p style={{ color: "red", fontSize: "1.1rem" }}>CTRL + B = Negrito, CTRL + I = Itálico</p>
+        <p style={{ color: "red", fontSize: "1.1rem" }}>
+          Use negrito e/ou itálico para datas, links e textos relevantes
+        </p>
+        {component}
+      </Modal.Body>
     </Modal>
   );
 };

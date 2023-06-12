@@ -1,32 +1,3 @@
-const INDEX_TO_LETTERS = {
-  0: "A",
-  1: "B",
-  2: "C",
-  3: "D",
-  4: "E",
-  5: "F",
-  6: "G",
-  7: "H",
-  8: "I",
-  9: "J",
-  10: "K",
-  11: "L",
-  12: "M",
-  13: "N",
-  14: "O",
-  15: "P",
-  16: "Q",
-  17: "R",
-  18: "S",
-  19: "T",
-  20: "U",
-  21: "V",
-  22: "W",
-  23: "X",
-  24: "Y",
-  25: "Z"
-};
-
 export const formateStringToDate = (date: string) => {
   const formatedString = date.replace(/^(\d{2})\/(\d{2})\/(\d{4})$/, "$3-$2-$1");
 
@@ -45,12 +16,14 @@ export const formatDateToPt_BrFormat = (date = new Date()) => {
   return new Intl.DateTimeFormat("pt-BR").format(date);
 };
 
-export const formatIndexToLetter = (index: number) =>
-  INDEX_TO_LETTERS[index as keyof typeof INDEX_TO_LETTERS];
+export function getLetterFromAlphabet(index: number): string {
+  if (index < 1 || index > 26) {
+    throw new Error("Número fora do intervalo válido.");
+  }
 
-export const formatStringDateToPtBr = (date = new Date().toISOString()) => {
-  return new Intl.DateTimeFormat("pt-br").format(formateStringToDate(date));
-};
+  const charCode = index + 64;
+  return String.fromCharCode(charCode);
+}
 
 type HTMLTagsTypes = "strong" | "em" | "del" | "br";
 

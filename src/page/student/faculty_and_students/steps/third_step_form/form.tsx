@@ -85,7 +85,7 @@ const Form = ({ question }: Props) => {
         </S.ContentCardHeader>
 
         <S.DescriptionContainer>
-          <p>{fourthQuestion?.title}</p>
+          <div dangerouslySetInnerHTML={{ __html: fourthQuestion?.title }} />
 
           <S.ContainerButton>
             <Button outline={true} type={"button"}>
@@ -105,10 +105,10 @@ const Form = ({ question }: Props) => {
         {fourthQuestion.childrens?.map((child, index) => (
           <S.ClassDataContainer key={child.id}>
             <S.ClassDataHeaderContainer>
-              <p>
-                <strong>{index + 1} - </strong>
-                Professor(a) {child.title}
-              </p>
+              <S.Card>
+                <strong>{index + 1}. </strong>
+                <span dangerouslySetInnerHTML={{ __html: child.title }} />
+              </S.Card>
 
               <div>
                 <button>

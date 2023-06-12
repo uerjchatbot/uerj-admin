@@ -1,6 +1,6 @@
+import { DotRounded as CommonDot } from "@/components/dot-rounded";
 import Theme from "@/styles/theme";
 import styled from "styled-components";
-import { DotRounded as CommonDot } from "@/components/dot-rounded";
 
 export const Container = styled.div``;
 
@@ -213,5 +213,18 @@ export const ClassDataNamesContainer = styled.div`
       font-size: 1.25rem;
       color: ${Theme.colors.grey.grey};
     }
+  }
+`;
+
+export const Card = styled.div`
+  display: flex;
+  gap: 1rem;
+
+  strong {
+    font-size: 1.3rem;
+  }
+
+  span {
+    text-align: left;
   }
 `;

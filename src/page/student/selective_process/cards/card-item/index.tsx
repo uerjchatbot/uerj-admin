@@ -44,11 +44,11 @@ export const CardItem = ({ question, index }: Props & { index: number }) => {
     <S.ContentCard>
       <S.ContentCardHeader>
         <S.DotRounded>{index}</S.DotRounded>
-        <span>{child?.question}</span>
+        <span dangerouslySetInnerHTML={{ __html: child.question }} />
       </S.ContentCardHeader>
 
       <div>
-        <p>{child?.title}</p>
+        <p dangerouslySetInnerHTML={{ __html: child.title }} />
       </div>
 
       <Button outline={true} type={"button"}>

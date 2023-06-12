@@ -182,6 +182,11 @@ export const HeaderTeacher = styled.div`
   display: flex;
   justify-content: space-between;
 
+  div {
+    display: flex;
+    align-items: flex-start;
+  }
+
   button {
     width: 300px;
     height: 48px;

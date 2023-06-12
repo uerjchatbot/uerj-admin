@@ -38,7 +38,7 @@ const Form = ({ question, setQuestion }: Props) => {
   return (
     <S.Container>
       <S.Header>
-        <p>{question.title}</p>
+        <p dangerouslySetInnerHTML={{ __html: question.title }} />
 
         <div>
           <Button outline={true} type={"button"}>
@@ -56,7 +56,7 @@ const Form = ({ question, setQuestion }: Props) => {
             <span>{child?.question}</span>
           </S.ContentCardHeader>
           <div>
-            <p>{child?.title}</p>
+            <p dangerouslySetInnerHTML={{ __html: child?.title }} />
           </div>
           <Button outline={true} type={"button"}>
             <span onClick={() => handleOpenEditQuestionModal(child)}>

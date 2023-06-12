@@ -88,9 +88,7 @@ const Home: React.FC = () => {
                 key={`card-${index}`}
                 onClick={() => {
                   navigate(navigateToPath[index], {
-                    state: {
-                      childrenId: children.id
-                    }
+                    state: children
                   });
                 }}>
                 <DotRounded>{index + 1}</DotRounded>

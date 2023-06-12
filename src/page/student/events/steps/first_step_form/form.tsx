@@ -39,7 +39,7 @@ const Form = ({ question, setQuestion }: Props) => {
   return (
     <>
       <S.DescriptionContainer>
-        <div>{question.title}</div>
+        <div dangerouslySetInnerHTML={{ __html: question.title }} />
 
         <S.ContainerButton>
           <Button outline={true} type={"button"}>

@@ -102,10 +102,10 @@ const Form = ({ question }: Props) => {
               return (
                 <S.ClassDataContainer key={child?.id}>
                   <S.ClassDataHeaderContainer>
-                    <p>
-                      <strong>{childIndex + 1} - </strong>
-                      {child.title}
-                    </p>
+                    <S.Card>
+                      <strong>{childIndex + 1}. </strong>
+                      <span dangerouslySetInnerHTML={{ __html: child.title }} />
+                    </S.Card>
 
                     <div>
                       <button>

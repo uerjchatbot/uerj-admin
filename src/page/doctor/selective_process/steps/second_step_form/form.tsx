@@ -71,7 +71,7 @@ const Form = ({ data }: Props) => {
             {documentation && <span>{documentation.question}</span>}
           </S.ContentCardHeader>
 
-          <p>{documentation && documentation.title}</p>
+          <p dangerouslySetInnerHTML={{ __html: documentation.title }} />
 
           <S.ContainerButton>
             <Button outline={true} type={"button"}>
@@ -88,7 +88,7 @@ const Form = ({ data }: Props) => {
             {step && <span>{step.question}</span>}
           </S.ContentCardHeader>
 
-          <p>{(step && step.title) || "Um texto aqui"}</p>
+          <p dangerouslySetInnerHTML={{ __html: (step && step.title) || "Um texto aqui" }} />
 
           <S.ContainerButton>
             <Button outline={true} type={"button"}>
@@ -105,7 +105,11 @@ const Form = ({ data }: Props) => {
             {discretion && <span>{discretion.question}</span>}
           </S.ContentCardHeader>
 
-          <p>{(discretion && discretion.title) || "Um texto Aqui"}</p>
+          <p
+            dangerouslySetInnerHTML={{
+              __html: (discretion && discretion.title) || "Um texto Aqui"
+            }}
+          />
 
           <S.ContainerButton>
             <Button outline={true} type={"button"}>
@@ -122,7 +126,11 @@ const Form = ({ data }: Props) => {
             {enrollment && <span>{enrollment.question}</span>}
           </S.ContentCardHeader>
 
-          <p>{(enrollment && enrollment.title) || "Um texto aqui"}</p>
+          <p
+            dangerouslySetInnerHTML={{
+              __html: (enrollment && enrollment.title) || "Um texto aqui"
+            }}
+          />
 
           <S.ContainerButton>
             <Button outline={true} type={"button"}>

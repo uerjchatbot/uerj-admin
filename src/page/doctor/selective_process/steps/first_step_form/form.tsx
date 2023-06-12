@@ -63,10 +63,10 @@ const Form = ({ data }: Props) => {
         <S.ContentCard>
           <S.ContentCardHeader>
             <S.DotRounded>1</S.DotRounded>
-            {notice && <span>{notice.question}</span>}
+            {notice && <span dangerouslySetInnerHTML={{ __html: notice.question }} />}
           </S.ContentCardHeader>
 
-          <p>{notice && notice.title}</p>
+          <p dangerouslySetInnerHTML={{ __html: notice.title }} />
 
           <S.ContainerButton>
             <Button outline={true} type={"button"}>
@@ -84,7 +84,7 @@ const Form = ({ data }: Props) => {
           </S.ContentCardHeader>
 
           <S.FlexRowCard>
-            <p>{vacancies && vacancies.title}</p>
+            <p dangerouslySetInnerHTML={{ __html: vacancies.title }} />
           </S.FlexRowCard>
 
           <S.ContainerButton>
@@ -102,7 +102,7 @@ const Form = ({ data }: Props) => {
             {quotas && <span>{quotas.question}</span>}
           </S.ContentCardHeader>
 
-          <p>{quotas.title}</p>
+          <p dangerouslySetInnerHTML={{ __html: quotas.title }} />
 
           <S.ContainerButton>
             <Button outline={true} type={"button"}>
@@ -119,7 +119,7 @@ const Form = ({ data }: Props) => {
             {registration && <span>{registration.question}</span>}
           </S.ContentCardHeader>
 
-          <p>{registration.title}</p>
+          <p dangerouslySetInnerHTML={{ __html: registration.title }} />
 
           <S.ContainerButton>
             <Button outline={true} type={"button"}>

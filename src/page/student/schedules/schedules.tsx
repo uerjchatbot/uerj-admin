@@ -96,10 +96,10 @@ const Schedules = () => {
           return (
             <S.ClassDataContainer key={child.id}>
               <S.ClassDataHeaderContainer>
-                <S.Title
-                  dangerouslySetInnerHTML={{
-                    __html: `<strong>${index + 1}. </strong>${child.title}`
-                  }}></S.Title>
+                <S.Title>
+                  <strong>{index + 1}.</strong>
+                  <div dangerouslySetInnerHTML={{ __html: child.title }} />
+                </S.Title>
 
                 <S.ButtonGroup>
                   <button>
@@ -136,7 +136,7 @@ const Schedules = () => {
 
         <S.ContentCard>
           <S.ContentCardHeader>
-            <span>{homeData?.title}</span>
+            <span dangerouslySetInnerHTML={{ __html: homeData?.title }} />
           </S.ContentCardHeader>
 
           <S.EditButtonContainer>

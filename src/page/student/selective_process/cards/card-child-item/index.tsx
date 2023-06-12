@@ -42,13 +42,12 @@ export const CartChildItem = ({ question, index }: Props & { index: number }) =>
   return (
     <S.ContentCard>
       <S.ContentCardHeader>
-        <span>
-          {index + 1} - {child?.question}
-        </span>
+        <span>{index + 1}.</span>
+        <p dangerouslySetInnerHTML={{ __html: child?.question }} />
       </S.ContentCardHeader>
 
       <div>
-        <p>{child?.title}</p>
+        <p dangerouslySetInnerHTML={{ __html: child?.title }} />
       </div>
 
       <Button outline={true} type={"button"}>

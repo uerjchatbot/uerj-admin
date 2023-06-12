@@ -32,7 +32,7 @@ const Matters = () => {
     const { data: doctor } = await QuestionServices.getQuestion(data.childrens[1]);
 
     setHomeData({ ...data, childrens: [master, doctor] });
-  }, [state]);
+  }, [state, setHomeData]);
 
   const handleNavigateBack = () => navigate(STUDENT_PATH());
 
@@ -91,7 +91,7 @@ const Matters = () => {
         </S.ButtonContainer>
 
         <S.TitleContainer>
-          <S.Title>{homeData.title}</S.Title>
+          <S.Title dangerouslySetInnerHTML={{ __html: homeData.title }} />
 
           <Button outline={true} type={"button"}>
             <span onClick={handleOpenEditHomeTitle}>
@@ -103,14 +103,14 @@ const Matters = () => {
 
       {homeData?.childrens?.map((child, index) => {
         return (
-          <S.Content key={`Matter-${index}`}>
+          <S.Content key={child.id}>
             <S.ContentHeader>
               <S.DotRounded>{index + 1}</S.DotRounded>
               <span>{child.question}</span>
             </S.ContentHeader>
 
             <S.ContentBody>
-              <S.Title>{child.title}</S.Title>
+              <S.Title dangerouslySetInnerHTML={{ __html: child.title }} />
 
               <S.MatterHeaderContainer>
                 <Button outline={true} type={"button"}>

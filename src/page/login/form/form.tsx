@@ -1,22 +1,20 @@
 import React from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
 
-import { Input } from "@/components/input";
-import { Container, ForgotPassword } from "./styles";
-import { INITIAL_PATH } from "@/routes/paths/paths.public";
 import { Button } from "@/components/button";
-// eslint-disable-next-line no-unused-vars
-import { HOME_PATH } from "@/routes/paths/paths.private";
+import { Input } from "@/components/input";
+import { INITIAL_PATH } from "@/routes/paths/paths.public";
+import { Container, ForgotPassword } from "./styles";
 
-import LoginSchema from "@/schemas/login";
-import { ILoginFormData } from "@/models/login";
 import { useAuth } from "@/hooks/useAuth";
 import { useLoading } from "@/hooks/useLoading";
+import { ILoginFormData } from "@/models/login";
+import LoginSchema from "@/schemas/login";
 import { toast } from "react-toastify";
 
 const FormLogin: React.FC = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const { setLoading } = useLoading();
   const { handleLogin } = useAuth();
@@ -26,6 +24,10 @@ const FormLogin: React.FC = () => {
     handleSubmit,
     formState: { errors }
   } = useForm<ILoginFormData>();
+
+  function openLoginPopup() {
+    window.open(`${import.meta.env.VITE_API_URL}/google/login`, "_self");
+  }
 
   const onSubmit: SubmitHandler<ILoginFormData> = async (data: ILoginFormData) => {
     try {
@@ -37,9 +39,7 @@ const FormLogin: React.FC = () => {
 
       setLoading(false);
 
-      toast.success("Logado com sucesso");
-
-      navigate("/home");
+      openLoginPopup();
     } catch (error) {
       toast.error("Usuário incorreto ou não cadastrado");
       setLoading(false);

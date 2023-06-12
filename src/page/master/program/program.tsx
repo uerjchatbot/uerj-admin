@@ -187,7 +187,7 @@ const Program = () => {
             </ContentCardHeader>
 
             <div>
-              <p>{program?.title}</p>
+              <p dangerouslySetInnerHTML={{ __html: program?.title }} />
             </div>
 
             <Button outline={true} type={"button"}>
@@ -207,7 +207,10 @@ const Program = () => {
               lines.childrens.map((child, index) => (
                 <CardItem key={child.id}>
                   <HeaderTeacher>
-                    <span>{`${index + 1} - ${child.question}`}</span>
+                    <div>
+                      <span>{index + 1}.</span>
+                      <p dangerouslySetInnerHTML={{ __html: child.question }} />
+                    </div>
                     <button onClick={() => handleCreateTeacher({ question: child })}>
                       Adicionar Professor(a) <GrAdd />
                     </button>
@@ -216,7 +219,7 @@ const Program = () => {
                     {child.childrens &&
                       child.childrens.map((c) => (
                         <TeacherItem key={c.id}>
-                          {c.title}
+                          <p dangerouslySetInnerHTML={{ __html: c.title }} />
                           <button>
                             <BsTrash onClick={() => handleDeleteTeacher(c)} />
                           </button>
@@ -240,7 +243,7 @@ const Program = () => {
             </ContentCardHeader>
 
             <div>
-              <p>{project?.title}</p>
+              <p dangerouslySetInnerHTML={{ __html: project?.title }} />
             </div>
 
             <Button outline={true} type={"button"}>
@@ -257,7 +260,7 @@ const Program = () => {
             </ContentCardHeader>
 
             <div>
-              <p>{handbag?.title}</p>
+              <p dangerouslySetInnerHTML={{ __html: handbag?.title }} />
             </div>
 
             <Button outline={true} type={"button"}>

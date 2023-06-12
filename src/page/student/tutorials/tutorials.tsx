@@ -61,12 +61,6 @@ const Tutorials = () => {
             onClick={() => handleSelectStage(2)}>
             Etapa 2
           </S.SwitchStageButton>
-
-          {/* <S.SwitchStageButton
-            isSelected={selectedStage === 3}
-            onClick={() => handleSelectStage(3)}>
-            Etapa 3
-          </S.SwitchStageButton> */}
         </div>
 
         <S.ContainerButton>
