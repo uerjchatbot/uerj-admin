@@ -74,9 +74,8 @@ export type QuestionOptionType = "CHECKBOX" | "RADIO";
 
 export interface FormQuestion {
   title: string;
-  // description: string;
   type: QuestionOptionType;
-  options?: OptionsFormAPI[];
+  options: OptionsFormAPI[];
 }
 
 export interface RequestFormCreateQuestions {

@@ -1,4 +1,4 @@
-import { FormQuestion, OptionsFormAPI, RequestFormAPI } from "@/models/form";
+import { FormQuestion, RequestFormAPI } from "@/models/form";
 
 export function formQuestionsBuilder(questions: FormQuestion[]): RequestFormAPI[] {
   return questions.map(({ title, type, options }, index) => ({
@@ -9,9 +9,7 @@ export function formQuestionsBuilder(questions: FormQuestion[]): RequestFormAPI[
         questionItem: {
           question: {
             choiceQuestion: {
-              options: options?.map((item) => ({
-                value: item
-              })) as OptionsFormAPI[],
+              options,
               type
             }
           }
