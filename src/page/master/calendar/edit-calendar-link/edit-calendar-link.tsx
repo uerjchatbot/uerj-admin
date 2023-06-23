@@ -2,7 +2,7 @@ import { EditTextButton } from "@/components/edit-text-button";
 import { TextEditor } from "@/components/text-editor";
 import { useModal } from "@/hooks/useModal";
 import { Question } from "@/models/Question";
-import { QuestionServices } from "@/services/question/question.service";
+import { QuestionServices } from "@/services/question.service";
 import React, { useCallback, useState } from "react";
 import { toast } from "react-toastify";
 

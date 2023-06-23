@@ -5,14 +5,13 @@ import * as S from "./styles";
 
 import { Button } from "@/components/button";
 import { useModal } from "@/hooks/useModal";
-import { Question } from "@/models/Question";
-import { IThirdStepData } from "@/models/doctor";
-import { QuestionServices } from "@/services/question/question.service";
+import { ProcessThirdStepData, Question } from "@/models/Question";
+import { QuestionServices } from "@/services/question.service";
 import { EditResourcesQuestion } from "../../edit-modals/resources";
 import { EditResultsQuestion } from "../../edit-modals/results";
 
 type Props = {
-  data?: IThirdStepData;
+  data?: ProcessThirdStepData;
 };
 
 const Form = ({ data }: Props) => {

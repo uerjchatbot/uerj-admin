@@ -6,7 +6,7 @@ import { useModal } from "@/hooks/useModal";
 import { EditTextButton } from "@/components/edit-text-button";
 import { TextEditor } from "@/components/text-editor";
 import { Question } from "@/models/Question";
-import { QuestionServices } from "@/services/question/question.service";
+import { QuestionServices } from "@/services/question.service";
 import * as S from "./styles";
 
 type Props = {

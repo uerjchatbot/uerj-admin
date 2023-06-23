@@ -1,7 +1,7 @@
 import { Button } from "@/components/button";
 import { useModal } from "@/hooks/useModal";
 import { Question } from "@/models/Question";
-import { QuestionServices } from "@/services/question/question.service";
+import { QuestionServices } from "@/services/question.service";
 import { useEffect, useState } from "react";
 import { BsPencil } from "react-icons/bs";
 import { EditQuestion } from "../../edit-modals/edit-question";

@@ -1,6 +1,6 @@
 import { Question } from "@/models/Question";
 import { AxiosPromise } from "axios";
-import { api } from "../api";
+import { api } from "./api";
 
 export const QuestionServices = {
   create(

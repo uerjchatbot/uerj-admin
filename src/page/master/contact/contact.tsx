@@ -9,7 +9,7 @@ import { useLoading } from "@/hooks/useLoading";
 import { useModal } from "@/hooks/useModal";
 import { Question } from "@/models/Question";
 import { MASTER_PATH } from "@/routes/paths/paths.private";
-import { QuestionServices } from "@/services/question/question.service";
+import { QuestionServices } from "@/services/question.service";
 import { EditContactData } from "./edit-contact-data";
 import {
   CardContent,
@@ -73,7 +73,7 @@ const Contact = () => {
       <ContentCard>
         <ContentCardHeader>
           <DotRounded>1</DotRounded>
-          <span>{contactData.question}</span>
+          {contactData && <span dangerouslySetInnerHTML={{ __html: contactData.question }} />}
         </ContentCardHeader>
 
         <CardContent>

@@ -47,3 +47,5 @@ export const EGRESS_NEW_FORM = () => `${EGRESS_PATH()}/forms/new-form`;
 export const EGRESS_COMUNICATIONS = () => `${EGRESS_PATH()}/comunications`;
 
 export const EGRESS_NEW_COMUNICATION = () => `${EGRESS_PATH()}/comunications/new-comunication`;
+
+export const EGRESS_STUDENTS = () => `${EGRESS_PATH()}/students`;

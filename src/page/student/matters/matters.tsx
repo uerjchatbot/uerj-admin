@@ -8,7 +8,7 @@ import { Button } from "@/components/button";
 import { useModal } from "@/hooks/useModal";
 import { Question } from "@/models/Question";
 import { STUDENT_PATH } from "@/routes/paths/paths.private";
-import { QuestionServices } from "@/services/question/question.service";
+import { QuestionServices } from "@/services/question.service";
 import { CreateDisciplineModal } from "./create-discipline";
 import { HomeTitle } from "./edit-modals/home-title";
 import { EditMatterText } from "./edit-modals/matter-text";

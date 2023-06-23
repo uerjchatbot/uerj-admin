@@ -5,10 +5,14 @@ import { toast } from "react-toastify";
 import { useLoading } from "@/hooks/useLoading";
 
 import { Button } from "@/components/button";
-import { Question } from "@/models/Question";
-import { IFirstStepData, ISecondStepData, IThirdStepData } from "@/models/doctor";
+import {
+  ProcessFirstStepData,
+  ProcessSecondStepData,
+  ProcessThirdStepData,
+  Question
+} from "@/models/Question";
 import { MASTER_PATH } from "@/routes/paths/paths.private";
-import { QuestionServices } from "@/services/question/question.service";
+import { QuestionServices } from "@/services/question.service";
 import { FirstStepForm } from "./steps/first_step_form";
 import { SecondStepForm } from "./steps/second_step_form";
 import { ThirdStepForm } from "./steps/third_step_form";
@@ -25,9 +29,15 @@ const SelectiveProcesss = () => {
 
   const [selectedStage, setSelectedStage] = useState(1);
   const [homeData, setHomeData] = useState<Question>({} as Question);
-  const [firstStepData, setFirstStepData] = useState<IFirstStepData>({} as IFirstStepData);
-  const [secondStepData, setSecondStepData] = useState<ISecondStepData>({} as ISecondStepData);
-  const [thirdStepData, setThirdStepData] = useState<IThirdStepData>({} as IThirdStepData);
+  const [firstStepData, setFirstStepData] = useState<ProcessFirstStepData>(
+    {} as ProcessFirstStepData
+  );
+  const [secondStepData, setSecondStepData] = useState<ProcessSecondStepData>(
+    {} as ProcessSecondStepData
+  );
+  const [thirdStepData, setThirdStepData] = useState<ProcessThirdStepData>(
+    {} as ProcessThirdStepData
+  );
   const handleNavigateBack = () => navigate(MASTER_PATH());
 
   const getData = async () => {

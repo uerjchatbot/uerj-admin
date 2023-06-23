@@ -6,7 +6,6 @@ import * as S from "./styles";
 import { Button } from "@/components/button";
 import { useModal } from "@/hooks/useModal";
 import { Question } from "@/models/Question";
-import { convertWhatsappTextToHtml } from "@/utils/formarter";
 import { EditFirstStepEvent } from "../../edit_modals/first_step_event";
 import { EditPageDescription } from "../../edit_modals/page_description";
 
@@ -58,7 +57,7 @@ const Form = ({ question, setQuestion }: Props) => {
               <span>{child.question}</span>
             </S.ContentCardHeader>
 
-            <S.Title dangerouslySetInnerHTML={{ __html: convertWhatsappTextToHtml(child.title) }} />
+            <S.Title dangerouslySetInnerHTML={{ __html: child.title }} />
 
             <S.ContainerButton>
               <Button outline={true} type={"button"}>

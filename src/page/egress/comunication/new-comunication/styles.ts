@@ -13,7 +13,7 @@ export const Header = styled.header`
 `;
 
 export const ButtonGroup = styled.div`
-  width: 50%;
+  width: 20%;
   display: flex;
   gap: 1.5rem;
 `;
@@ -21,7 +21,7 @@ export const ButtonGroup = styled.div`
 export const BoxForm = styled.div`
   box-shadow: 0px 4px 4px rgba(184, 190, 194, 0.6);
   border-radius: 2px;
-  max-width: 82.125rem;
+  max-width: 920px;
   width: 100%;
   display: flex;
   gap: 2.25rem;
@@ -109,11 +109,4 @@ export const ItemOption = styled.div`
     font-size: 1.25rem;
     color: #919699;
   }
-`;
-
-export const FormContent = styled.textarea`
-  font-weight: 400;
-  width: 100%;
-  font-size: 1.5rem;
-  padding: 2rem 2.5625rem;
 `;

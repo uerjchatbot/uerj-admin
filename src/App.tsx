@@ -1,5 +1,5 @@
-import { ThemeProvider } from "styled-components";
 import { ToastContainer } from "react-toastify";
+import { ThemeProvider } from "styled-components";
 
 import "react-toastify/dist/ReactToastify.css";
 import "rsuite/dist/rsuite.min.css";
@@ -9,8 +9,8 @@ import RoutesComponent from "@/routes/routes.component";
 import GlobalStyle from "@/styles/global.style";
 import Theme from "@/styles/theme";
 import Loading from "./components/Loading";
-import { AppProvider } from "./hooks";
 import { EditTextModal } from "./components/edit-text-modal";
+import { AppProvider } from "./hooks";
 
 function App() {
   return (

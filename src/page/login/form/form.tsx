@@ -1,10 +1,9 @@
-import React from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-
 import { Button } from "@/components/button";
 import { Input } from "@/components/input";
 import { INITIAL_PATH } from "@/routes/paths/paths.public";
+import React from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
 import { Container, ForgotPassword } from "./styles";
 
 import { useAuth } from "@/hooks/useAuth";
@@ -14,7 +13,7 @@ import LoginSchema from "@/schemas/login";
 import { toast } from "react-toastify";
 
 const FormLogin: React.FC = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const { setLoading } = useLoading();
   const { handleLogin } = useAuth();
@@ -24,10 +23,6 @@ const FormLogin: React.FC = () => {
     handleSubmit,
     formState: { errors }
   } = useForm<ILoginFormData>();
-
-  function openLoginPopup() {
-    window.open(`${import.meta.env.VITE_API_URL}/google/login`, "_self");
-  }
 
   const onSubmit: SubmitHandler<ILoginFormData> = async (data: ILoginFormData) => {
     try {
@@ -39,7 +34,7 @@ const FormLogin: React.FC = () => {
 
       setLoading(false);
 
-      openLoginPopup();
+      navigate("/home");
     } catch (error) {
       toast.error("Usuário incorreto ou não cadastrado");
       setLoading(false);
@@ -59,7 +54,6 @@ const FormLogin: React.FC = () => {
           errorMessage="O email é obrigatório"
           errors={errors}
         />
-
         <Input
           type="password"
           label="Senha"
@@ -70,11 +64,9 @@ const FormLogin: React.FC = () => {
           errorMessage="A senha é obrigatório"
           errors={errors}
         />
-
         <ForgotPassword>
           <Link to={INITIAL_PATH()}>Esqueceu sua senha?</Link>
         </ForgotPassword>
-
         <Button type="submit">
           <p> Entrar</p>
         </Button>

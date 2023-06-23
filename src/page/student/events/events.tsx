@@ -7,7 +7,7 @@ import { useLoading } from "@/hooks/useLoading";
 import { Button } from "@/components/button";
 import { Question } from "@/models/Question";
 import { STUDENT_PATH } from "@/routes/paths/paths.private";
-import { QuestionServices } from "@/services/question/question.service";
+import { QuestionServices } from "@/services/question.service";
 import { FirstStepForm } from "./steps/first_step_form";
 import { SecondStepForm } from "./steps/second_step_form";
 import * as S from "./styles";

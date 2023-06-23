@@ -9,7 +9,7 @@ import Theme from "@/styles/theme";
 import { useModal } from "@/hooks/useModal";
 import { Question } from "@/models/Question";
 import { DOCTOR_PATH, EGRESS_PATH, MASTER_PATH, STUDENT_PATH } from "@/routes/paths/paths.private";
-import { QuestionServices } from "@/services/question/question.service";
+import { QuestionServices } from "@/services/question.service";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { EditHomeTitle } from "./edit-title";

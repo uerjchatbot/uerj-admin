@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/button";
 import { useModal } from "@/hooks/useModal";
 import { Question } from "@/models/Question";
-import { QuestionServices } from "@/services/question/question.service";
+import { QuestionServices } from "@/services/question.service";
 import { BsPencil, BsTrash } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
 import { IoIosPeople } from "react-icons/io";
