@@ -83,6 +83,8 @@ const Comunications: React.FC = () => {
 
       toast.success("E-mail com a comunicação enviado com sucesso!");
     } catch (error) {
+      setLoading(false);
+
       toast.error("Houve um erro ao enviar comunicação");
 
       console.error(error);

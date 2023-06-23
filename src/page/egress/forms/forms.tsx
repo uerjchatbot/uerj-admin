@@ -72,6 +72,8 @@ const Forms: React.FC = () => {
 
       toast.success("Email com o formulário enviado com sucesso");
     } catch (error) {
+      setLoading(false);
+
       toast.error("Houve um erro ao enviar formulário");
 
       console.error(error);
