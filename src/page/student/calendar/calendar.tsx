@@ -23,7 +23,7 @@ import {
 
 //? Edit Modals
 import { Question } from "@/models/Question";
-import { QuestionServices } from "@/services/question/question.service";
+import { QuestionServices } from "@/services/question.service";
 import { EditFirstQuestion } from "./questions/edit-first-question";
 import { EditFourthQuestion } from "./questions/edit-fourth-question";
 import { EditSecondQuestion } from "./questions/edit-second-question";

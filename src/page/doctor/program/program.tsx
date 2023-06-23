@@ -23,7 +23,7 @@ import {
 
 //? Edit Modals
 import { Question } from "@/models/Question";
-import { QuestionServices } from "@/services/question/question.service";
+import { QuestionServices } from "@/services/question.service";
 import { GrAdd } from "react-icons/gr";
 import { CreateTeacher } from "./create_teacher";
 import { EditHandbagQuestion } from "./edit-modals/handbag";

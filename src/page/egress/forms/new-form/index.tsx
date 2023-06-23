@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button as ButtonComponent } from "@/components/button";
 import { Question } from "@/models/Question";
 import { OptionsFormAPI } from "@/models/form";
-import { FormService } from "@/services/form/form.service";
+import { FormService } from "@/services/form.service";
 import { getLetterFromAlphabet } from "@/utils/formarter";
 import { useFieldArray, useForm } from "react-hook-form";
 import { AiFillDelete } from "react-icons/ai";

@@ -38,9 +38,6 @@ const TextEditor = ({ value, setValue, placeholder = "Digite aqui", fontSize = 2
       onChange={() => {
         if (editorRef.current && editorRef.current.getText().length > 0) {
           const text = editorRef?.current?.getContents(true);
-
-          console.log({ text });
-
           setValue(text);
         }
       }}

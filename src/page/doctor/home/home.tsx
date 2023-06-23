@@ -17,7 +17,7 @@ import { Button } from "@/components/button";
 import { useModal } from "@/hooks/useModal";
 import { Question } from "@/models/Question";
 import * as Private from "@/routes/paths/paths.private";
-import { QuestionServices } from "@/services/question/question.service";
+import { QuestionServices } from "@/services/question.service";
 import EditHomeTitle from "./edit-home-title/edit-home-title";
 
 const navigateToPath = [

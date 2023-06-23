@@ -9,7 +9,7 @@ import { useLoading } from "@/hooks/useLoading";
 import { useModal } from "@/hooks/useModal";
 import { Question } from "@/models/Question";
 import { MASTER_PATH } from "@/routes/paths/paths.private";
-import { QuestionServices } from "@/services/question/question.service";
+import { QuestionServices } from "@/services/question.service";
 import { EditCalendarLink } from "./edit-calendar-link";
 import { Container, ContainerButton, DescriptionContainer, Title } from "./styles";
 

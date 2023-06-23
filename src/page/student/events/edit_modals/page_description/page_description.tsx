@@ -5,7 +5,7 @@ import { TextEditor } from "@/components/text-editor";
 import { EditTextButton } from "@/components/edit-text-button";
 import { useModal } from "@/hooks/useModal";
 import { Question } from "@/models/Question";
-import { QuestionServices } from "@/services/question/question.service";
+import { QuestionServices } from "@/services/question.service";
 import { toast } from "react-toastify";
 
 type Props = {

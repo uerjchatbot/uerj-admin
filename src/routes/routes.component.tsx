@@ -4,7 +4,7 @@ import { INITIAL_PATH } from "@/routes/paths/paths.public";
 import WrapperRoute from "@/routes/route.wrapper";
 import React from "react";
 
-import { BrowserRouter, Routes as Router, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes as Router } from "react-router-dom";
 
 const RoutesComponent: React.FC = () => {
   const renderPrivateRoutes = () => {

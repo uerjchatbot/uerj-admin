@@ -8,6 +8,7 @@ import NewComunication from "@/page/egress/comunication/new-comunication";
 import { EgressFormsPage } from "@/page/egress/forms";
 import NewForm from "@/page/egress/forms/new-form";
 import { HomeEgress } from "@/page/egress/home";
+import Students from "@/page/egress/students/students";
 import { Home } from "@/page/home/main";
 import { ViewHome } from "@/page/home/view";
 import { MasterCalendarPage } from "@/page/master/calendar";
@@ -155,5 +156,11 @@ export const PrivateRoutesComponents: RouteComponentInterface[] = [
     path: Private.EGRESS_NEW_COMUNICATION(),
     Component: NewComunication,
     breadcrumb: " / Nova Comunicação"
+  },
+
+  {
+    path: Private.EGRESS_STUDENTS(),
+    Component: Students,
+    breadcrumb: " / 3 - Ex-alunos"
   }
 ];

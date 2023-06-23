@@ -1,6 +1,7 @@
+import { Degree } from "@/models/Degree";
 import { CreatedFormResponse, FormQuestion, List } from "@/models/form";
 import { AxiosPromise } from "axios";
-import { api } from "../api";
+import { api } from "./api";
 
 interface CreateForm {
   title: string;
@@ -16,7 +17,7 @@ export const FormService = {
     return api.get(`/forms`);
   },
 
-  send(data: { id: string; degree: "master" | "doctor" }): AxiosPromise<void> {
+  send(data: Degree): AxiosPromise<void> {
     return api.post(`/forms/${data.id}/send`, { degree: data.degree });
   }
 };

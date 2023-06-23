@@ -102,6 +102,6 @@ export interface CreatedFormResponse {
 }
 
 export type List = {
-  meta: Meta;
+  meta: Partial<Meta>;
   data: CreatedFormResponse[];
 };

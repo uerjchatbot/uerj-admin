@@ -1,5 +1,6 @@
-export interface IUserData {
-  email: string;
-  id: number;
+export interface Student {
   name: string;
+  email: string;
+  degree: "Doutorado" | "Mestrado";
+  accept_email: boolean;
 }

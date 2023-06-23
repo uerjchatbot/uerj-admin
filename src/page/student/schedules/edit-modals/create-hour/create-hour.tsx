@@ -6,7 +6,7 @@ import { TextEditor } from "@/components/text-editor";
 import { useLoading } from "@/hooks/useLoading";
 import { useModal } from "@/hooks/useModal";
 import { Question } from "@/models/Question";
-import { QuestionServices } from "@/services/question/question.service";
+import { QuestionServices } from "@/services/question.service";
 
 type Props = {
   question: Question;

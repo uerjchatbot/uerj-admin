@@ -10,7 +10,7 @@ import { useLoading } from "@/hooks/useLoading";
 import { useModal } from "@/hooks/useModal";
 import { Question } from "@/models/Question";
 import { STUDENT_PATH } from "@/routes/paths/paths.private";
-import { QuestionServices } from "@/services/question/question.service";
+import { QuestionServices } from "@/services/question.service";
 import { CreateHourModal } from "./edit-modals/create-hour";
 import { EditHourModal } from "./edit-modals/edit-hour";
 import { EditHomeTitle } from "./edit-modals/home-title";

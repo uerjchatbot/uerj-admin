@@ -1,8 +1,6 @@
-import React from "react";
-import { Navigate, Outlet } from "react-router-dom";
-import localStorageService from "@/services/local-storage/local-storage.service";
-import { AuthKeysEnum } from "@/types/enum/auth.enum";
 import Layout from "@/layout/layout";
+import React from "react";
+import { Outlet } from "react-router-dom";
 
 interface IWrapperRoute {
   redirect?: string;
@@ -10,12 +8,6 @@ interface IWrapperRoute {
 }
 
 const WrapperRoute: React.FC<IWrapperRoute> = ({ isPrivate, redirect = "/" }) => {
-  const token = localStorageService.getAuthData(AuthKeysEnum.AUTH_TOKEN);
-
-  // if (!token && isPrivate) {
-  //   return <Navigate replace to={redirect} />;
-  // }
-
   if (isPrivate) {
     return (
       <Layout>
