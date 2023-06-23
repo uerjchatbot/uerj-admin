@@ -73,7 +73,7 @@ const Contact = () => {
       <ContentCard>
         <ContentCardHeader>
           <DotRounded>1</DotRounded>
-          <span>{contactData.question}</span>
+          {contactData && <span dangerouslySetInnerHTML={{ __html: contactData.question }} />}
         </ContentCardHeader>
 
         <CardContent>

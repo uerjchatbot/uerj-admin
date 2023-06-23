@@ -48,7 +48,8 @@ const NewForm: React.FC = () => {
     register,
     formState: { errors, isSubmitting },
     control,
-    handleSubmit
+    handleSubmit,
+    getValues
   } = useForm<FormCreate>({
     mode: "all",
     criteriaMode: "all",
@@ -74,17 +75,8 @@ const NewForm: React.FC = () => {
 
   async function createForm(data: FormCreate) {
     try {
-      const [access_token] = document.cookie.split(";").map((c) => c.split("=")[1]);
-
-      const { data: form_create } = await FormService.create({
+      await FormService.build({
         title: data.title,
-        token: access_token,
-        questionId: state.id
-      });
-
-      await FormService.createQuestion({
-        token: access_token,
-        formId: form_create.id,
         questions: data.questions.map(({ mode, options, title }) => ({
           type: mode,
           title,
@@ -95,9 +87,35 @@ const NewForm: React.FC = () => {
       toast.success("Formulário criado com sucesso");
       handleBackNavigation();
     } catch (error) {
+      toast.error("Houve um erro ao criar o formulário");
+
       console.log(error);
     }
   }
+
+  const addOption = (index: number) => {
+    getValues;
+    const questionField = getValues(`questions.${index}`);
+
+    if (questionField) {
+      const newOption = { value: "" };
+      update(index, {
+        ...questionField,
+        options: [...questionField.options, newOption]
+      });
+    }
+  };
+
+  const removeOption = (index: number, opindex: number) => {
+    const questionField = getValues(`questions.${index}`);
+
+    if (questionField) {
+      update(index, {
+        ...questionField,
+        options: questionField.options.filter((o, i) => i !== opindex)
+      });
+    }
+  };
 
   return (
     <S.Container>
@@ -203,17 +221,7 @@ const NewForm: React.FC = () => {
                         {opindex === 0 && (
                           <Grid item xs={3} alignItems="center" display="flex">
                             <Button
-                              onClick={() => {
-                                const questionField = questions[index];
-
-                                if (questionField) {
-                                  const newOption = { value: "" };
-                                  update(index, {
-                                    ...questionField,
-                                    options: [...questionField.options, newOption]
-                                  });
-                                }
-                              }}
+                              onClick={() => addOption(index)}
                               variant="contained"
                               color="success"
                               size="large"
@@ -229,16 +237,7 @@ const NewForm: React.FC = () => {
                               variant="outlined"
                               color="error"
                               style={{ height: "100%" }}
-                              onClick={() => {
-                                const questionField = questions[index];
-
-                                if (questionField) {
-                                  update(index, {
-                                    ...questionField,
-                                    options: questionField.options.filter((o, i) => i !== opindex)
-                                  });
-                                }
-                              }}>
+                              onClick={() => removeOption(index, opindex)}>
                               <AiFillDelete size={20} style={{ color: "#e4310d" }} />
                             </Button>
                           </Grid>

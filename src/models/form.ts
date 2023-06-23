@@ -1,3 +1,5 @@
+import { Meta } from "picmo/dist/data/DataStore";
+
 export interface CreateFormAPI {
   title: string;
   documentTitle?: string;
@@ -91,10 +93,15 @@ export const questionTypeMap = {
 };
 
 export interface CreatedFormResponse {
+  id: string;
   created_at: string;
   form_id: string;
   form_url: string;
-  id: string;
-  question_id: string;
+  title: string;
   updated_at: string;
 }
+
+export type List = {
+  meta: Meta;
+  data: CreatedFormResponse[];
+};

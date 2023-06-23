@@ -1,20 +1,25 @@
 import { Button as ButtonComponent } from "@/components/button";
+import { useLoading } from "@/hooks/useLoading";
 import { Question } from "@/models/Question";
+import { List } from "@/models/form";
 import * as Private from "@/routes/paths/paths.private";
-import { Fetch, FormService } from "@/services/form/form.service";
+import { FormService } from "@/services/form/form.service";
 import { Button } from "@mui/material";
 import React, { useCallback, useEffect } from "react";
 import { BsEye, BsPlusLg, BsSearch } from "react-icons/bs";
 import { FiSend } from "react-icons/fi";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import * as S from "./styles";
 interface UseLocationState {
   state: Question;
 }
 
 const Forms: React.FC = () => {
+  const { setLoading } = useLoading();
+
   const { state } = useLocation() as UseLocationState;
-  const [forms, setForms] = React.useState<Fetch[]>([]);
+  const [forms, setForms] = React.useState<List>({ data: [], meta: {} });
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -27,13 +32,31 @@ const Forms: React.FC = () => {
 
   const getForms = useCallback(async (): Promise<void> => {
     try {
-      const { data } = await FormService.list(state.id);
+      setLoading(true);
+      const { data } = await FormService.list();
 
-      setForms(data.forms);
+      setForms(data);
+      setLoading(false);
     } catch (error) {
       console.error(error);
     }
   }, [state.id, setForms]);
+
+  const sendForm = async (data: { id: string; degree: "master" | "doctor" }) => {
+    try {
+      setLoading(true);
+
+      const { data: created } = await FormService.send(data);
+
+      setLoading(false);
+
+      toast.success("Email com o formulário enviado com sucesso");
+    } catch (error) {
+      toast.error("Houve um erro ao enviar formulário");
+
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     getForms();
@@ -77,8 +100,8 @@ const Forms: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {forms.length > 0 &&
-              forms?.map((form) => (
+            {forms.data.length > 0 &&
+              forms.data?.map((form) => (
                 <tr key={form.id}>
                   <td>{form.title}</td>
                   <S.Actions>
@@ -87,7 +110,10 @@ const Forms: React.FC = () => {
                         <BsEye size={22} />
                       </Button>
                     </a>
-                    <Button variant="contained" color="secondary">
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={() => sendForm({ id: form.id, degree: "master" })}>
                       <FiSend size={22} />
                     </Button>
                   </S.Actions>

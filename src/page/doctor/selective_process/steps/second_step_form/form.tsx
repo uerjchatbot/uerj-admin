@@ -68,7 +68,7 @@ const Form = ({ data }: Props) => {
         <S.ContentCard>
           <S.ContentCardHeader>
             <S.DotRounded>5</S.DotRounded>
-            {documentation && <span>{documentation.question}</span>}
+            {documentation && <span dangerouslySetInnerHTML={{ __html: documentation.question }} />}
           </S.ContentCardHeader>
 
           <p dangerouslySetInnerHTML={{ __html: documentation.title }} />
@@ -85,7 +85,7 @@ const Form = ({ data }: Props) => {
         <S.ContentCard>
           <S.ContentCardHeader>
             <S.DotRounded>6</S.DotRounded>
-            {step && <span>{step.question}</span>}
+            {step && <span dangerouslySetInnerHTML={{ __html: step.question }} />}
           </S.ContentCardHeader>
 
           <p dangerouslySetInnerHTML={{ __html: (step && step.title) || "Um texto aqui" }} />
@@ -102,7 +102,7 @@ const Form = ({ data }: Props) => {
         <S.ContentCard>
           <S.ContentCardHeader>
             <S.DotRounded>7</S.DotRounded>
-            {discretion && <span>{discretion.question}</span>}
+            {discretion && <span dangerouslySetInnerHTML={{ __html: discretion.question }} />}
           </S.ContentCardHeader>
 
           <p
@@ -123,7 +123,7 @@ const Form = ({ data }: Props) => {
         <S.ContentCard>
           <S.ContentCardHeader>
             <S.DotRounded>8</S.DotRounded>
-            {enrollment && <span>{enrollment.question}</span>}
+            {enrollment && <span dangerouslySetInnerHTML={{ __html: enrollment.question }} />}
           </S.ContentCardHeader>
 
           <p
