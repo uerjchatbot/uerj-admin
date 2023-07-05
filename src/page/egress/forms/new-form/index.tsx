@@ -1,14 +1,13 @@
 import { Box, Button, CircularProgress, Grid, MenuItem, TextField } from "@mui/material";
 import React, { Fragment } from "react";
 
-import * as Private from "@/routes/paths/paths.private";
-import { zodResolver } from "@hookform/resolvers/zod";
-
 import { Button as ButtonComponent } from "@/components/button";
 import { Question } from "@/models/Question";
 import { OptionsFormAPI } from "@/models/form";
+import * as Private from "@/routes/paths/paths.private";
 import { FormService } from "@/services/form.service";
 import { getLetterFromAlphabet } from "@/utils/formarter";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 import { AiFillDelete } from "react-icons/ai";
 import { IoMdAdd } from "react-icons/io";
@@ -126,7 +125,6 @@ const NewForm: React.FC = () => {
           </ButtonComponent>
         </S.ButtonGroup>
       </S.Header>
-
       {isSubmitting && (
         <Box
           sx={{
@@ -139,7 +137,6 @@ const NewForm: React.FC = () => {
           <CircularProgress />
         </Box>
       )}
-
       {!isSubmitting && (
         <form onSubmit={handleSubmit(createForm)}>
           <S.BoxForm>

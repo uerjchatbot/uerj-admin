@@ -22,6 +22,7 @@ import { FiSend } from "react-icons/fi";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as S from "./styles";
+
 interface UseLocationState {
   state: Question;
 }
@@ -88,6 +89,8 @@ const Forms: React.FC = () => {
     navigate(Private.EGRESS_PATH(), {
       state
     });
+
+  console.log({ a: import.meta.env.VITE_GOOGLE_CLIENT_ID });
 
   function SendDialog({ onClose, open }: DialogProps) {
     return (
